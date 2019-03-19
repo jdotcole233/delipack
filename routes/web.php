@@ -27,3 +27,16 @@ Route::get('/dashboardheader', function(){
 Route::get('/maindashboard', function(){
     return view('dashboard.maindashboard');
 });
+
+Route::get('/riders', function(){
+    return view('dashboard.riders');
+});
+
+Route::get('/rides', function(){
+    return view('dashboard.rides');
+});
+
+
+Route::get('/dashboardprofile', function(){
+    return view('dashboard.dashboardprofile');
+});
