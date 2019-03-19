@@ -18,3 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/dashboardheader', function(){
+    return view('systemheaders/dashboardheaders');
+});
+
+
+Route::get('/maindashboard', function(){
+    return view('dashboard.maindashboard');
+});
