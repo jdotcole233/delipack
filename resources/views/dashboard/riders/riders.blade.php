@@ -37,7 +37,7 @@
                           <a href="{{url('/aboutriders')}}" class="btn btn-primary"> View </a>
                        </td>
                        <td> 
-                          <button class="btn btn-danger"> Assign </button>
+                          <button class="btn btn-success" data-toggle="modal" data-target=".bd-assignride-modal-sm"> Assign </button>
                        </td>
                        <td> 
                           <button class="btn btn-danger"> Deactivate </button>
@@ -50,6 +50,48 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="modal fade bd-assignride-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Assign ride to {rider name}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+        <div class="modal-body">
+          <form>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                     <!-- <label for="recipient-name" class="col-form-label">Select Bike</label> -->
+                        <select class="form-control form-control-lg">
+                          <option value="">Select Bike</option>
+                          <option>GH-4345</option>
+                          <option>GE-41142</option>
+                          <option>GS-4364</option>
+                          <option>GT-4002</option>
+                        </select>
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                        <button type="button" class="btn btn-danger form-control">Assign</button>
+                  </div>
+                </div>
+              </div>
+          </form>
+              
+        </div>
+    </div>
+  </div>
 </div>
 
 
