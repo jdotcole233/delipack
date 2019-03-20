@@ -38,11 +38,15 @@ Route::get('/aboutriders', function(){
 });
 
 Route::get('/rides', function(){
-    return view('dashboard.rides');
+    return view('dashboard.rides.rides');
 });
 
 Route::get('/deliveries', function(){
     return view('dashboard.deliveries.deliveries');
+});
+
+Route::get('/reports', function(){
+    return view('dashboard.reports.datareports');
 });
 
 

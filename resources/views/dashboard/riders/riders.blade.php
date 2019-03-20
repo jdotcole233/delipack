@@ -23,8 +23,9 @@
                       <th> City </th>
                       <th> Area </th>
                       <th> Phone number </th>
-                      <th> Action view</th>
-                      <th> Action Delete</th>
+                      <th> View</th>
+                      <th> Assign</th>
+                      <th> Delete</th>
                     </thead>
                     <tbody>
                       <tr>
@@ -36,10 +37,12 @@
                           <a href="{{url('/aboutriders')}}" class="btn btn-primary"> View </a>
                        </td>
                        <td> 
+                          <button class="btn btn-danger"> Assign </button>
+                       </td>
+                       <td> 
                           <button class="btn btn-danger"> Deactivate </button>
                        </td>
                       </tr>
-                      
                     </tbody>
                   </table>
                 </div>
@@ -48,6 +51,17 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

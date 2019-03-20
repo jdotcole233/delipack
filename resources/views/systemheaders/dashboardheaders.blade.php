@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Now UI Dashboard by Creative Tim
+    {Company name} - DeliPack
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -19,9 +19,11 @@
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
 
-  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet" /> -->
+  <!-- <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" /> -->
+  <link href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css" rel="stylesheet" />
 
   <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
 
   
 
@@ -35,15 +37,15 @@
     -->
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-          CT
+          {AB}
         </a>
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          Creative Tim
+          {Company  name}
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
-          <li class="active ">
+          <li class="active">
             <a href="{{url('maindashboard')}}">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
@@ -51,7 +53,7 @@
           </li>
           <li>
             <a href="{{ url('/deliveries')}}">
-              <i class="now-ui-icons sport_user-run"></i>
+              <i class="now-ui-icons business_money-coins"></i>
               <p>Deliveries</p>
             </a>
           </li>
@@ -67,12 +69,18 @@
               <p>Rides</p>
             </a>
           </li>
-          <li class="active-pro">
+          <li>
+            <a href="{{url('/reports')}}">
+              <i class="now-ui-icons business_chart-pie-36"></i>
+              <p>Generate reports</p>
+            </a>
+          </li>
+          <!-- <li class="active-pro">
             <a href="#">
               <i class="now-ui-icons arrows-1_cloud-download-93"></i>
               <p>Upgrade to PRO</p>
             </a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -194,15 +202,35 @@
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
   <script src="../assets/demo/demo.js"></script>
-  <script>
+
+
+
+
+<script>
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       demo.initDashboardPageCharts();
     });
 
     $(document).ready(function() {
-    $('#riderstable').DataTable();
+    $('#riderstable').DataTable({
+         'dom': 'Bfrtip',
+        'buttons': [
+            'copy',
+            'excel',
+            'csv',
+            'pdf',
+            'print'
+        ]
+
+    });
 } );
   </script>
 <!-- https://code.jquery.com/jquery-3.3.1.js -->
