@@ -18,6 +18,13 @@
   <link href="../assets/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="../assets/demo/demo.css" rel="stylesheet" />
+
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet" /> -->
+
+  <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+  
+
 </head>
 
 <body class="">
@@ -40,6 +47,12 @@
             <a href="{{url('maindashboard')}}">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url('/deliveries')}}">
+              <i class="now-ui-icons sport_user-run"></i>
+              <p>Deliveries</p>
             </a>
           </li>
           <li>
@@ -165,7 +178,8 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="../assets/js/core/jquery.min.js"></script>
+  <!-- <script src="../assets/js/core/jquery.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
@@ -178,14 +192,20 @@
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/now-ui-dashboard.min.js?v=1.3.0" type="text/javascript"></script>
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
   <script src="../assets/demo/demo.js"></script>
   <script>
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       demo.initDashboardPageCharts();
-
     });
+
+    $(document).ready(function() {
+    $('#riderstable').DataTable();
+} );
   </script>
+<!-- https://code.jquery.com/jquery-3.3.1.js -->
 </body>
 
 </html>

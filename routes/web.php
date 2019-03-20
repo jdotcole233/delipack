@@ -29,11 +29,20 @@ Route::get('/maindashboard', function(){
 });
 
 Route::get('/riders', function(){
-    return view('dashboard.riders');
+    return view('dashboard.riders.riders');
+});
+
+
+Route::get('/aboutriders', function(){
+    return view('dashboard.riders.aboutrider');
 });
 
 Route::get('/rides', function(){
     return view('dashboard.rides');
+});
+
+Route::get('/deliveries', function(){
+    return view('dashboard.deliveries.deliveries');
 });
 
 
