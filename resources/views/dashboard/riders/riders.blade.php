@@ -117,24 +117,24 @@
       </div>
 
       <div class="modal-body">
-        <form>
+        <form class="needs-validation" no-validate>
                 <div class="row">
                   <div class="col-md-4">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">First name:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="text" class="form-control"  name="first_name"  placeholder="Musa" required>
                       </div>
                   </div>
                   <div class="col-md-4">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Other name:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Kojo">
+                        <input type="text" class="form-control" name="other_name" placeholder="Kojo" required>
                       </div>
                   </div>
                    <div class="col-md-4">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Last name:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Anim">
+                        <input type="text" class="form-control" name="last_name" placeholder="Anim" required>
                       </div>
                   </div>
                 </div>
@@ -143,7 +143,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Home address:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Hse No. 25 Haatso">
+                        <input type="text" class="form-control" name="address" placeholder="Hse No. 25 Haatso" required>
                       </div>
                   </div>
                 </div>
@@ -152,19 +152,26 @@
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Region:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Accra">
+                        <select class="form-control form-control-lg" name="region" required>
+                          <option value="">Select region</option>
+                          <option value="Greater Accra Region">Greater Accra Region</option>
+                          <option value="Ashanti Region">Ashanti Region</option>
+                          <option value="Eastern Region">Eastern Region</option>
+                          <option value="Central Region">Central Region</option>
+                          
+                        </select>
                       </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">City:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Greater Accra">
+                        <input type="text" class="form-control" name="city" placeholder="Greater Accra" required>
                       </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Area:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="East legon">
+                        <input type="text" class="form-control" name="area" placeholder="East legon" required>
                       </div>
                   </div>
                 </div>
@@ -173,13 +180,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Phone number 1:</label>
-                        <input type="number" min="10" max="14" class="form-control" id="recipient-name" placeholder="Personal phone number">
+                        <input type="text" min="10" max="14" class="form-control" name="personal_phonenumber" placeholder="Personal phone number" required>
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Phone number 2:</label>
-                        <input type="number" min="10" max="14" class="form-control" id="recipient-name" placeholder="Work phone number">
+                        <input type="text" min="10" max="14" class="form-control" id="recipient-name" placeholder="Work phone number" required>
                       </div>
                   </div>
                 </div>
@@ -187,8 +194,12 @@
                <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Driver's License</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="G382376">
+                        <label for="recipient-name" class="col-form-label">Gender</label>
+                        <select class="form-control form-control-lg" required>
+                          <option value="">Select gender</option>
+                          <option>Male</option>
+                          <option>Female</option>
+                        </select>
                       </div>
                   </div>
                   <div class="col-md-6">
@@ -199,25 +210,52 @@
                   </div>
                 </div>
 
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">License class</label>
+                        <input type="text"  class="form-control" id="recipient-name" placeholder="E.g A, B" required>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">License number</label>
+                        <input type="text" class="form-control" id="recipient-name" placeholder="E.g G453773" required>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Date of issue</label>
+                        <input type="Date"  class="form-control" id="recipient-name" required>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Expiry date</label>
+                        <input type="Date"  class="form-control" id="recipient-name"  required>
+                      </div>
+                  </div>
+                </div>
+
 
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="message-text" class="col-form-label">About:</label>
-                      <textarea class="form-control" id="message-text"></textarea>
+                      <textarea class="form-control" id="message-text" required></textarea>
                     </div>
                   </div>
                 </div>
-
-
-
-        </form>
       </div>
-
+    </form>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Register</button>
+        <button class="btn btn-primary" id="ridersubmitbtn" >Register</button>
       </div>
+
     </div>
 </div>
 </div>

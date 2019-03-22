@@ -110,11 +110,31 @@
                       </div>
                     </div>
                   </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Gender</label>
+                        <select class="form-control form-control-lg">
+                          <option value="">Select gender</option>
+                          <option>Male</option>
+                          <option>Female</option>
+                        </select>
+                      </div>
+                  </div>
+                </div>
+
                   <div class="row">
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
-                        <label>License Number</label>
-                        <input type="text" class="form-control" placeholder="City" value="Mike">
+                            <label for="recipient-name" class="col-form-label">Region:</label>
+                            <select class="form-control form-control-lg">
+                                <option value="">Select region</option>
+                                <option>Greater Accra Region</option>
+                                <option>Ashanti Region</option>
+                                <option>Eastern Region</option>
+                                <option>Central Region</option>
+                            </select>
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
@@ -130,6 +150,39 @@
                       </div>
                     </div>
                   </div>
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">License class</label>
+                        <input type="text"  class="form-control" id="recipient-name" placeholder="E.g A, B">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">License number</label>
+                        <input type="text" class="form-control" id="recipient-name" placeholder="E.g G453773">
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Date of issue</label>
+                        <input type="Date"  class="form-control" id="recipient-name">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Expiry date</label>
+                        <input type="Date"  class="form-control" id="recipient-name" >
+                      </div>
+                  </div>
+                </div>
+
+
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
