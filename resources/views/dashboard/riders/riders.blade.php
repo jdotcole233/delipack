@@ -186,7 +186,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Phone number 2:</label>
-                        <input type="text" min="10" max="14" class="form-control" id="recipient-name" placeholder="Work phone number" required>
+                        <input type="text" min="10" max="14" class="form-control" name="work_phonenumber" placeholder="Work phone number" required>
                       </div>
                   </div>
                 </div>
@@ -195,17 +195,17 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Gender</label>
-                        <select class="form-control form-control-lg" required>
+                        <select class="form-control form-control-lg" name="gender" required>
                           <option value="">Select gender</option>
-                          <option>Male</option>
-                          <option>Female</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
                         </select>
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="custom-file">
                       <label for="recipient-name" class="col-form-label">Profile picture</label>
-                      <input type="file" class="form-control " id="validatedCustomFile" required>
+                      <input type="file" class="form-control " name="profile_picture" required>
                     </div>
                   </div>
                 </div>
@@ -214,13 +214,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">License class</label>
-                        <input type="text"  class="form-control" id="recipient-name" placeholder="E.g A, B" required>
+                        <input type="text"  class="form-control" name="license_type" placeholder="E.g A, B" required>
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">License number</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="E.g G453773" required>
+                        <input type="text" class="form-control" name="license_number" placeholder="E.g G453773" required>
                       </div>
                   </div>
                 </div>
@@ -229,13 +229,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of issue</label>
-                        <input type="Date"  class="form-control" id="recipient-name" required>
+                        <input type="Date"  class="form-control" name="date_of_issue" required>
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Expiry date</label>
-                        <input type="Date"  class="form-control" id="recipient-name"  required>
+                        <input type="Date"  class="form-control" name="expiry_date"  required>
                       </div>
                   </div>
                 </div>
@@ -245,7 +245,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="message-text" class="col-form-label">About:</label>
-                      <textarea class="form-control" id="message-text" required></textarea>
+                      <textarea class="form-control" name="about" required></textarea>
                     </div>
                   </div>
                 </div>
