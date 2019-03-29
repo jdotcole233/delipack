@@ -9,10 +9,10 @@
         <div class="col-md-12">
         <div class="card">
               <div class="card-header">
-                <h4 class="card-title"> {Rider name} work</h4>
+                <h4 class="card-title"> {{$company_rider_name->first_name . " " . $company_rider_name->last_name."'s"}} work</h4>
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-primary pull-right" data-toggle="modal" data-target=".bd-riderprofile-modal-lg">{Ride name} profile</button>
+                        <button class="btn btn-primary pull-right riderprofilebtn" >{{$company_rider_name->first_name . " " . $company_rider_name->last_name."'s"}} profile</button>
                     </div>
                 </div>
               </div>
@@ -67,24 +67,25 @@
                 <h5 class="title">Edit Profile</h5>
               </div>
               <div class="card-body">
-                <form>
+                <form id="editridersinformation">
+                  <meta name="csrf_token" content="{{csrf_token()}}"> 
                   <div class="row">
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
                         <label> First name</label>
-                        <input type="text" class="form-control" placeholder="Company" value="Creative Code Inc.">
+                        <input type="text" name="first_name" class="form-control" id="edit_first_name" placeholder="">
                       </div>
                     </div>
                     <div class="col-md-3 px-1">
                       <div class="form-group">
                         <label>Other name</label>
-                        <input type="text" class="form-control" placeholder="Username" value="michael23">
+                        <input type="text" name="other_name" class="form-control" id="edit_other_name" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
                         <label for="exampleInputEmail1">last name</label>
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input type="text" name="last_name" class="form-control" id="edit_last_name" placeholder="">
                       </div>
                     </div>
                   </div>
@@ -92,13 +93,13 @@
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Personal phone</label>
-                        <input type="text" class="form-control" placeholder="Company" value="Mike">
+                        <input type="text" name="personal_phone" class="form-control" id="edit_personal_phone" placeholder="" >
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
                         <label>Work phone</label>
-                        <input type="text" class="form-control" placeholder="Last Name" value="Andrew">
+                        <input type="text" name="work_phone" class="form-control" id="edit_work_phone" placeholder=" " v>
                       </div>
                     </div>
                   </div>
@@ -106,7 +107,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Address</label>
-                        <input type="text" class="form-control" placeholder="Home Address" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                        <input type="text" name="address" class="form-control" id="edit_address" placeholder="" >
                       </div>
                     </div>
                   </div>
@@ -115,10 +116,10 @@
                   <div class="col-md-12">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Gender</label>
-                        <select class="form-control form-control-lg">
+                        <select class="form-control form-control-lg" name="gender" id="edit_gender" >
                           <option value="">Select gender</option>
-                          <option>Male</option>
-                          <option>Female</option>
+                          <option value="Male">Male</option>
+                          <option vale="Female">Female</option>
                         </select>
                       </div>
                   </div>
@@ -128,25 +129,25 @@
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Region:</label>
-                            <select class="form-control form-control-lg">
+                            <select name="region" class="form-control form-control-lg" id="edit_region">
                                 <option value="">Select region</option>
-                                <option>Greater Accra Region</option>
-                                <option>Ashanti Region</option>
-                                <option>Eastern Region</option>
-                                <option>Central Region</option>
+                                <option vale="Greater Accra Region">Greater Accra Region</option>
+                                <option vlaue="Ashanti Region">Ashanti Region</option>
+                                <option value="Eastern Region">Eastern Region</option>
+                                <option value="Central Region">Central Region</option>
                             </select>
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
                       <div class="form-group">
                         <label>City</label>
-                        <input type="text" class="form-control" placeholder="Country" value="Andrew">
+                        <input type="text" name="city" class="form-control" id="edit_city" placeholder=" ">
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
                         <label>Area</label>
-                        <input type="text" class="form-control" placeholder="ZIP Code">
+                        <input name="area" type="text" class="form-control" id="edit_area" placeholder=" ">
                       </div>
                     </div>
                   </div>
@@ -156,13 +157,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">License class</label>
-                        <input type="text"  class="form-control" id="recipient-name" placeholder="E.g A, B">
+                        <input type="text" name="License_type"  class="form-control" id="edit_license_class" placeholder=" ">
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">License number</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="E.g G453773">
+                        <input type="text" name="License_number" class="form-control" id="edit_license_number" placeholder=" ">
                       </div>
                   </div>
                 </div>
@@ -171,13 +172,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of issue</label>
-                        <input type="Date"  class="form-control" id="recipient-name">
+                        <input type="Date" name="date_of_issue" class="form-control"  id="edit_date_of_issue">
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Expiry date</label>
-                        <input type="Date"  class="form-control" id="recipient-name" >
+                        <input type="Date" name="Expiry_date"  class="form-control" id="edit_expiry_date" >
                       </div>
                   </div>
                 </div>
@@ -187,16 +188,16 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>About Me</label>
-                        <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description" value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
+                        <textarea rows="4" cols="80" name="about" class="form-control" placeholder="Here can be your description" id="edit_about_me" value="Mike"></textarea>
                       </div>
                     </div>
                   </div>
+                </form>
                   <div class="row">
                       <div class="col-md-12">
-                          <button class="btn btn-primary">Edit</button>
+                          <button class="btn btn-primary ridereditinfobtn">Edit</button>
                       </div>
                   </div>
-                </form>
               </div>
             </div>
           </div>
@@ -209,13 +210,13 @@
                 <div class="author">
                   <a href="#">
                     <img class="avatar border-gray" src="../assets/img/mike.jpg" alt="...">
-                    <h5 class="title">Mike Andrew</h5>
+                    <h5 class="title" id="user_full_name">Mike Andrew</h5>
                   </a>
-                  <p class="description">
+                  <p class="description" id="user_access">
                     michael24
                   </p>
                 </div>
-                <p class="description text-center">
+                <p class="description text-center" id="user_about">
                   "Lamborghini Mercy
                   <br> Your chick she so thirsty
                   <br> I'm in that two seat Lambo"

@@ -17,9 +17,8 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table" id="riderstable">
+                  <table class="table" id="ridestable">
                     <thead class=" text-primary">
-                      <th>ID</th>
                       <th>Brand Name</th>
                       <th>Reg Number</th>
                       <th>Date of expiry</th>
@@ -28,7 +27,6 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>Dakota Rice</td>
                         <td>Niger</td>
                         <td>Oud-Turnhout</td>
                         <td>$36,738</td>
@@ -62,40 +60,54 @@
 
 
       <div class="modal-body">
-         <form>
+         <form class="ridesformsval" no-validate>
+           <meta name="csrf-token" content="{{ csrf_token() }}">
               <div class="row">
                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Brand name:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="text" class="form-control" name="brand_name" placeholder="Yamaha" required>
                       </div>
                    </div>
                    <div class="col-md-6">
                      <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Registered number:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="text" class="form-control" name="registered_number" placeholder="GS-223" required>
                       </div>
                    </div> 
+              </div>
+              <div class="row" style="display:none;">
+                   <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="companiescompanies_id" value="1">
+                      </div>
+                   </div>
+                   <div class="col-md-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="status" value="0">
+                      </div>
+                   </div>
               </div>
               <div class="row">
                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of registration:</label>
-                        <input type="Date" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="Date" class="form-control" name="date_of_registration" required>
                       </div>
                    </div>
                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of expiry:</label>
-                        <input type="Date" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="Date" class="form-control" name="date_of_expiry"  required>
                       </div>
                    </div> 
               </div>
+          </form>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Register</button>
+                  <button type="button" class="btn btn-primary registerridebtn">Register</button>
                 </div>
-         </form>
+
       </div>
 
 

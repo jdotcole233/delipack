@@ -28,14 +28,11 @@ Route::get('/maindashboard', function(){
     return view('dashboard.maindashboard');
 });
 
-Route::get('/riders', function(){
-    return view('dashboard.riders.riders');
-});
+Route::get('/riders','riderController@getallrides');
 
 
-Route::get('/aboutriders', function(){
-    return view('dashboard.riders.aboutrider');
-});
+Route::get('/aboutriders/{id}', 'riderController@riderinformation');
+Route::get('/editriderinformation/{id}', 'riderController@ridereditinformation');
 
 Route::get('/rides', function(){
     return view('dashboard.rides.rides');
@@ -53,3 +50,12 @@ Route::get('/reports', function(){
 Route::get('/dashboardprofile', function(){
     return view('dashboard.dashboardprofile');
 });
+
+Route::get('/getridersinformation', 'riderController@ridersinformation');
+
+
+Route::post('/registerrider', 'riderController@func_registerrider');
+Route::post('/uploadriderphoto', 'riderController@uploadRiderprofile');
+
+Route::post('/registerride', 'rideController@regRide');
+Route::get('/gerregrides','rideController@getregRides');
