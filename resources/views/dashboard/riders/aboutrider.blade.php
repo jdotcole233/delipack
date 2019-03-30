@@ -67,13 +67,13 @@
                 <h5 class="title">Edit Profile</h5>
               </div>
               <div class="card-body">
-                <form id="editridersinformation">
-                  <meta name="csrf_token" content="{{csrf_token()}}"> 
+                <form class="editridersinformation" no-validate>
+                  <meta name="csrf-token" content="{{csrf_token()}}"> 
                   <div class="row">
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
                         <label> First name</label>
-                        <input type="text" name="first_name" class="form-control" id="edit_first_name" placeholder="">
+                        <input type="text" name="first_name" class="form-control" id="edit_first_name" placeholder="" required>
                       </div>
                     </div>
                     <div class="col-md-3 px-1">
@@ -85,7 +85,7 @@
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
                         <label for="exampleInputEmail1">last name</label>
-                        <input type="text" name="last_name" class="form-control" id="edit_last_name" placeholder="">
+                        <input type="text" name="last_name" class="form-control" id="edit_last_name" placeholder="" required>
                       </div>
                     </div>
                   </div>
@@ -93,13 +93,13 @@
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
                         <label>Personal phone</label>
-                        <input type="text" name="personal_phone" class="form-control" id="edit_personal_phone" placeholder="" >
+                        <input type="text" name="personal_phone" class="form-control" id="edit_personal_phone" placeholder="" required>
                       </div>
                     </div>
                     <div class="col-md-6 pl-1">
                       <div class="form-group">
                         <label>Work phone</label>
-                        <input type="text" name="work_phone" class="form-control" id="edit_work_phone" placeholder=" " v>
+                        <input type="text" name="work_phone" class="form-control" id="edit_work_phone" placeholder=" " >
                       </div>
                     </div>
                   </div>
@@ -107,7 +107,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Address</label>
-                        <input type="text" name="address" class="form-control" id="edit_address" placeholder="" >
+                        <input type="text" name="address" class="form-control" id="edit_address" placeholder="" required>
                       </div>
                     </div>
                   </div>
@@ -116,7 +116,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Gender</label>
-                        <select class="form-control form-control-lg" name="gender" id="edit_gender" >
+                        <select class="form-control form-control-lg" name="gender" id="edit_gender" required>
                           <option value="">Select gender</option>
                           <option value="Male">Male</option>
                           <option vale="Female">Female</option>
@@ -129,7 +129,7 @@
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Region:</label>
-                            <select name="region" class="form-control form-control-lg" id="edit_region">
+                            <select name="region" class="form-control form-control-lg" id="edit_region" required>
                                 <option value="">Select region</option>
                                 <option vale="Greater Accra Region">Greater Accra Region</option>
                                 <option vlaue="Ashanti Region">Ashanti Region</option>
@@ -141,13 +141,13 @@
                     <div class="col-md-4 px-1">
                       <div class="form-group">
                         <label>City</label>
-                        <input type="text" name="city" class="form-control" id="edit_city" placeholder=" ">
+                        <input type="text" name="city" class="form-control" id="edit_city" placeholder=" " required>
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
                         <label>Area</label>
-                        <input name="area" type="text" class="form-control" id="edit_area" placeholder=" ">
+                        <input name="area" type="text" class="form-control" id="edit_area" placeholder=" " required>
                       </div>
                     </div>
                   </div>
@@ -157,13 +157,21 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">License class</label>
-                        <input type="text" name="License_type"  class="form-control" id="edit_license_class" placeholder=" ">
+                        <input type="text" name="License_type"  class="form-control" id="edit_license_class" placeholder=" " required>
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">License number</label>
-                        <input type="text" name="License_number" class="form-control" id="edit_license_number" placeholder=" ">
+                        <input type="text" name="License_number" class="form-control" id="edit_license_number" placeholder=" " required>
+                      </div>
+                  </div>
+                </div>
+                
+                <div class="row" style="display:none;">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="hidden" name="rider_id" class="form-control" id="riderident" >
                       </div>
                   </div>
                 </div>
@@ -172,13 +180,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of issue</label>
-                        <input type="Date" name="date_of_issue" class="form-control"  id="edit_date_of_issue">
+                        <input type="Date" name="date_of_issue" class="form-control"  id="edit_date_of_issue" required>
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Expiry date</label>
-                        <input type="Date" name="Expiry_date"  class="form-control" id="edit_expiry_date" >
+                        <input type="Date" name="Expiry_date"  class="form-control" id="edit_expiry_date" required>
                       </div>
                   </div>
                 </div>

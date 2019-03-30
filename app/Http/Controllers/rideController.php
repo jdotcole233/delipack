@@ -22,7 +22,7 @@ class rideController extends Controller
                 $registeredbike->brand_name,
                 $registeredbike->registered_number,
                 $registeredbike->date_of_expiry,
-                '<button class="btn btn-primary" data-toggle="modal" data-target=".bd-rideeditform-modal-lg">View</button>',
+                '<button class="btn btn-primary editmotor" id="'.$registeredbike->bike_id.'">View</button>',
                 '<button class="btn btn-primary">Delete</button>'
                 );
                 array_push($regarray, $recbike);
@@ -33,5 +33,17 @@ class rideController extends Controller
 
         }
         return response()->json(['data' => $regarray]);
+    }
+
+    function motorinformation($motor_id){
+        $motor_data = Motor_bike::where('bike_id', $motor_id)->first();
+        return response()->json($motor_data);
+    }
+
+    function editmotorinformation(Request $request){
+        Motor_bike::where('bike_id', $request->bike_id)
+        ->update($request->all());
+
+        return response()->json("Updated successfully");
     }
 }

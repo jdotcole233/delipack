@@ -71,7 +71,7 @@
                 <div class="col-md-12">
                   <div class="form-group">
                      <!-- <label for="recipient-name" class="col-form-label">Select Bike</label> -->
-                        <select class="form-control form-control-lg" required>
+                        <select class="form-control form-control-lg" name="motor_bikesbike_id" required>
                           <option value="">Select Bike</option>
                           @foreach($rides as $ride)
                           <option value="{{$ride->bike_id}}">{{ $ride->registered_number}}</option>
@@ -197,6 +197,14 @@
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Phone number 2:</label>
                         <input type="text" min="10" max="14" class="form-control" name="work_phone" placeholder="Work phone number" required>
+                      </div>
+                  </div>
+                </div>
+
+              <div class="row" style="display:none;">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="assigned_bike" value="0" >
                       </div>
                   </div>
                 </div>

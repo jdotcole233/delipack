@@ -12,6 +12,7 @@ use App\User;
 use App\Rider_login;
 use DB;
 use App\Motor_bike;
+use App\Rider_assigned_motor_bike;
 
 
 class riderController extends Controller
@@ -66,28 +67,46 @@ class riderController extends Controller
 
 
     function ridersinformation(){
-        $riders = DB::table('company_riders')->join('riders_addresses','company_riders.company_rider_id','riders_addresses.company_riderscompany_rider_id')->get();    
+        $riders = DB::table('company_riders')
+        ->join('riders_addresses','company_riders.company_rider_id','riders_addresses.company_riderscompany_rider_id')
+        ->latest('company_riders.created_at')
+        ->get();    
+
+
         $ridersarray = array();
         if ($riders != null){
             foreach ($riders as $rider){
-                        $recordarray = array();
-                        array_push($recordarray,
-                            $rider->first_name. " ". $rider->last_name,
-                            $rider->city,
-                            $rider->area,
-                            $rider->personal_phone,
-                            '<a  href="/aboutriders/'.$rider->company_rider_id.'" class="btn btn-primary"> View </a>',
-                            '<button class="btn btn-success assignride" id="'.$rider->company_rider_id.'"> Assign </button>',
-                            '<button class="btn btn-danger"> Deactivate </button>'
-                        );
+            $recordarray = array();
+                 if ($rider->assigned_bike == 0){
+                    array_push($recordarray,
+                        $rider->first_name. " ". $rider->last_name,
+                        $rider->city,
+                        $rider->area,
+                        $rider->personal_phone,
+                        '<a  href="/aboutriders/'.$rider->company_rider_id.'" class="btn btn-primary"> View </a>',
+                        '<button class="btn btn-success assignride" id="'.$rider->company_rider_id.'"> Assign </button>',
+                        '<button class="btn btn-danger"> Deactivate </button>'
+                    );
+                 } else {
+                     array_push($recordarray,
+                        $rider->first_name. " ". $rider->last_name,
+                        $rider->city,
+                        $rider->area,
+                        $rider->personal_phone,
+                        '<a  href="/aboutriders/'.$rider->company_rider_id.'" class="btn btn-primary"> View </a>',
+                        '<button class="btn btn-warning assignride" id="'.$rider->company_rider_id.'"> Unassign </button>',
+                        '<button class="btn btn-danger"> Deactivate </button>'
+                    );
+                 }
+                        
                         array_push($ridersarray, $recordarray);
-                    }
+            }
         } else {
             $emptyarray = array("", "", "", "", "", "", "");
             array_push($ridersarray, $emptyarray);
         }
         
-        return response()->json(['data' => $ridersarray]);
+        return response()->json(['data' => $ridersarray ]);
     }
 
 
@@ -111,5 +130,62 @@ class riderController extends Controller
     function getallrides(){
         $rides = Motor_bike::where('status', 0)->get();
         return view('dashboard.riders.riders', compact('rides'));
+    }
+
+    function insertRiderAndAssign(Request $request){
+        Rider_assigned_motor_bike::create($request->all());
+        Motor_bike::where('bike_id', $request->motor_bikesbike_id)->update([
+            'status' => 1
+        ]);
+        company_rider::where('company_rider_id', $request->company_riderscompany_rider_id)
+        ->update([
+            'assigned_bike' => 1
+        ]);
+
+        return response()->json('Bike assigned to rider');
+    }
+
+    function editriderprofile(Request $request){
+        company_rider::where('company_rider_id', $request->rider_id)
+        ->update([
+            'first_name' => $request->first_name,
+            'other_name' => $request->other_name,
+            'last_name' => $request->last_name,
+            'gender' => $request->gender,
+            'work_phone' => $request->personal_phone,
+            'personal_phone' => $request->work_phone,
+            'about' => $request->about,
+        ]);
+        Riders_address::where('company_riderscompany_rider_id', $request->rider_id)
+        ->update([
+            'address' => $request->address,
+            'region' => $request->region,
+            'city' => $request->city,
+            'area' => $request->area
+        ]);
+        Riders_license::where('company_riderscompany_rider_id', $request->rider_id)
+        ->update([
+            'License_number' => $request->License_number,
+            'License_type' => $request->License_type,
+            'Expiry_date' => $request->Expiry_date,
+            'date_of_issue' => $request->date_of_issue 
+        ]);
+
+        return response()->json("Updated successfully");
+    }
+
+    function unassignbiker(Request $request){
+        $unassign= Rider_assigned_motor_bike::where('company_riderscompany_rider_id', $request->rider_id)->latest()->first();
+        company_rider::where('company_rider_id', $unassign->company_riderscompany_rider_id)
+        ->update([
+            'assigned_bike' => 0
+        ]);
+        Motor_bike::where('bike_id', $unassign->motor_bikesbike_id)
+        ->update([
+            'status' => 0
+        ]);
+
+        return response()->json("Bike unassigned");
+
     }
 }

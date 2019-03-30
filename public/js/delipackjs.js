@@ -1,42 +1,7 @@
 $(document).ready(function(e){
- 
-    // let ridersImage, reader, actimage;
-
-    // $('#profile_picture_get').change(function (e) {
-    //     let getimage = e.target.files[0].name;
-    //     ridersImage = e.target.files[0];
-    //     console.table(ridersImage);
-    //     if (window.FileReader){
-    //         reader = new FileReader();
-    //         reader.readAsDataURL(ridersImage);
-    //         reader.onloadend = function(e){
-    //             console.log(e.target.result);
-    //             actimage = e.target.result;
-    //             // $('#displayprofilepic').src = e.target.result;
-    //         };
-            
-    //     }
-    // });
-
 
     $('#initialregisterbtn').on('click', ()=> {$('.rideregistrationforms').modal('show')});
 
-    // $('#riderimageupload').on('click', (e) =>{
-
-
-    //     let formData = new FormData(this);
-    //     //  = new FormData();
-    //     // let photofile = $('#profile_picture_get')[0].files[0];
-    //     formData.append("file", actimage);
-
-
-    //     postInformation(formData, 
-    //         '#modalloader',
-    //          '.rideregistrationforms',
-    //         '.bd-pictureupload-modal-lg',
-    //         '/uploadriderphoto');
-    //     // $('#imageuploadform').submit();
-    // });
 
     $('#ridersubmitbtn').on('click', (event) => {
        let formvalid =  validateForms('needs-validation', event);
@@ -47,14 +12,9 @@ $(document).ready(function(e){
             // $('#modalloader').modal('show');
             let isrequestback = postInformation($('.needs-validation').serialize(), 
             '#modalloader', 
-            '.rideregistrationforms',
-            '.bd-pictureupload-modal-lg',
+            '',
+            '',
             '/registerrider');
-            // if (isrequestback == true){
-            //     $('.bd-pictureupload-modal-lg').modal('show');
-            // } else {
-            //     $('.bd-example-modal-lg').modal('show');
-            // }
 
         } else {
             nowuiDashboards.showNotification('top', 'right', 'primary','Fill out all mandatory fields');
@@ -72,6 +32,16 @@ $(document).ready(function(e){
         }
     });
 
+    $('.assignridebtn').on('click', function (e) {
+        let assignform = validateForms('assignform', e);
+        if (assignform == true) {
+            postInformation($('.assignform').serialize(), '', '', '', '/assignedmotrorbiketorider');
+            $('.bd-assignride-modal-sm').modal('hide');
+            $('.assignform').trigger('reset');
+            // $('').text('Unassign');
+            // location.reload();
+        } 
+    });
  
 
 
@@ -111,21 +81,28 @@ $(document).ready(function(e){
         });
     }
 
- $('#ridersoutputtable').DataTable({
+    let riderinfo = $('#ridersoutputtable').DataTable({
         'ajax' : '/getridersinformation',
          'deferRender': true
     });
 
     
-    $('#ridestable').DataTable({  
+    let ridesinfo = $('#ridestable').DataTable({  
         'ajax': '/gerregrides',
         'deferRender': true
       });
+
+      setInterval(function(){
+        riderinfo.ajax.reload(null, false);
+        ridesinfo.ajax.reload(null, false);
+        console.log("Table reload");
+      },3000);
 
 
 $('.riderprofilebtn').on('click', function(e){
     $('.bd-riderprofile-modal-lg').modal('show');
     let riderid = window.location.pathname.substr(13);
+    $('#riderident').val(riderid);
     // console.log(riderid);
     // return;
     $.ajax({
@@ -163,31 +140,82 @@ $('.riderprofilebtn').on('click', function(e){
 });
 
     $('.ridereditinfobtn').on('click', function (e){
-        console.log($('#editridersinformation').serialize());
+        let isvalidated = validateForms('editridersinformation', e);
+        if (isvalidated == true){
+            // console.log($('.editridersinformation').serialize());
+            postInformation($('.editridersinformation').serialize(), '', '', '','/editridersprofile');
+            $('.editridersinformation').trigger('reset');
+            $('.bd-riderprofile-modal-lg').modal('hide');
+        }
     });
+
+
 
     $('#ridersoutputtable').on('click','.assignride', function(){
-        let btntxt = $(this).text();
-        if (btntxt.localeCompare("Assign")){
+        let btntxt = String($(this).html().trim());
+        console.log(btntxt.length);
+        let unassignobj = {};
+        unassignobj["rider_id"] = $(this).attr("id");
+
+        if (btntxt.length == 6){
             $('.bd-assignride-modal-sm').modal('show');
-            // console.log($(this).attr('id'));
+            console.log($(this).attr('id'));
             $('#assigncmp_rider').val($(this).attr('id'));
-        } else {
-            $(this).text('Unassign');
-            $(this).addClass('danger');
+        } else if(btntxt.length == 8 ){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want unassign Rider from Bike!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Unassign!'
+            }).then((result) => {
+                if (result.value) {
+                    console.log(result.value);
+                    postInformation(unassignobj,'','','','/unassignedmotorbike');
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    // location.reload();
+                }
+            })
         }
     });
 
 
-    $('.assignridebtn').on('click', function(e){
-        let assignform = validateForms('assignform', e);
-        if (assignform == true){
-            //write the code to assign a ride to a rider
-        }else{
-
-        }
-        console.log("Hello");
+    // rider edit function 
+    $('#ridestable').on('click', '.editmotor', function (e){
+        $('.bd-rideeditform-modal-lg').modal('show');
+        let motor_id = $(this).attr('id');
+        $('#bike_ident').val(motor_id);
+        console.log(motor_id);
+        $.ajax({
+            method: 'GET',
+            url: '/editmotorinformation/'+ motor_id
+        }).done(function(data){
+            $('#brand_name').val(data.brand_name);
+            $('#registered_number').val(data.registered_number);
+            $('#date_of_registration').val(data.date_of_registration);
+            $('#date_of_expiry').val(data.date_of_expiry);
+        });
     });
+
+
+    //send editted information
+    $('.editridebtn').on('click', function(e){
+        // console.log('H');
+        let isvalidated = validateForms('editrideform',e);
+        if (isvalidated == true){
+            postInformation($('.editrideform').serialize(), '', '', '', '/editrideinformation')
+            $('.editrideform').trigger('reset');
+            $('.bd-rideeditform-modal-lg').modal('hide');
+        }
+    });
+
+
 
     $.ajax({
         method: 'GET',

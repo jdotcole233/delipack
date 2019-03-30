@@ -124,7 +124,7 @@
 
 
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Register ride</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit ride</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -132,18 +132,19 @@
 
 
       <div class="modal-body">
-         <form>
+         <form class="editrideform" no-validate>
+              <meta name="csrf-token" content="{{ csrf_token() }}" >
               <div class="row">
                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Brand name:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="text" class="form-control" id="brand_name" name="brand_name" required>
                       </div>
                    </div>
                    <div class="col-md-6">
                      <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Registered number:</label>
-                        <input type="text" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="text" class="form-control" id="registered_number" name="registered_number"  required>
                       </div>
                    </div> 
               </div>
@@ -151,20 +152,33 @@
                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of registration:</label>
-                        <input type="Date" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="Date" class="form-control" id="date_of_registration" name="date_of_registration"  required>
                       </div>
                    </div>
                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of expiry:</label>
-                        <input type="Date" class="form-control" id="recipient-name" placeholder="Musa">
+                        <input type="Date" class="form-control" id="date_of_expiry" name="date_of_expiry" required>
                       </div>
                    </div> 
               </div>
+              <div class="row" style="display:none;">
+                   <!-- <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Date of registration:</label>
+                        <input type="Date" class="form-control" name="date_of_registration" >
+                      </div>
+                   </div> -->
+                   <div class="col-md-12">
+                      <div class="form-group">
+                        <input type="hidden" class="form-control" id="bike_ident" name="bike_id">
+                      </div>
+                   </div> 
+              </div>
+            </form>
                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">Edit</button>
+                  <button type="button" class="btn btn-primary editridebtn">Edit</button>
                 </div>
-         </form>
       </div>
 
 

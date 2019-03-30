@@ -31,6 +31,7 @@ Route::get('/maindashboard', function(){
 Route::get('/riders','riderController@getallrides');
 
 
+
 Route::get('/aboutriders/{id}', 'riderController@riderinformation');
 Route::get('/editriderinformation/{id}', 'riderController@ridereditinformation');
 
@@ -56,6 +57,11 @@ Route::get('/getridersinformation', 'riderController@ridersinformation');
 
 Route::post('/registerrider', 'riderController@func_registerrider');
 Route::post('/uploadriderphoto', 'riderController@uploadRiderprofile');
+Route::post('/assignedmotrorbiketorider','riderController@insertRiderAndAssign');
+Route::get('/editmotorinformation/{id}', 'rideController@motorinformation');
+Route::post('/editrideinformation', 'rideController@editmotorinformation');
+Route::post('/editridersprofile', 'riderController@editriderprofile');
+Route::post('/unassignedmotorbike', 'riderController@unassignbiker');
 
 Route::post('/registerride', 'rideController@regRide');
 Route::get('/gerregrides','rideController@getregRides');
