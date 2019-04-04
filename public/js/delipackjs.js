@@ -95,7 +95,6 @@ $(document).ready(function(e){
       setInterval(function(){
         riderinfo.ajax.reload(null, false);
         ridesinfo.ajax.reload(null, false);
-        console.log("Table reload");
       },3000);
 
 
