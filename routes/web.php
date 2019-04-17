@@ -67,3 +67,6 @@ Route::post('/registercutomer', 'customerController@registerCustomer');
 
 Route::post('/registerride', 'rideController@regRide');
 Route::get('/gerregrides','rideController@getregRides');
+
+
+Route::post('/customer_login', 'customerController@authenticateUser');

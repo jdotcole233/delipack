@@ -46,6 +46,17 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'customer_login' => [
+            'driver' => 'session',
+            'provider' => 'customer_logins',
+        ],
+
+        'customer_login-api' => [
+            'driver' => 'token',
+            'provider' => 'customer_logins',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -71,6 +82,10 @@ return [
             'model' => App\User::class,
         ],
 
+        'customer_logins' => [
+            'driver' => 'eloquent',
+            'model' => App\Customer_login::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -95,6 +110,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+         'customer_login' => [
+            'provider' => 'customer_logins',
             'table' => 'password_resets',
             'expire' => 60,
         ],
