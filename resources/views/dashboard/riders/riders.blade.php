@@ -84,6 +84,9 @@
                               <div class="col-md-6">
                                  <input type="text" id="assigncmp_rider" name="company_riderscompany_rider_id" value="1">
                               </div>
+                              <div>
+                                <input type="text" id="assigncmp_rider" name="assigned_bike" value="1">
+                              </div>
                         </div>
                     </div>
                 </div>

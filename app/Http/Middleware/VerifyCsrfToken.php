@@ -20,6 +20,14 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/registercutomer',
-        '/customer_login'
+        '/customer_login',
+        '/authenticatedriver',
+        '/updatepassword',
+        '/companydata',
+        '/updateTransaction',
+        '/ratedelivery',
+        '/customertransactionhistory',
+        '/sendandroidcustomerreport'
+
     ];
 }

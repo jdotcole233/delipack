@@ -92,6 +92,11 @@ $(document).ready(function(e){
         'deferRender': true
       });
 
+    let transactioninfo = $('#transactionstable').DataTable({
+        'ajax': '/getTransactionsforcompany',
+        'deferRender': true
+    });
+
       setInterval(function(){
         riderinfo.ajax.reload(null, false);
         ridesinfo.ajax.reload(null, false);

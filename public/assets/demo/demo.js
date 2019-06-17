@@ -224,7 +224,7 @@ demo = {
       data: {
         labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
         datasets: [{
-          label: "Data",
+          label: "Returns in GHC",
           borderColor: chartColor,
           pointBorderColor: chartColor,
           pointBackgroundColor: "#1e3d60",
@@ -237,7 +237,7 @@ demo = {
           fill: true,
           backgroundColor: gradientFill,
           borderWidth: 2,
-          data: [50, 150, 100, 190, 130, 90, 150, 160, 120, 140, 190, 95]
+          data: sortDataItems($('#salechart').data('sales-summary'))
         }]
       },
       options: {
@@ -318,7 +318,7 @@ demo = {
       data: {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         datasets: [{
-          label: "Active Users",
+          label: "Total services",
           borderColor: "#f96332",
           pointBorderColor: "#FFF",
           pointBackgroundColor: "#f96332",
@@ -329,7 +329,7 @@ demo = {
           fill: true,
           backgroundColor: gradientFill,
           borderWidth: 2,
-          data: [542, 480, 430, 550, 530, 453, 380, 434, 568, 610, 700, 630]
+          data: sortDataItems($('#errandchart').data('errands'))
         }]
       },
       options: gradientChartOptionsConfiguration
@@ -350,9 +350,9 @@ demo = {
       type: 'line',
       responsive: true,
       data: {
-        labels: ["12pm,", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"],
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         datasets: [{
-          label: "Email Stats",
+          label: "Returns in GHC",
           borderColor: "#18ce0f",
           pointBorderColor: "#FFF",
           pointBackgroundColor: "#18ce0f",
@@ -363,7 +363,7 @@ demo = {
           fill: true,
           backgroundColor: gradientFill,
           borderWidth: 2,
-          data: [40, 500, 650, 700, 1200, 1250, 1300, 1900]
+          data: sortDataItems($('#salechart').data('sales-summary'))
         }]
       },
       options: gradientChartOptionsConfigurationWithNumbersAndGrid
@@ -375,12 +375,23 @@ demo = {
     gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
     gradientFill.addColorStop(1, hexToRGB('#2CA8FF', 0.6));
 
+    console.log(Object.values($('#ratingchart').data('ratings')));
+
+    function sortDataItems(dataItems){
+       let dataSet = [];
+       for(var i = 0; i < Object.keys(dataItems).length; i++){
+         dataSet[parseInt(Object.keys(dataItems)[i] - 1)] = Object.values(dataItems)[i];
+       }
+        return dataSet;
+    };
+
+
     var a = {
       type: "bar",
       data: {
         labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         datasets: [{
-          label: "Active Countries",
+          label: "Active performance",
           backgroundColor: gradientFill,
           borderColor: "#2CA8FF",
           pointBorderColor: "#FFF",
@@ -391,7 +402,7 @@ demo = {
           pointRadius: 4,
           fill: true,
           borderWidth: 1,
-          data: [80, 99, 86, 96, 123, 85, 100, 75, 88, 90, 123, 155]
+          data: sortDataItems($('#ratingchart').data('ratings'))
         }]
       },
       options: {

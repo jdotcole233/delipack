@@ -13,6 +13,7 @@ use App\Rider_login;
 use DB;
 use App\Motor_bike;
 use App\Rider_assigned_motor_bike;
+use Auth;
 
 
 class riderController extends Controller
@@ -43,10 +44,10 @@ class riderController extends Controller
         Rider_login::create([
             'phone_number' => $request->personal_phone,
             'password' => bcrypt('123456'),
-            'account' => true,
+            'account' => "ACTIVE",
             'rider_id' => $rider_id,
             'company_id' => 1,
-            'first_time_sign_in' => true
+            'first_time_sign_in' => 'true'
         ]);
 
 
@@ -141,7 +142,7 @@ class riderController extends Controller
         ->update([
             'assigned_bike' => 1
         ]);
-
+       
         return response()->json('Bike assigned to rider');
     }
 
@@ -184,8 +185,65 @@ class riderController extends Controller
         ->update([
             'status' => 0
         ]);
+        Rider_assigned_motor_bike::where('company_riderscompany_rider_id', $request->rider_id)->delete();
+
+
+        // Rider_assigned_motor_bike::where('company_riderscompany_rider_id', $request->company_riderscompany_rider_id)
+        // ->update([
+        //     'assigned_bike' => 0
+        // ]);
 
         return response()->json("Bike unassigned");
 
+    }
+
+    public function authenticateDriver(Request $request){
+        
+        $driver_phoneNumber = $request->phone_number;
+        $driver_password = $request->password;
+     
+            if (Auth::guard('driver_login')->attempt(['phone_number' => $driver_phoneNumber, 'password' => $driver_password])){
+                    $driver = Rider_login::where('phone_number', $driver_phoneNumber)->first();
+                    
+                    if ($driver->account_status == "ACTIVE"){
+                            $driver_data = company_rider::where('company_rider_id', $driver->rider_id)->get();
+                            return response()->json([
+                            'success_cue' => 'Success',
+                            'rider_id' => $driver->rider_id,
+                            'first_name' => $driver_data[0]->first_name,
+                            'last_name' => $driver_data[0]->last_name,
+                            'phone_number' => $driver->phone_number,
+                            'company_id' => $driver->company_id,
+                            'first_time_sign_in' => $driver->first_time_sign_in,
+                            'account_status' => $driver->account_status
+                        ]);
+                    } else {
+                            return response()->json([
+                            'success_cue' => 'Deactivated',
+                            'account_status' => "",
+                            'first_time_sign_in' => ""
+                        ]);
+                    }
+                    
+            } else {
+                return response()->json([
+                        'success_cue' => "Failed",
+                        'account_status' => $request->phone_number,
+                        'first_time_sign_in' => $request->password
+                    ]);
+            }
+    }
+
+
+    public function changePassword(Request $request){
+            $updatepass = Rider_login::where('rider_id', $request->rider_id)->update([
+                'password' => bcrypt($request->password),
+                'first_time_sign_in' => 'false'
+            ]);
+            
+            return response()->json([
+                'success_cue' => 'Successful',
+                'password_response' => $updatepass
+            ]);
     }
 }
