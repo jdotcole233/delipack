@@ -10,57 +10,50 @@
         <div class="card">
               <div class="card-header">
                 <h4 class="card-title"> Reports </h4>
-
+                <form id="reportforms">
+                <meta name="csrf-token" content="{{csrf_token()}}">
                 <fieldset class="border p-2">
                     <legend class="w-auto">From - to</legend>
                      <div class="row">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>From</label>
-                                <input type="Date" class="form-control" placeholder="Username" >
+                                <input type="Date" id="fromdateid" name="fromdate" class="form-control" placeholder="Username" >
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label>To</label>
-                                <input type="Date" class="form-control" placeholder="Username">
+                                <input type="Date" id="todateid" name="todate" class="form-control" placeholder="Username">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <p></p>
                                 <!-- <input type="submit" class="btn btn-primary" placeholder="Username" value="michael23"> -->
-                                <button class="btn btn-primary">Generate</button>
+                                <button class="btn btn-primary querydatabtn">Generate</button>
                             </div>
                         </div>
                     </div>
                 </fieldset>
+                </form>
                 <br>
                 <br>
 
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table" id="riderstable">
+                  <table class="table" id="reportstable">
                     <thead class=" text-primary">
                       <th> Trans ID </th>
-                      <th> Sender name </th>
-                      <th> Receiver name </th>
-                      <th> Delivery St.</th>
+                      <th> Customer </th>
+                      <th> Pick up </th>
+                      <th> Delivery</th>
                       <th> Rider </th>
                       <th> Date & Time </th>
                       <th> Charge </th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td> 1</td>
-                        <td> Dakota Rice </td>
-                        <td> Oud-Turnhout </td>
-                        <td> $36,738 </td>
-                        <td> Dakota Rice</td>
-                        <td> Niger </td>
-                        <td> $36,738 </td>
-                      </tr>
                       
                     </tbody>
                   </table>
@@ -77,7 +70,7 @@
                                         <table class="table table-bordered">
                                             <tr>
                                                 <td><strong>Total</strong></td>
-                                                <td>{GHC 4400}</td>
+                                                <td id="totalresult">{GHC 00.00}</td>
                                             </tr>
                                         </table>
                                     </div>

@@ -20,26 +20,16 @@
                 <div class="table-responsive">
                   <table class="table" id="riderstable">
                     <thead class=" text-primary">
-                      <th> Sender </th>
-                      <th> Sender No. </th>
-                      <th> Source </th>
-                      <th> Receiver </th>
-                      <th> Receiver No. </th>
-                      <th> Destination </th>
-                      <th> Delivery St.</th>
+                      <th> Ref </th>
+                      <th> Customer </th>
+                      <th> Phone number </th>
+                      <th> Pick up  </th>
+                      <th> Delivery </th>
+                      <th> Rating </th>
+                      <th> Status</th>
                       <th> Date/Time </th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td> Dakota Rice </td>
-                        <td> Oud-Turnhout </td>
-                        <td> $36,738 </td>
-                        <td> Dakota Rice</td>
-                        <td> Niger </td>
-                        <td> Oud-Turnhout </td>
-                        <td> $36,738 </td>
-                        <td> 1/9/9090</td>
-                      </tr>
                       
                     </tbody>
                   </table>

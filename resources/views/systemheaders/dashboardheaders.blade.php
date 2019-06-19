@@ -7,7 +7,9 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    {Company name} - DeliPack
+     @auth
+      {{DB::table('companies')->where('companies_id',Auth::user()->id)->value('company_abbreviation')}} - {{DB::table('companies')->where('companies_id',Auth::user()->id)->value('company_name')}}
+     @endauth
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -38,40 +40,56 @@
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-          {AB}
-        </a>
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          {Company  name}
-        </a>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center">
+                <img  src="http://127.0.0.1:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="">
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+                <a class="simple-text logo-mini">
+              @auth
+                {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}}
+              @endauth
+              </a>
+              <a class="simple-text logo-normal">
+              @auth
+                {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_name')}}
+              @endauth
+              </a>
+              <a class="simple-text logo-normal " style="margin-top:-27px;">
+              @auth
+                Joined on :{{date('Y-m-d',strtotime(DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('created_at')))}}
+              @endauth
+               </a>
+             </div>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
-          <li class="active">
+          <li class="{{ (request()->is('maindashboard')) ? 'active' : '' }}">
             <a href="{{url('maindashboard')}}">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li>
+          <li class="{{ (request()->is('deliveries')) ? 'active' : '' }}"}>
             <a href="{{ url('/deliveries')}}">
               <i class="now-ui-icons business_money-coins"></i>
               <p>Deliveries</p>
             </a>
           </li>
-          <li>
+          <li class="{{ (request()->is('riders')) ? 'active' : '' }}"}>
             <a href="{{ url('/riders')}}">
               <i class="now-ui-icons sport_user-run"></i>
               <p>Delivery guys</p>
             </a>
           </li>
-          <li>
+          <li class="{{ (request()->is('rides')) ? 'active' : '' }}"}>  
             <a href="{{url('/rides')}}">
               <i class="now-ui-icons shopping_delivery-fast"></i>
               <p>Rides</p>
             </a>
           </li>
-          <li>
+          <li class="{{ (request()->is('reports')) ? 'active' : '' }}"}>
             <a href="{{url('/reports')}}">
               <i class="now-ui-icons business_chart-pie-36"></i>
               <p>Generate reports</p>
@@ -134,7 +152,15 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="{{url('/dashboardprofile')}}">profile</a>
-                  <a class="dropdown-item" href="#">Logout</a>
+                  <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
                 </div>
               </li>
               <li class="nav-item">
@@ -185,18 +211,13 @@
           <nav>
             <ul>
               <li>
-                <a href="https://www.creative-tim.com">
-                  Creative Tim
+                <a href="https://delivpack.com/">
+                  DeliPack
                 </a>
               </li>
               <li>
-                <a href="http://presentation.creative-tim.com">
+                <a href="https://delivpack.com/aboutdelipack">
                   About Us
-                </a>
-              </li>
-              <li>
-                <a href="http://blog.creative-tim.com">
-                  Blog
                 </a>
               </li>
             </ul>
@@ -205,9 +226,8 @@
             &copy;
             <script>
               document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-            </script>, Designed by
-            <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
-            <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+            </script>
+            DeliPack
           </div>
         </div>
       </footer>
@@ -215,7 +235,13 @@
   </div>
   <!--   Core JS Files   -->
   <!-- <script src="../assets/js/core/jquery.min.js"></script> -->
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
@@ -239,7 +265,12 @@
   <script src="../assets/demo/demo.js"></script>
   <script src="../js/delipackjs.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-  
+  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+ 
+
+
+
 
 
 

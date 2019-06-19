@@ -1,5 +1,6 @@
 $(document).ready(function(e){
 
+
     $('#initialregisterbtn').on('click', ()=> {$('.rideregistrationforms').modal('show')});
 
 
@@ -86,6 +87,141 @@ $(document).ready(function(e){
          'deferRender': true
     });
 
+    let riderfound_id = "";
+
+    $('#ridersoutputtable').on('click','.singleriderbtn', function(){
+        riderfound_id = $(this).data('riderid');
+        // console.log(riderfound_id);
+        // location.href = /aboutriders/ + riderfound_id;
+    });
+
+    (function(){
+        console.log(location.pathname.substring(1,12));
+        if (location.pathname.substring(1, 12) == "aboutriders"){
+            riderfound_id = location.pathname.substring(13);
+        }
+        console.log(riderfound_id);
+
+    })();
+
+    if(riderfound_id != ""){
+        let singleriderinfo = $('#riderstable').DataTable({
+            'ajax': '/getsingleriderinformation/' + riderfound_id,
+            'deferRender': false,
+            'searching':false,
+            'destroy':true
+        });
+    }
+   
+
+    $('.querydatabtn').on('click', function(e){
+        e.preventDefault();
+        console.log("Hello");
+         $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            method: 'POST',
+            url: '/queryCompanyTransactionData/',
+            data: $('#reportforms').serialize(),
+            success: function(data){
+                console.log(data.data);
+                $('#reportstable').DataTable().destroy();
+                $('#reportstable').DataTable({
+                    data: data.data,
+                    'deferRender': true,
+                    'dom': 'Bfrtip',
+                    'buttons': [
+                        'copy',
+                        'excel',
+                        'csv',
+                        'pdf',
+                        'print'
+                    ]
+                })
+                $('#totalresult').text("GHC " + data.total);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        }); 
+        
+    });
+
+
+    (function(){
+        let today = new Date();
+        $('#mainemptitle').html("Employees current activities for " + today.getFullYear() + "-" + today.getMonth() + "-" + today.getDay());
+    })();
+
+
+    var firebaseConfig = {
+        apiKey: "AIzaSyCG0zoNGxI_QNvlsnFxWeENc6S7frpR4TE",
+        authDomain: "delipack-2d2ca.firebaseapp.com",
+        databaseURL: "https://delipack-2d2ca.firebaseio.com",
+        projectId: "delipack-2d2ca",
+        storageBucket: "delipack-2d2ca.appspot.com",
+        messagingSenderId: "636386670726",
+        appId: "1:636386670726:web:97c67f0f90e2d761"
+      };
+      let app = firebase.initializeApp(firebaseConfig);
+   
+
+
+
+
+
+
+
+    $('#employeecurrentactivitytable').on('click','.viewtodaysalesbtn',function(){
+        $('#exampleModalCenter').modal('show');
+        let today = new Date();
+        console.log("Hello " + $(this).parent().parent().find('#ridernameid').text());
+        $('#exampleModalLongTitle').html($(this).parent().parent().find('#ridernameid').text() + " sales <br>" +
+        "Date: " + today.getFullYear() + "-" + today.getMonth() + "-" +  today.getDay() + "<br> Time: " + today.getHours() + ":" + today.getMinutes()  );
+        $.ajax({
+            method:'GET',
+            url: '/getridersalesdfortoday/' + $(this).data('riderid'),
+            success: function(data){
+                $('#tripssum').text(data[0]);
+                $('#salessum').text(data[1]);
+                $('#commissionsum').text(data[2]);
+                $('#totalsale').text(parseInt(data[1]) + parseInt(data[2]));
+            },
+        });
+    
+    });
+
+    
+
+    $('#transactionstable').on('click','.quickviewButton',function(){
+        let dataitemobj = $(this).data('transactions');
+        $('#transaction_title').text("From: " + dataitemobj.source + " To: " + dataitemobj.destination);
+        $('#transaction_number').text("00" + dataitemobj.transaction_id);
+        $('#created_at').text(dataitemobj.paidon);
+        $('#brand_name').text(dataitemobj.brand_name);
+        $('#rating').text(dataitemobj.rate_value);
+        $('#registered_number').text(dataitemobj.registered_number);
+        $('#delivery_fee').text(dataitemobj.delivery_charge);
+        $('#commission').text(dataitemobj.commission_charge);
+        $('#transtotal').text(dataitemobj.total_charge);
+        $('#customerfirstname').val(dataitemobj.customerFirstName);
+        $('#customerlastname').val(dataitemobj.customerLastName);
+        $('#customerphonenumber').val(dataitemobj.customerPhoneNumber);
+        $('#riderFirstName').val(dataitemobj.ridersFirstName);
+        $('#riderLastName').val(dataitemobj.ridersLastName);
+        $('#personalnumber').val(dataitemobj.personal_phone);
+        $('#worknumber').val(dataitemobj.work_phone);
+        $('#pickup').val(dataitemobj.source);
+        $('#delivery').val(dataitemobj.destination);
+        $('#deliverystatus').val(dataitemobj.delivery_status);
+        $('.bd-quickview-modal-lg').modal('show');
+
+        console.log($(this).data('transactions'));
+    });
     
     let ridesinfo = $('#ridestable').DataTable({  
         'ajax': '/gerregrides',
@@ -162,6 +298,7 @@ $('.riderprofilebtn').on('click', function(e){
         unassignobj["rider_id"] = $(this).attr("id");
 
         if (btntxt.length == 6){
+            updateAssignmentBike();
             $('.bd-assignride-modal-sm').modal('show');
             console.log($(this).attr('id'));
             $('#assigncmp_rider').val($(this).attr('id'));
@@ -252,4 +389,81 @@ $('.riderprofilebtn').on('click', function(e){
        return isvalid;
     }
 
+
+    //Deactivating riders
+
+    $('#riderTable').on('click', '.deactivateRiderBtn', function () {
+        let id = $(this).data('id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want deactivate Rider!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, deactivate!'
+        }).then((result) =>{
+            if(result.value){
+                $.ajax({
+                    method: 'GET',
+                    url: `/deactivteRider/${id}`,
+                }).done(function (data) {
+                    nowuiDashboards.showNotification('top', 'right', 'warning', data);
+                    console.table(data);
+                });
+            }
+        })
+    });
+
+function updateAssignmentBike(){
+    $.ajax({
+        method: 'GET',
+        url: '/getcompanybikesforassignment',
+        success: function (data) {
+            $('#ridesselecttag').empty();
+            $('<option>')
+                .text('Select Bike')
+                .appendTo('#ridesselecttag');
+            $.each(data, function (value, index) {
+                console.log(index);
+                $('<option>').val(index.bike_id)
+                    .text(index.brand_name + " " + index.registered_number)
+                    .appendTo('#ridesselecttag');
+            });
+        }
+    })
+}
+
+// setInterval(updateAssignmentBike, 3000);
+
+
+    //Delete Motor Bike from the list 
+    $('#ridestable').on('click', '.motorBikeDeleteBtn', function () {
+        let id = $(this).data('id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want delete bike!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    method: 'GET',
+                    url: `/deleteBike/${id}`,
+                }).done(function (data) {
+                    nowuiDashboards.showNotification('top', 'right', 'warning', data);
+                    console.table(data);
+                });
+            }
+        })
+    });
+
+
 });
+
+
+
+

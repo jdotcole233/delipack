@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 
 Auth::routes();
@@ -49,9 +49,7 @@ Route::get('/reports', function(){
 });
 
 
-Route::get('/dashboardprofile', function(){
-    return view('dashboard.dashboardprofile');
-});
+Route::get('/dashboardprofile', 'CompanyController@profilePage');
 
 Route::get('/getridersinformation', 'riderController@ridersinformation');
 
@@ -73,6 +71,10 @@ Route::post('/registercutomer', 'customerController@registerCustomer');
 Route::post('/registerride', 'rideController@regRide');
 Route::get('/gerregrides','rideController@getregRides');
 Route::get('/getTransactionsforcompany', 'CompanyController@transactionquery');
+Route::get('/getsingleriderinformation/{id}','CompanyController@singletransactionquery');
+Route::post('/queryCompanyTransactionData','CompanyController@queryCompanyData');
+Route::post('/gettotalsales','CompanyController@totalSales');
+
 
 Route::post('/companydata','customerController@companyInformation');
 Route::post('/updateTransaction', 'customerController@updateCustomerTransaction');
@@ -83,3 +85,8 @@ Route::post('/customertransactionhistory', 'customerController@getcustomertransa
 Route::post('/customer_login', 'customerController@authenticateUser');
 
 Route::post('/sendandroidcustomerreport','customerController@customerAndroidReport');
+Route::get('/getridersalesdfortoday/{id}','CompanyController@getridersalesfortoday');
+Route::get('/deactivteRider/{id}','riderController@deactivateRider');
+Route::get('/deleteBike/{id}','rideController@deleteBike');
+Route::get('/getcompanybikesforassignment','riderController@getCompanyRidersToAssign');
+Route::post('/updateProfile','CompaanyController@updateProfile');

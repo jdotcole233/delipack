@@ -101,10 +101,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Rider_login::class,
         ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],
     ],
 
     /*

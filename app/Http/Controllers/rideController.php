@@ -4,16 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Motor_bike;
+use Auth;
 
 class rideController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function regRide(Request $request){
         Motor_bike::create($request->all());
         return response()->json("Ride registered successfully");
     }
 
     function getregRides(){
-        $registeredbikes = Motor_bike::all();
+        $registeredbikes = Motor_bike::where('companiescompanies_id',Auth::user()->id)
+        ->where("delete_status","NOT DELETED")
+        ->get();
         $regarray = array();
         if ($registeredbikes != null){
             foreach ($registeredbikes as $registeredbike) {
@@ -23,7 +32,7 @@ class rideController extends Controller
                 $registeredbike->registered_number,
                 $registeredbike->date_of_expiry,
                 '<button class="btn btn-primary editmotor" id="'.$registeredbike->bike_id.'">View</button>',
-                '<button class="btn btn-primary">Delete</button>'
+                '<button data-id="'.$registeredbike->bike_id.'" class="btn btn-primary motorBikeDeleteBtn">Delete</button>'
                 );
                 array_push($regarray, $recbike);
             }
@@ -45,5 +54,14 @@ class rideController extends Controller
         ->update($request->all());
 
         return response()->json("Updated successfully");
+    }
+
+
+    public function deleteBike($id){
+        Motor_bike::where('bike_id',$id)->update([
+            "delete_status" => "DELETED"
+        ]);
+
+        return response()->json("Motor Bike  removed successfully");
     }
 }

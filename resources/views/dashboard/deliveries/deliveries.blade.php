@@ -14,29 +14,19 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table" id="riderstable">
+                  <table class="table" id="transactionstable">
                     <thead class=" text-primary">
                       <th> Ref </th>
-                      <th> Sender </th>
-                      <th> Source </th>
-                      <th> Receiver </th>
-                      <th> Destination </th>
-                      <th> Delivery St.</th>
-                      <th> Rider </th>
+                      <th> Customer</th>
+                      <th> Phone </th>
+                      <th> Pick-up </th>
+                      <th> Delivery </th>
+                      <th> Date </th>
+                      <th> Rider name </th>
                       <th> Action </th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td> 1</td>
-                        <td> Dakota Rice </td>
-                        <td> Oud-Turnhout </td>
-                        <td> $36,738 </td>
-                        <td> Dakota Rice</td>
-                        <td> Niger </td>
-                        <td> Oud-Turnhout </td>
-                        <td> <button class="btn btn-primary" data-toggle="modal" data-target=".bd-quickview-modal-lg"> Quick view</button> </td>
-                      </tr>
-                      
+                     
                     </tbody>
                   </table>
                 </div>
@@ -63,7 +53,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h6 class="title">From: {Source name}  - to: {Destination name}, Rider: {Rider namee}</h6>
+                <h6 class="title" id="transaction_title">From: {Source name}  - to: {Destination name}, Rider: {Rider namee}</h6>
               </div>
               <div class="card-body">
                 <form>
@@ -75,15 +65,15 @@
                                  <table class="table">
                                     <tr>
                                         <td><strong>Transaction ID</strong></td>
-                                        <td>{Transaction number}</td>
+                                        <td id="transaction_number" >{Transaction number}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Date & time</strong></td>
-                                        <td>{Date & time}</td>
+                                        <td id="created_at">{Date & time}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Ride (Brand)</strong></td>
-                                        <td>{Motor name}</td>
+                                        <td id="brand_name">{Motor name}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -91,15 +81,15 @@
                                <table class="table">
                                     <tr>
                                         <td><strong>ETA</strong></td>
-                                        <td>{00:00}</td>
+                                        <td >{00:00}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Rating</strong></td>
-                                        <td>{*****}</td>
+                                        <td id="rating">{*****}</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Ride Number</strong></td>
-                                        <td>{Registered number}</td>
+                                        <td id="registered_number">{Registered number}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -109,15 +99,15 @@
                                <table class="table">
                                     <tr>
                                         <td><strong>Delivery fee:</strong></td>
-                                        <td>GHC 15</td>
+                                        <td id="delivery_fee">GHC 15</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Commission</strong></td>
-                                        <td>GHC 2</td>
+                                        <td id="commission">GHC 2</td>
                                     </tr>
                                      <tr>
                                         <td><strong>Total amount</strong></td>
-                                        <td>GHC 13</td>
+                                        <td id="transtotal">GHC 13</td>
                                     </tr>
                                 </table>
                             </div>
@@ -128,22 +118,16 @@
                     <fieldset class="border p-2">
                         <legend class="w-auto">Sender's Information</legend>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>First name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
+                                    <input type="text" id="customerfirstname" class="form-control" placeholder="Username" value="michael23" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Other name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Last name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
+                                    <input type="text" id="customerlastname" class="form-control" placeholder="Username" value="michael23" readonly>
                                 </div>
                             </div>
                         </div>
@@ -151,41 +135,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Phone number</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-
-
-                    <fieldset class="border p-2">
-                        <legend class="w-auto">Receiver's Information</legend>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>First name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Other name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Last name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Phone number</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
+                                    <input type="text" id="customerphonenumber" class="form-control" placeholder="Username" value="michael23" readonly>
                                 </div>
                             </div>
                         </div>
@@ -196,30 +146,59 @@
                     <fieldset class="border p-2">
                         <legend class="w-auto">Rider's Information</legend>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>First name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
+                                    <input type="text" id="riderFirstName" class="form-control" placeholder="Username" value="michael23" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Other name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Last name</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
+                                    <input type="text" id="riderLastName" class="form-control" placeholder="Username" value="michael23" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Personal number</label>
+                                    <input type="text" id="personalnumber" class="form-control" placeholder="Username" value="michael23" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Work number</label>
+                                    <input type="text" id="worknumber"  class="form-control" placeholder="Username" value="michael23" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+
+                    <fieldset class="border p-2">
+                        <legend class="w-auto">Errand's Information</legend>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Pick up location</label>
+                                    <input type="text" id="pickup" class="form-control" placeholder="Username" value="michael23" readonly>
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Delivery location</label>
+                                    <input type="text" id="delivery" class="form-control" placeholder="Username" value="michael23" readonly>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Phone number</label>
-                                    <input type="text" class="form-control" placeholder="Username" value="michael23">
+                                    <label>Delivery status</label>
+                                    <input type="text" id="deliverystatus" class="form-control" placeholder="Username" value="michael23" readonly>
                                 </div>
                             </div>
                         </div>

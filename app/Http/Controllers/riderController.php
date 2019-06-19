@@ -18,6 +18,12 @@ use Auth;
 
 class riderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function func_registerrider(Request $request){
         $rider_id = company_rider::create($request->all())->latest()->value('company_rider_id');
         Riders_address::create([
@@ -29,7 +35,7 @@ class riderController extends Controller
         ]);
         Riders_license::create([
             'company_riderscompany_rider_id' => $rider_id,
-            'company_id' => 1,
+            'company_id' => Auth::user()->id,
             'License_type' => $request->license_type,
             'License_number' => $request->license_number,
             'Expiry_date' => $request->expiry_date,
@@ -38,7 +44,7 @@ class riderController extends Controller
         ]);
         Companies_rider::create([
             'company_riderscompany_rider_id' => $rider_id,
-            'companiescompanies_id' => 1
+            'companiescompanies_id' => Auth::user()->id
         ]);
 
         Rider_login::create([
@@ -46,7 +52,7 @@ class riderController extends Controller
             'password' => bcrypt('123456'),
             'account' => "ACTIVE",
             'rider_id' => $rider_id,
-            'company_id' => 1,
+            'company_id' => Auth::user()->id,
             'first_time_sign_in' => 'true'
         ]);
 
@@ -69,7 +75,10 @@ class riderController extends Controller
 
     function ridersinformation(){
         $riders = DB::table('company_riders')
+        ->join('companies_riders','company_riders.company_rider_id','companies_riders.company_riderscompany_rider_id')
         ->join('riders_addresses','company_riders.company_rider_id','riders_addresses.company_riderscompany_rider_id')
+        ->where('companies_riders.companiescompanies_id', Auth::user()->id)
+        ->where('company_riders.delete_status','NOT DELETED')
         ->latest('company_riders.created_at')
         ->get();    
 
@@ -86,7 +95,7 @@ class riderController extends Controller
                         $rider->personal_phone,
                         '<a  href="/aboutriders/'.$rider->company_rider_id.'" class="btn btn-primary"> View </a>',
                         '<button class="btn btn-success assignride" id="'.$rider->company_rider_id.'"> Assign </button>',
-                        '<button class="btn btn-danger"> Deactivate </button>'
+                        '<button data-id="'.$rider->company_rider_id.'" class="btn btn-danger deactivateRiderBtn"> Deactivate </button>'
                     );
                  } else {
                      array_push($recordarray,
@@ -94,9 +103,9 @@ class riderController extends Controller
                         $rider->city,
                         $rider->area,
                         $rider->personal_phone,
-                        '<a  href="/aboutriders/'.$rider->company_rider_id.'" class="btn btn-primary"> View </a>',
+                        '<a  href="/aboutriders/'.$rider->company_rider_id.'" data-riderid='.$rider->company_rider_id.' class="btn btn-primary singleriderbtn"> View </a>',
                         '<button class="btn btn-warning assignride" id="'.$rider->company_rider_id.'"> Unassign </button>',
-                        '<button class="btn btn-danger"> Deactivate </button>'
+                        '<button data-id="'.$rider->company_rider_id.'" class="btn btn-danger deactivateRiderBtn" disabled> Deactivate </button>'
                     );
                  }
                         
@@ -129,8 +138,17 @@ class riderController extends Controller
 
 
     function getallrides(){
-        $rides = Motor_bike::where('status', 0)->get();
-        return view('dashboard.riders.riders', compact('rides'));
+        
+        return view('dashboard.riders.riders');
+    }
+
+    function getCompanyRidersToAssign(){
+        $rides = Motor_bike::where('companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->where('status', 0)
+        ->where('delete_status', 'NOT DELETED')
+        ->get();
+
+        return response()->json($rides);
     }
 
     function insertRiderAndAssign(Request $request){
@@ -246,4 +264,18 @@ class riderController extends Controller
                 'password_response' => $updatepass
             ]);
     }
+
+
+
+    //Deactivate the rider
+
+    public function deactivateRider($id){
+        Company_rider::where('company_rider_id',$id)->update([
+            "delete_status" => "DELETED"
+        ]);
+
+        return response()->json("Rider Deactivated");
+    }
+
+
 }

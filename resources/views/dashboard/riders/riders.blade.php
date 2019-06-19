@@ -27,22 +27,8 @@
                       <th> Assign</th>
                       <th> Delete</th>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td> Dakota Rice</td>
-                        <td> Niger </td>
-                        <td> Oud-Turnhout </td>
-                        <td> $36,738 </td>
-                        <td> 
-                          <a href="{{url('/aboutriders')}}" class="btn btn-primary"> View </a>
-                       </td>
-                       <td> 
-                          <button class="btn btn-success" data-toggle="modal" data-target=".bd-assignride-modal-sm"> Assign </button>
-                       </td>
-                       <td> 
-                          <button class="btn btn-danger"> Deactivate </button>
-                       </td>
-                      </tr>
+                    <tbody id="riderTable">
+                      
                     </tbody>
                   </table>
                 </div>
@@ -71,11 +57,8 @@
                 <div class="col-md-12">
                   <div class="form-group">
                      <!-- <label for="recipient-name" class="col-form-label">Select Bike</label> -->
-                        <select class="form-control form-control-lg" name="motor_bikesbike_id" required>
-                          <option value="">Select Bike</option>
-                          @foreach($rides as $ride)
-                          <option value="{{$ride->bike_id}}">{{ $ride->registered_number}}</option>
-                          @endforeach
+                        <select id="ridesselecttag" class="form-control form-control-lg" name="motor_bikesbike_id" required>
+                         
                         </select>
                         <div class="row" style="display:none;">
                               <div class="col-md-6">

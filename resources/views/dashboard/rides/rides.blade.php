@@ -26,14 +26,7 @@
                       <th>Action</th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Niger</td>
-                        <td>Oud-Turnhout</td>
-                        <td>$36,738</td>
-                        <td><button class="btn btn-primary" data-toggle="modal" data-target=".bd-rideeditform-modal-lg">View</button></td>
-                        <td><button class="btn btn-primary">Delete</button></td>
-                      </tr>
- 
+                      
                     </tbody>
                   </table>
                 </div>
