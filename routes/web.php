@@ -63,8 +63,6 @@ Route::post('/editrideinformation', 'rideController@editmotorinformation');
 
 Route::post('/editridersprofile', 'riderController@editriderprofile');
 Route::post('/unassignedmotorbike', 'riderController@unassignbiker');
-Route::post('/authenticatedriver', 'riderController@authenticateDriver');
-Route::post('/updatepassword', 'riderController@changePassword');
 
 Route::post('/registercutomer', 'customerController@registerCustomer');
 
@@ -78,8 +76,8 @@ Route::post('/gettotalsales','CompanyController@totalSales');
 
 Route::post('/companydata','customerController@companyInformation');
 Route::post('/updateTransaction', 'customerController@updateCustomerTransaction');
-Route::post('/ratedelivery', 'customerController@ratedeliverycompany');
 Route::post('/customertransactionhistory', 'customerController@getcustomertransactions');
+Route::post('/ratedelivery', 'customerController@ratedeliverycompany');
 
 
 Route::post('/customer_login', 'customerController@authenticateUser');

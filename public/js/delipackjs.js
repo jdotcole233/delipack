@@ -185,7 +185,7 @@ $(document).ready(function(e){
                 $('#tripssum').text(data[0]);
                 $('#salessum').text(data[1]);
                 $('#commissionsum').text(data[2]);
-                $('#totalsale').text(parseInt(data[1]) + parseInt(data[2]));
+                $('#totalsale').text(data[3]);
             },
         });
     
@@ -292,6 +292,7 @@ $('.riderprofilebtn').on('click', function(e){
             updateAssignmentBike();
             $('.bd-assignride-modal-sm').modal('show');
             $('#assigncmp_rider').val($(this).attr('id'));
+            console.log($('#assigncmp_rider').val());
         } else if(btntxt.length == 8 ){
             Swal.fire({
                 title: 'Are you sure?',

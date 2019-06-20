@@ -35,7 +35,7 @@ class riderController extends Controller
         ]);
         Riders_license::create([
             'company_riderscompany_rider_id' => $rider_id,
-            'company_id' => Auth::user()->id,
+            'company_id' => Auth::user()->companiescompanies_id,
             'License_type' => $request->license_type,
             'License_number' => $request->license_number,
             'Expiry_date' => $request->expiry_date,
@@ -44,7 +44,7 @@ class riderController extends Controller
         ]);
         Companies_rider::create([
             'company_riderscompany_rider_id' => $rider_id,
-            'companiescompanies_id' => Auth::user()->id
+            'companiescompanies_id' => Auth::user()->companiescompanies_id
         ]);
 
         Rider_login::create([
@@ -52,7 +52,7 @@ class riderController extends Controller
             'password' => bcrypt('123456'),
             'account' => "ACTIVE",
             'rider_id' => $rider_id,
-            'company_id' => Auth::user()->id,
+            'company_id' => Auth::user()->companiescompanies_id,
             'first_time_sign_in' => 'true'
         ]);
 
@@ -77,7 +77,7 @@ class riderController extends Controller
         $riders = DB::table('company_riders')
         ->join('companies_riders','company_riders.company_rider_id','companies_riders.company_riderscompany_rider_id')
         ->join('riders_addresses','company_riders.company_rider_id','riders_addresses.company_riderscompany_rider_id')
-        ->where('companies_riders.companiescompanies_id', Auth::user()->id)
+        ->where('companies_riders.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->where('company_riders.delete_status','NOT DELETED')
         ->latest('company_riders.created_at')
         ->get();    
@@ -214,57 +214,6 @@ class riderController extends Controller
         return response()->json("Bike unassigned");
 
     }
-
-    public function authenticateDriver(Request $request){
-        
-        $driver_phoneNumber = $request->phone_number;
-        $driver_password = $request->password;
-     
-            if (Auth::guard('driver_login')->attempt(['phone_number' => $driver_phoneNumber, 'password' => $driver_password])){
-                    $driver = Rider_login::where('phone_number', $driver_phoneNumber)->first();
-                    
-                    if ($driver->account_status == "ACTIVE"){
-                            $driver_data = company_rider::where('company_rider_id', $driver->rider_id)->get();
-                            return response()->json([
-                            'success_cue' => 'Success',
-                            'rider_id' => $driver->rider_id,
-                            'first_name' => $driver_data[0]->first_name,
-                            'last_name' => $driver_data[0]->last_name,
-                            'phone_number' => $driver->phone_number,
-                            'company_id' => $driver->company_id,
-                            'first_time_sign_in' => $driver->first_time_sign_in,
-                            'account_status' => $driver->account_status
-                        ]);
-                    } else {
-                            return response()->json([
-                            'success_cue' => 'Deactivated',
-                            'account_status' => "",
-                            'first_time_sign_in' => ""
-                        ]);
-                    }
-                    
-            } else {
-                return response()->json([
-                        'success_cue' => "Failed",
-                        'account_status' => $request->phone_number,
-                        'first_time_sign_in' => $request->password
-                    ]);
-            }
-    }
-
-
-    public function changePassword(Request $request){
-            $updatepass = Rider_login::where('rider_id', $request->rider_id)->update([
-                'password' => bcrypt($request->password),
-                'first_time_sign_in' => 'false'
-            ]);
-            
-            return response()->json([
-                'success_cue' => 'Successful',
-                'password_response' => $updatepass
-            ]);
-    }
-
 
 
     //Deactivate the rider

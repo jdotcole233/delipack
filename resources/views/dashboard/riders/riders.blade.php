@@ -62,13 +62,13 @@
                         </select>
                         <div class="row" style="display:none;">
                               <div class="col-md-6">
-                                 <input type="text" name="companiescompanies_id" value="1">
+                                 <input type="text" name="companiescompanies_id" value="{{Auth::user()->companiescompanies_id}}">
                               </div>
                               <div class="col-md-6">
-                                 <input type="text" id="assigncmp_rider" name="company_riderscompany_rider_id" value="1">
+                                 <input type="text" id="assigncmp_rider" name="company_riderscompany_rider_id">
                               </div>
                               <div>
-                                <input type="text" id="assigncmp_rider" name="assigned_bike" value="1">
+                                <input type="text" id="assigncmp_assignmentval" name="assigned_bike" value="1">
                               </div>
                         </div>
                     </div>
@@ -181,13 +181,13 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Phone number 1:</label>
+                        <label for="recipient-name" class="col-form-label">Personal number:</label>
                         <input type="text" min="10" max="14" class="form-control" name="personal_phone" placeholder="Personal phone number" required>
                       </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Phone number 2:</label>
+                        <label for="recipient-name" class="col-form-label">Work number:</label>
                         <input type="text" min="10" max="14" class="form-control" name="work_phone" placeholder="Work phone number" required>
                       </div>
                   </div>

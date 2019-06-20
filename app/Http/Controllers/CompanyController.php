@@ -28,17 +28,17 @@ class CompanyController extends Controller
     public function totalSales(Request $request){
         $annual_total = [];
         $totalsales = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
-        ->where('transactions.companiescompanies_id', Auth::user()->id)
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->where('transactions.delivery_status', 'ACTIVE')
         ->select(DB::raw("DATE_FORMAT(transactions.created_at, '%m') as month"),DB::raw('delivery_charge'))->get()
         ->groupBy('month');
 
-        $totalerrands = Transaction::where('companiescompanies_id', Auth::user()->id)
+        $totalerrands = Transaction::where('companiescompanies_id', Auth::user()->companiescompanies_id)
         ->select(DB::raw("DATE_FORMAT(transactions.created_at, '%m') as month"),DB::raw('companiescompanies_id'))
         ->get()
         ->groupBy('month');
 
-        $totalratings = Rating::where('company_id', Auth::user()->id)
+        $totalratings = Rating::where('company_id', Auth::user()->companiescompanies_id)
        ->select(DB::raw("DATE_FORMAT(ratings.created_at, '%m') as month"),DB::raw('rate_value'))
         ->get()
         ->groupBy('month');
@@ -46,7 +46,7 @@ class CompanyController extends Controller
         $riderAssignedandTransactions = Company_rider::join('rider_assigned_motor_bikes', 'company_riders.company_rider_id', 'rider_assigned_motor_bikes.company_riderscompany_rider_id')
          ->join('motor_bikes', 'rider_assigned_motor_bikes.motor_bikesbike_id','motor_bikes.bike_id')
          ->select('company_rider_id','first_name','last_name','work_phone', 'brand_name','registered_number')
-         ->where('rider_assigned_motor_bikes.companiescompanies_id', Auth::user()->id)
+         ->where('rider_assigned_motor_bikes.companiescompanies_id', Auth::user()->companiescompanies_id)
          ->where('rider_assigned_motor_bikes.assigned_bike', 1)
          ->latest('rider_assigned_motor_bikes.created_at')
          ->get();
@@ -88,7 +88,7 @@ class CompanyController extends Controller
         ->join('ratings', 'transactions.transaction_id', 'ratings.transactions_id')
         ->select('transaction_id','rate_value','brand_name','registered_number','destination','source','delivery_status','payments.created_at as paidon', 'delivery_charge', 'commission_charge', 'payment_type', 'total_charge', 'customers.first_name as customerFirstName',
                  'customers.last_name as customerLastName', 'customers.phone_number as customerPhoneNumber', 'company_riders.first_name as ridersFirstName', 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 'work_phone', 'personal_phone')
-        ->where('transactions.companiescompanies_id', Auth::user()->id)
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->orderBy('transactions.created_at')
         ->get();
         
@@ -213,24 +213,32 @@ class CompanyController extends Controller
       $totaltransactionstoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
-        ->where('transactions.companiescompanies_id', Auth::user()->id)
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->count('transactions.transaction_id');
 
         $totalchargestoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
-        ->where('transactions.companiescompanies_id', Auth::user()->id)
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->sum('delivery_charge');
 
          $totalcommissiontoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
-        ->where('transactions.companiescompanies_id', Auth::user()->id)
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->sum('commission_charge');
+
+        $totaltoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+        ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
+        ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->sum('total_charge');
 
         return response()->json( [$totaltransactionstoday,
                                  $totalchargestoday,
-                                 $totalcommissiontoday]);
+                                 $totalcommissiontoday,
+                                 $totaltoday
+                                 ]);
    }
 
    function profilePage(){

@@ -79,7 +79,8 @@ class customerController extends Controller
                 
                 if($payment->save()){
                     $transactionResponse = [
-                            "success" => "Done"
+                            "success" => "Done",
+                            "transaction_id" => $transaction->transaction_id
                         ];
                 }
             } else {
@@ -101,9 +102,15 @@ class customerController extends Controller
 
 
     function ratedeliverycompany(Request $request){
-            Rating::create($request->all());
+            Rating::create([
+                'rate_value' => $request->rate_value,
+                'company_riderscompany_rider_id' => $request->company_riderscompany_rider_id,
+                'customerscustomer_id' => $request->customerscustomer_id,
+                'company_id' => $request->company_id,
+                'transactions_id' => $request->transactions_id
+            ]);
 
-            return response()->json(['success' => 'successful']);
+            return response()->json(['success' => "successful"]);
     }
 
 

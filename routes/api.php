@@ -19,4 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 // Route::post('/gettotalsales','CompanyController@totalSales');
-Route::post('/queryCompanyData','CompanyController@queryCompanyData');
+// Route::post('/queryCompanyData','CompanyController@queryCompanyData');
+
+
+Route::post('/authenticatedriver', 'MobileRiderController@authenticateDriver');
+Route::post('/updatepassword', 'MobileRiderController@changePassword');
+
