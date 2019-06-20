@@ -133,6 +133,12 @@
                         <input type="text" class="form-control" name="last_name" placeholder="Anim" required>
                       </div>
                   </div>
+                  <div class="col-md-4" style="display:none">
+                      <div class="form-group">
+                        <input type="hidden" class="form-control" name="assigned_bike" value="0" required>
+                        <input type="hidden" class="form-control" name="delete_status" value="NOT DELETED" required>
+                      </div>
+                  </div>
                 </div>
 
                 <div class="row">

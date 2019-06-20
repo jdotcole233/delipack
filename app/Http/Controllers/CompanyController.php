@@ -15,6 +15,7 @@ use Hash;
 use Auth;
 use Carbon\Carbon;
 use Session;
+use App\Companies_rider;
 
 class CompanyController extends Controller
 {
@@ -275,6 +276,13 @@ class CompanyController extends Controller
         ]);
 
         return response()->json("Password updated successfully");
+    }
+
+    public function companyridersIdentifications(){
+        $ridersids = Companies_rider::where('companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->get()->pluck('company_riderscompany_rider_id');
+
+        return response()->json($ridersids);
     }
 
 

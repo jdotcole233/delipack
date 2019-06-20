@@ -91,3 +91,4 @@ Route::get('/deleteBike/{id}','rideController@deleteBike');
 Route::get('/getcompanybikesforassignment','riderController@getCompanyRidersToAssign');
 Route::post('/updateProfile','CompanyController@updateProfile');
 Route::post('/updatepassword','CompanyController@updatepassword');
+Route::get('/getcompanyridersids', 'CompanyController@companyridersIdentifications');

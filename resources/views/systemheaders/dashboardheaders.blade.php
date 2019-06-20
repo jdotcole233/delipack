@@ -45,11 +45,11 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center">
-                <!-- <a class="simple-text logo-mini">
-              //@auth
-                //{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}}
-              //@endauth
-              </a> -->
+              <a class="simple-text logo-mini">
+              @auth
+                {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}}
+              @endauth
+              </a> 
               <a class="simple-text logo-normal">
               @auth
                 {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_name')}}

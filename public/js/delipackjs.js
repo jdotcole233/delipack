@@ -151,7 +151,7 @@ $(document).ready(function(e){
 
     (function(){
         let today = new Date();
-        $('#mainemptitle').html("Employees current activities for " + today.getFullYear() + "-" + today.getMonth() + "-" + today.getDay());
+        $('#mainemptitle').html("Employees current activities for " + today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate());
     })();
 
 
@@ -177,7 +177,7 @@ $(document).ready(function(e){
         $('#exampleModalCenter').modal('show');
         let today = new Date();
         $('#exampleModalLongTitle').html($(this).parent().parent().find('#ridernameid').text() + " sales <br>" +
-        "Date: " + today.getFullYear() + "-" + today.getMonth() + "-" +  today.getDay() + "<br> Time: " + today.getHours() + ":" + today.getMinutes()  );
+        "Date: " + today.getFullYear() + "-" + (today.getMonth()+1) + "-" +  today.getDate() + "<br> Time: " + today.getHours() + ":" + today.getMinutes()  );
         $.ajax({
             method:'GET',
             url: '/getridersalesdfortoday/' + $(this).data('riderid'),
@@ -442,6 +442,83 @@ function updateAssignmentBike(){
             }
         })
     });
+
+
+
+    const availablekeysarray = [];
+    const availablevalsarray = [];
+    const availablecss = {
+        "backgroundColor": "green",
+        "color": "white",
+        "padding": "5px",
+        "borderRadius": "5px 5px 5px 5px"
+    }
+
+    const workingcss = {
+        "backgroundColor": "#fd7e14",
+        "color": "white",
+        "padding": "5px",
+        "borderRadius": "5px 5px 5px 5px"
+    }
+
+    const unavailablecss = {
+        "backgroundColor": "#a6a6a6",
+        "color": "white",
+        "padding": "5px",
+        "borderRadius": "5px 5px 5px 5px"
+    }
+
+    function checkRiderStatus() {
+        const mapleyval = new Set();
+        $.ajax({
+            method:"GET",
+            url:"/getcompanyridersids",
+            success: function(data){
+                console.log(data);
+                const riderlocationavailable = firebase.database().ref().child('RiderLocationAvailable');
+                const riderworking = firebase.database().ref().child("RiderFoundForCustomer");
+                riderlocationavailable.on('child_added', function (snapshot) {
+                    $.each(data, function (i) {
+                        if (snapshot.key.includes(data[i])) {
+                            $('#status' + snapshot.key).children().text("Available").css(availablecss);
+                            const obj = {};
+                            obj["lat"] = snapshot.val().l[0];
+                            obj["lng"] = snapshot.val().l[1];
+                            mapleyval.add(obj);
+
+                        }
+                    });
+
+                    riderlocationavailable.on('child_removed', function (snap) {
+                        $('#status' + snap.key).children().text("Unavailable").css(unavailablecss);
+                        riderlocationavailable.on('child_removed').off();
+                    });
+                });
+
+
+
+                riderworking.on('child_added', function (snap) {
+                    $.each(data, function (index) {
+                        if (snap.key.includes(data[index])) {
+                            $('#status' + snap.key).children().text("On-errand").css(workingcss);
+                        }
+                    });
+
+                    riderworking.on('child_removed', function (snap) {
+                        $('#status' + snap.key).children().text("Unavailable").css(unavailablecss);
+                        riderworking.on('child_removed').off();
+                    });
+                });
+            }
+        });
+    }
+
+    setInterval(checkRiderStatus, 1000);
+
+
+
+
+
 
 
     //change password

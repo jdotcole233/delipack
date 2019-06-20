@@ -72,7 +72,7 @@
               <div class="row" style="display:none;">
                    <div class="col-md-6">
                       <div class="form-group">
-                        <input type="text" class="form-control" name="companiescompanies_id" value="1">
+                        <input type="text" class="form-control" name="companiescompanies_id" value="{{Auth::user()->companiescompanies_id}}">
                       </div>
                    </div>
                    <div class="col-md-6">

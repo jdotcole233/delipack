@@ -20,7 +20,8 @@ class rideController extends Controller
     }
 
     function getregRides(){
-        $registeredbikes = Motor_bike::where('companiescompanies_id',Auth::user()->id)
+        $registeredbikes = Motor_bike::where('companiescompanies_id',Auth::user()->companiescompanies_id)
+
         ->where("delete_status","NOT DELETED")
         ->get();
         $regarray = array();
