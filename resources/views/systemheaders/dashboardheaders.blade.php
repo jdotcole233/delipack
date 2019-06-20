@@ -3,12 +3,11 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" href="../asset/img/brand/favicon.ico">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
      @auth
-      {{DB::table('companies')->where('companies_id',Auth::user()->id)->value('company_abbreviation')}} - {{DB::table('companies')->where('companies_id',Auth::user()->id)->value('company_name')}}
+      {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}} - {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_name')}}
      @endauth
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -46,11 +45,11 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center">
-                <a class="simple-text logo-mini">
-              @auth
-                {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}}
-              @endauth
-              </a>
+                <!-- <a class="simple-text logo-mini">
+              //@auth
+                //{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}}
+              //@endauth
+              </a> -->
               <a class="simple-text logo-normal">
               @auth
                 {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_name')}}
@@ -143,16 +142,17 @@
                   </p>
                 </a>
               </li>
-              <li class="nav-item dropdown">
+              <li style="cursor:pointer" class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons location_world"></i>
                   <p>
                     <span class="d-lg-none d-md-block">Some Actions</span>
                   </p>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{url('/dashboardprofile')}}">profile</a>
-                  <a class="dropdown-item" href="{{ route('logout') }}"
+                <div  class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{url('/dashboardprofile')}}" style="cursor:pointer;">profile</a>
+                  <a  class="dropdown-item" id="changepassBtn" style="cursor:pointer;">change password</a>
+                  <a class="dropdown-item" href="{{ route('logout') }}" style="cursor:pointer;"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -233,6 +233,46 @@
       </footer>
     </div>
   </div>
+
+
+
+  <!--  -->
+
+  <div class="modal fade" id="change_password_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="modal-title" id="exampleModalLongTitle">Change password</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form  id="changePasswordFrom">
+              <div style="display:none">
+                <meta name="csrf-token" content="{{csrf_field()}}" >
+              </div>
+             <div class="form-group">
+                <label for="new-pasword">New password</label>
+                <input type="password" id="newPass" name="password" class="form-control" placeholder="Enter new password">
+             </div> 
+             <div class="form-group">
+                <label for="confirm_password">Confirm password</label>
+                <input type="password" id="confirmPass" name="confirm_password" class="form-control" placeholder="Confirm password">
+             </div> 
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="changePassword" class="btn btn-info">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- / -->
+
+
   <!--   Core JS Files   -->
   <!-- <script src="../assets/js/core/jquery.min.js"></script> -->
 

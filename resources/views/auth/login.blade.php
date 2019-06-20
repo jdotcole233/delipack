@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
-  <title>DeliPack</title>
+  <title>DeliPack platform</title>
   <!-- Favicon -->
-  <link href="../asset/img/brand/favicon.png" rel="icon" type="image/png">
+  <link href="../asset/img/brand/favicon.ico" rel="icon" >
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
   <!-- Icons -->
@@ -93,8 +93,8 @@
         <div class="col-lg-5 col-md-7">
           <div class="card bg-secondary shadow border-0">
             <div class="card-header bg-transparent pb-5">
-              <div class="btn-wrapper text-center">
-                  <!-- <center><img src="{{asset('asset/img/brand/tcntrackerPNG.png')}}" alt="Company logo" width="150px" height="50px"></center> -->
+              <div class="row d-flex justify-content-center">
+                  <img src="{{asset('asset/img/brand/deli_s.png')}}" alt="Company logo" width="50px" height="50px">
               </div>
             </div>
             <div class="card-body px-lg-5 py-lg-5">
@@ -161,20 +161,20 @@
       <div class="row align-items-center justify-content-xl-between">
         <div class="col-xl-6">
           <div class="copyright text-center text-xl-left text-muted">
-            &copy; 2018 <a href="" class="font-weight-bold ml-1" >DeliPack</a>
+            &copy; <span id="year"></span> <a href="" class="font-weight-bold ml-1" >DeliPack</a>
           </div>
         </div>
         <div class="col-xl-6">
           <ul class="nav nav-footer justify-content-center justify-content-xl-end">
             <li class="nav-item">
-              <a href="" class="nav-link" >About Us</a>
+              <a href="https://delivpack.com/aboutdelipack" class="nav-link" >About Us</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link" >Contact Us</a>
+              <a href="https://delivpack.com/#customercall" class="nav-link" >Contact Us</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a href="" class="nav-link" >FAQ</a>
-            </li>
+            </li> -->
             
           </ul>
         </div>
@@ -187,6 +187,11 @@
   <script src="../asset/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Argon JS -->
   <script src="../asset/js/argon.js?v=1.0.0"></script>
+  <script>
+    let date = new Date();
+
+    $('#year').text(date.getFullYear())
+  </script>
 </body>
 
 </html>

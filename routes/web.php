@@ -89,4 +89,5 @@ Route::get('/getridersalesdfortoday/{id}','CompanyController@getridersalesfortod
 Route::get('/deactivteRider/{id}','riderController@deactivateRider');
 Route::get('/deleteBike/{id}','rideController@deleteBike');
 Route::get('/getcompanybikesforassignment','riderController@getCompanyRidersToAssign');
-Route::post('/updateProfile','CompaanyController@updateProfile');
+Route::post('/updateProfile','CompanyController@updateProfile');
+Route::post('/updatepassword','CompanyController@updatepassword');

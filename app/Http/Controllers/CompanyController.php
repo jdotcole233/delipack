@@ -7,10 +7,14 @@ use App\Transaction;
 use App\Payment;
 use App\Rating;
 use App\Company_rider;
+use App\Company_address;
+use App\User;
 use App\Company;
 use DB;
+use Hash;
 use Auth;
 use Carbon\Carbon;
+use Session;
 
 class CompanyController extends Controller
 {
@@ -230,14 +234,48 @@ class CompanyController extends Controller
 
    function profilePage(){
     $company = Company::join('company_addresses','companies.companies_id','company_addresses.companiescompanies_id')
+    ->join('company_socialmedia_handles','companies.companies_id','company_socialmedia_handles.companiescompanies_id')
     ->where('companies.companies_id',Auth::user()->companiescompanies_id)->first();
     return view('dashboard.dashboardprofile',compact('company'));
     }
 
 
     public function updateProfile(Request $info){
+        Company::where('companies_id',Auth::user()->companiescompanies_id)
+        ->update([
+            "company_abbreviation" => $info->company_abbreviation,
+            "company_phone_one" => $info->company_phone_one,
+            "company_phone_two" => $info->company_phone_two,
+        ]);
 
-        return back();
+        Company_address::where('companiescompanies_id',Auth::user()->companiescompanies_id)
+        ->update([
+            "address" => $info->address,
+            "city" => $info->city,
+            "area" => $info->area,
+            "region" => $info->region,
+        ]);
+
+        User::where('companiescompanies_id',Auth::user()->companiescompanies_id)
+        ->update([
+            "email"=>$info->email
+        ]);
+
+        //Session::flush("message","");
+
+        return redirect()->back()->with("message","Your details have been updated successfully");
     }
+
+
+    public function updatepassword(Request $request){
+
+        User::where('companiescompanies_id',Auth::user()->companiescompanies_id)
+        ->update([
+            "password" => Hash::make($request->password)
+        ]);
+
+        return response()->json("Password updated successfully");
+    }
+
 
 }

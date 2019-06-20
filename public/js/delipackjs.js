@@ -19,7 +19,7 @@ $(document).ready(function(e){
 
         } else {
             nowuiDashboards.showNotification('top', 'right', 'primary','Fill out all mandatory fields');
-            console.log("Something went wrong");
+            // console.log("Something went wrong");
         }
     });
 
@@ -96,7 +96,7 @@ $(document).ready(function(e){
     });
 
     (function(){
-        console.log(location.pathname.substring(1,12));
+        // console.log(location.pathname.substring(1,12));
         if (location.pathname.substring(1, 12) == "aboutriders"){
             riderfound_id = location.pathname.substring(13);
         }
@@ -116,7 +116,6 @@ $(document).ready(function(e){
 
     $('.querydatabtn').on('click', function(e){
         e.preventDefault();
-        console.log("Hello");
          $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -128,7 +127,6 @@ $(document).ready(function(e){
             url: '/queryCompanyTransactionData/',
             data: $('#reportforms').serialize(),
             success: function(data){
-                console.log(data.data);
                 $('#reportstable').DataTable().destroy();
                 $('#reportstable').DataTable({
                     data: data.data,
@@ -145,7 +143,6 @@ $(document).ready(function(e){
                 $('#totalresult').text("GHC " + data.total);
             },
             error: function(error){
-                console.log(error);
             }
         }); 
         
@@ -179,7 +176,6 @@ $(document).ready(function(e){
     $('#employeecurrentactivitytable').on('click','.viewtodaysalesbtn',function(){
         $('#exampleModalCenter').modal('show');
         let today = new Date();
-        console.log("Hello " + $(this).parent().parent().find('#ridernameid').text());
         $('#exampleModalLongTitle').html($(this).parent().parent().find('#ridernameid').text() + " sales <br>" +
         "Date: " + today.getFullYear() + "-" + today.getMonth() + "-" +  today.getDay() + "<br> Time: " + today.getHours() + ":" + today.getMinutes()  );
         $.ajax({
@@ -219,8 +215,6 @@ $(document).ready(function(e){
         $('#delivery').val(dataitemobj.destination);
         $('#deliverystatus').val(dataitemobj.delivery_status);
         $('.bd-quickview-modal-lg').modal('show');
-
-        console.log($(this).data('transactions'));
     });
     
     let ridesinfo = $('#ridestable').DataTable({  
@@ -243,7 +237,6 @@ $('.riderprofilebtn').on('click', function(e){
     $('.bd-riderprofile-modal-lg').modal('show');
     let riderid = window.location.pathname.substr(13);
     $('#riderident').val(riderid);
-    // console.log(riderid);
     // return;
     $.ajax({
         method:'GET',
@@ -282,7 +275,6 @@ $('.riderprofilebtn').on('click', function(e){
     $('.ridereditinfobtn').on('click', function (e){
         let isvalidated = validateForms('editridersinformation', e);
         if (isvalidated == true){
-            // console.log($('.editridersinformation').serialize());
             postInformation($('.editridersinformation').serialize(), '', '', '','/editridersprofile');
             $('.editridersinformation').trigger('reset');
             $('.bd-riderprofile-modal-lg').modal('hide');
@@ -293,14 +285,12 @@ $('.riderprofilebtn').on('click', function(e){
 
     $('#ridersoutputtable').on('click','.assignride', function(){
         let btntxt = String($(this).html().trim());
-        console.log(btntxt.length);
         let unassignobj = {};
         unassignobj["rider_id"] = $(this).attr("id");
 
         if (btntxt.length == 6){
             updateAssignmentBike();
             $('.bd-assignride-modal-sm').modal('show');
-            console.log($(this).attr('id'));
             $('#assigncmp_rider').val($(this).attr('id'));
         } else if(btntxt.length == 8 ){
             Swal.fire({
@@ -313,7 +303,6 @@ $('.riderprofilebtn').on('click', function(e){
                 confirmButtonText: 'Yes, Unassign!'
             }).then((result) => {
                 if (result.value) {
-                    console.log(result.value);
                     postInformation(unassignobj,'','','','/unassignedmotorbike');
                     Swal.fire(
                         'Deleted!',
@@ -332,7 +321,6 @@ $('.riderprofilebtn').on('click', function(e){
         $('.bd-rideeditform-modal-lg').modal('show');
         let motor_id = $(this).attr('id');
         $('#bike_ident').val(motor_id);
-        console.log(motor_id);
         $.ajax({
             method: 'GET',
             url: '/editmotorinformation/'+ motor_id
@@ -347,7 +335,6 @@ $('.riderprofilebtn').on('click', function(e){
 
     //send editted information
     $('.editridebtn').on('click', function(e){
-        // console.log('H');
         let isvalidated = validateForms('editrideform',e);
         if (isvalidated == true){
             postInformation($('.editrideform').serialize(), '', '', '', '/editrideinformation')
@@ -362,7 +349,6 @@ $('.riderprofilebtn').on('click', function(e){
         method: 'GET',
         url: '/getridersinformation',
     }).done(function(data){
-        console.table(data);
     });
 
 
@@ -378,7 +364,6 @@ $('.riderprofilebtn').on('click', function(e){
             if (form.checkValidity() == false) {
                 event.preventDefault();
                 event.stopPropagation();
-                console.log("Hello");
                 form.classList.add('was-validated');
                 isvalid = false;
             } else {
@@ -409,7 +394,6 @@ $('.riderprofilebtn').on('click', function(e){
                     url: `/deactivteRider/${id}`,
                 }).done(function (data) {
                     nowuiDashboards.showNotification('top', 'right', 'warning', data);
-                    console.table(data);
                 });
             }
         })
@@ -425,7 +409,6 @@ function updateAssignmentBike(){
                 .text('Select Bike')
                 .appendTo('#ridesselecttag');
             $.each(data, function (value, index) {
-                console.log(index);
                 $('<option>').val(index.bike_id)
                     .text(index.brand_name + " " + index.registered_number)
                     .appendTo('#ridesselecttag');
@@ -455,12 +438,80 @@ function updateAssignmentBike(){
                     url: `/deleteBike/${id}`,
                 }).done(function (data) {
                     nowuiDashboards.showNotification('top', 'right', 'warning', data);
-                    console.table(data);
                 });
             }
         })
     });
 
+
+    //change password
+    $('#changepassBtn').on('click',function(){
+        $('#change_password_modal').modal("show");
+    });
+
+    const mandcss ={
+        "border":"1px solid red"
+    }
+
+    const manresetdcss = {
+        "border": "1px solid silver"
+    }
+
+    $('#changePassword').on('click',function(){
+        let newPass = $('#newPass').val();
+        let confirmPass = $('#confirmPass').val();
+
+        if(newPass == "" || confirmPass == ""){
+            $('#newPass').css(mandcss);
+            $('#confirmPass').css(mandcss);
+            return;
+        } 
+        
+        if(newPass.length >= 8){
+            if(confirmPass.length >= 8){
+                if(confirmPass != newPass){
+                    nowuiDashboards.showNotification('top', 'right', 'danger', "Passwords must match");
+                }else{
+                    $('#newPass').css(manresetdcss);
+                    $('#confirmPass').css(manresetdcss);
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        method:"POST",
+                        dataType:"JSON",
+                        url:"updatepassword",
+                        data:$('#changePasswordFrom').serialize(),
+                        success:function(data){
+                            $('#newPass').css(manresetdcss);
+                            $('#confirmPass').css(manresetdcss);
+                            nowuiDashboards.showNotification('top', 'right', 'success', data);
+                            $('#changePasswordFrom').trigger('reset')
+                            $('#change_password_modal').modal("hide");
+                            setTimeout(function(){
+                                $('#logout-form').submit();
+                            },2000);
+                        },
+                        error:function(error){
+                            nowuiDashboards.showNotification('top', 'right', 'danger', "Whoops couldn't chnage your password");
+                        }
+                    });
+                }
+            }else{
+                $('#confirmPass').css(mandcss);
+                $('#newPass').css(manresetdcss);
+
+            }
+        }else{
+            $('#newPass').css(mandcss);
+            $('#confirmPass').css(manresetdcss);
+
+        }
+    });
 
 });
 

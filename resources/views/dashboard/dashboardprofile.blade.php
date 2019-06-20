@@ -11,23 +11,24 @@
               </div>
               <div class="card-body">
                 <form action="{{url('/updateProfile')}}" method="POST">
+                @csrf
                   <div class="row">
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
                         <label>Company (disabled)</label>
-                        <input type="text" class="form-control" disabled="" placeholder="Company" value="{{$company->company_name}}">
+                        <input type="text" class="form-control" disabled="" name="company_name" placeholder="Company" value="{{$company->company_name}}">
                       </div>
                     </div>
                     <div class="col-md-3 px-1">
                       <div class="form-group">
                         <label>Abbreviation</label>
-                        <input type="text" class="form-control" placeholder="abbreviation" value="{{$company->company_abbreviation}}">
+                        <input type="text" class="form-control" placeholder="abbreviation" name="company_abbreviation" value="{{$company->company_abbreviation}}">
                       </div>
                     </div>
                     <div class="col-md-4 pl-1">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" placeholder="Email" value={{Auth::user()->email}}>
+                        <input type="email" name="email" class="form-control" placeholder="Email" value={{Auth::user()->email}}>
                       </div>
                     </div>
                   </div>
@@ -49,7 +50,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Address</label>
-                        <input type="text" class="form-control" placeholder="Home Address" value="{{$company->address}}">
+                        <input type="text" class="form-control" placeholder="Home Address" name="address" value="{{$company->address}}">
                       </div>
                     </div>
                   </div>
@@ -57,7 +58,7 @@
                     <div class="col-md-4 pr-1">
                       <div class="form-group">
                         <label>City</label>
-                        <input type="text" class="form-control" placeholder="City" value="{{$company->city}}">
+                        <input type="text" class="form-control" placeholder="City" name="city" value="{{$company->city}}">
                       </div>
                     </div>
                     <div class="col-md-4 px-1">
@@ -81,6 +82,13 @@
                     </div>
                   </div>
                 </form>
+
+                  @if(Session::has("message"))
+                    <div class="alert alert-success">
+                      {!! Session::get("message") !!}
+                    </div>
+                  @endif
+
               </div>
             </div>
           </div>
@@ -93,32 +101,37 @@
                 <div class="author">
                   <a href="#">
                     <img  src="http://127.0.0.1:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="">
-                    <h5 class="title">Mike Andrew</h5>
+                    <h5 class="title">{{$company->company_name}}</h5>
                   </a>
                   <p class="description">
-                    michael24
+                      {{$company->company_abbreviation}}
                   </p>
                 </div>
-                <p class="description text-center">
-                  "Lamborghini Mercy
-                  <br> Your chick she so thirsty
-                  <br> I'm in that two seat Lambo"
-                </p>
+                <div class="row  d-flex justify-content-center">
+                  <a href="" class="simple-text logo-normal">
+                    Joined on :{{date('Y-m-d',strtotime(DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('created_at')))}}
+                  </a>
+                </div >
               </div>
               <hr>
               <div class="button-container">
-                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                <a target="_blank" href="https://fb.com/{{$company->facebook_handle}}" class="btn btn-neutral btn-icon btn-round btn-lg">
                   <i class="fab fa-facebook-f"></i>
-                </button>
-                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                </a>
+                <a target="_blank" href="https://twitter.com/users/{{$company->twitter_handle}}" class="btn btn-neutral btn-icon btn-round btn-lg">
                   <i class="fab fa-twitter"></i>
-                </button>
-                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-                  <i class="fab fa-google-plus-g"></i>
-                </button>
+                </a>
+                <a target="_blank" href="https://instagram.com/{{$company->instagram_handle}}" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-instagram"></i>
+                </a>
               </div>
             </div>
           </div>
         </div>
 </div>
+
+
+
+
+
 @endsection

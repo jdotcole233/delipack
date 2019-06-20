@@ -138,13 +138,9 @@
 
         const riderlocationavailable = firebase.database().ref().child('RiderLocationAvailable');
         const riderworking = firebase.database().ref().child("RiderFoundForCustomer");
-        riderlocationavailable.on('child_added', function (snapshot) {
-            console.log(typeof(snapshot.key));
-            
+        riderlocationavailable.on('child_added', function (snapshot) {            
             $.each(ab, function (i) {
                 if (snapshot.key.includes(ab[i])) {
-                    console.log(snapshot.key + " " + snapshot.key.includes(ab[i]));
-                    console.log($('#status' + snapshot.key));
                     $('#status' + snapshot.key).children().text("Available").css(availablecss);
                     const obj = {};
                       obj["lat"] = snapshot.val().l[0];
@@ -175,7 +171,6 @@
             });
         });
 
-        console.log([...mapleyval.values()]);
         return mapleyval;
     }
     // checkRiderStatus([64, 90, 61, 92, 34, 59]);
@@ -184,20 +179,18 @@
 
      function initMap(){
   
-                        console.log("Working");
                         var uluru = {lat: 5.64175, lng: -0.15190};
                         // The map, centered at Uluru
                         var map = new google.maps.Map(
                             document.getElementById('map'), {zoom: 11, center: uluru});
                         // The marker, positioned at Uluru
                         var marker = new google.maps.Marker({position: uluru, map: map});
-                        console.log([...mapleyval.keys()]);
 
-                        var markers = [...mapleyval.values()].map(function(location, i) {
-                          return new google.maps.Marker({
-                            position: location
-                          });
-                        });
+                        // var markers = [...mapleyval.values()].map(function(location, i) {
+                        //   return new google.maps.Marker({
+                        //     position: location
+                        //   });
+                        // });
 
                         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
