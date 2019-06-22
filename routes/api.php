@@ -25,3 +25,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/authenticatedriver', 'MobileRiderController@authenticateDriver');
 Route::post('/updatepassword', 'MobileRiderController@changePassword');
 
+
+//customer app
+Route::post('/customer_login', 'customerController@authenticateUser');
+Route::post('/companydata','customerController@companyInformation');
+Route::post('/updateTransaction', 'customerController@updateCustomerTransaction');
+Route::post('/ratedelivery', 'customerController@ratedeliverycompany');
+Route::post('/customertransactionhistory', 'customerController@getcustomertransactions');
+Route::post('/sendandroidcustomerreport','customerController@customerAndroidReport');
+

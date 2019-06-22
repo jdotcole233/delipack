@@ -28,6 +28,7 @@ $(document).ready(function(e){
         if (formvalidate == true){
             $('.bd-rideform-modal-lg').modal('hide');
             postInformation($('.ridesformsval').serialize(), '','.bd-rideform-modal-lg','' , '/registerride');
+            $('.ridesformsval').trigger("reset");
         } else {
             nowuiDashboards.showNotification('top','right', 'primary', 'Fill out all mandatory fields');
         }
@@ -306,8 +307,8 @@ $('.riderprofilebtn').on('click', function(e){
                 if (result.value) {
                     postInformation(unassignobj,'','','','/unassignedmotorbike');
                     Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
+                        'Unassigned!',
+                        'Rider has been unassigned.',
                         'success'
                     )
                     // location.reload();

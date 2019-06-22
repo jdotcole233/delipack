@@ -206,19 +206,23 @@
               </div>
               <div class="card-body">
                 <div class="author">
-                  <a href="#">
-                    <img class="avatar border-gray" src="../assets/img/mike.jpg" alt="...">
+                  <a style="z-index:1000; position:relative;" href="#">
+                  @if(DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path') != null)
+                    <img class="avatar body-gray"  src="http://192.168.100.9:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_name')}}">
+                    @else
+                      <img  src="http://192.168.100.9:8001/company_logos/deli_s.png" alt="Default" width="150px" height="150px">
+                    @endif
                     <h5 class="title" id="user_full_name">Mike Andrew</h5>
                   </a>
                   <p class="description" id="user_access">
                     michael24
                   </p>
                 </div>
-                <p class="description text-center" id="user_about">
+                <!-- <p class="description text-center" id="user_about">
                   "Lamborghini Mercy
                   <br> Your chick she so thirsty
                   <br> I'm in that two seat Lambo"
-                </p>
+                </p> -->
               </div>
               <hr>
               <div class="button-container">

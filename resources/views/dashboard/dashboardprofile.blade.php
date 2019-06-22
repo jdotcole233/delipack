@@ -101,9 +101,9 @@
                 <div class="author">
                   <a style="z-index:1000; position:relative;" href="#">
                     @if($company->company_logo_path != null)
-                    <img  src="http://127.0.0.1:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="{{$company->company_name}}">
+                    <img  src="http://192.168.100.9:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="{{$company->company_name}}">
                     @else
-                      <img  src="http://127.0.0.1:8001/company_logos/deli_s.png" alt="Default" width="150px" height="150px">
+                      <img  src="http://192.168.100.9:8001/company_logos/deli_s.png" alt="Default" width="150px" height="150px">
                     @endif
                     <h5 class="title">{{$company->company_name}}</h5>
                   </a>

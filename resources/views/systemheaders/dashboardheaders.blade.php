@@ -41,7 +41,7 @@
       <div class="logo">
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center">
-                <img  src="http://192.168.100.5:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="">
+                <img  src="http://192.168.100.9:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="">
             </div>
         </div>
         <div class="row d-flex justify-content-center">

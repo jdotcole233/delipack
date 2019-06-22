@@ -14,6 +14,7 @@ use App\Transaction;
 use App\Payment;
 use App\Rating;
 use App\Android_report;
+use Carbon\Carbon;
 
 class customerController extends Controller
 {
@@ -57,6 +58,7 @@ class customerController extends Controller
     }
 
     function updateCustomerTransaction(Request $request){
+            $trans_generate = date('Y',strtotime(Carbon::now())) . date('i',strtotime(Carbon::now()));
             $transactionResponse = "";
             $transaction = new Transaction();
             $transaction->company_riderscompany_rider_id = $request->company_riderscompany_rider_id;
@@ -71,7 +73,7 @@ class customerController extends Controller
                 $payment = new Payment();
                 $payment->transactionstransaction_id = $transaction->transaction_id;
                 $payment->customerscustomer_id = $request->customerscustomer_id;
-                $payment->transaction_number = "";
+                $payment->transaction_number = $trans_generate. $transaction->transaction_id;
                 $payment->delivery_charge = $request->delivery_charge;
                 $payment->commission_charge = $request->commission_charge;
                 $payment->payment_type = $request->payment_type;
