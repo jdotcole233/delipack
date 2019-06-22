@@ -214,24 +214,28 @@ class CompanyController extends Controller
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->where('transactions.delivery_status','ACTIVE')
         ->count('transactions.transaction_id');
 
         $totalchargestoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->where('transactions.delivery_status','ACTIVE')
         ->sum('delivery_charge');
 
          $totalcommissiontoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->where('transactions.delivery_status','ACTIVE')
         ->sum('commission_charge');
 
         $totaltoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->where('transactions.delivery_status','ACTIVE')
         ->sum('total_charge');
 
         return response()->json( [$totaltransactionstoday,

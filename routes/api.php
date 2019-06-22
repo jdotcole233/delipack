@@ -33,4 +33,4 @@ Route::post('/updateTransaction', 'customerController@updateCustomerTransaction'
 Route::post('/ratedelivery', 'customerController@ratedeliverycompany');
 Route::post('/customertransactionhistory', 'customerController@getcustomertransactions');
 Route::post('/sendandroidcustomerreport','customerController@customerAndroidReport');
-
+Route::post('/customererrandsessioncancel','customerController@customererrandsessioncancel');

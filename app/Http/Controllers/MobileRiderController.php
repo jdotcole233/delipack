@@ -20,6 +20,9 @@ class MobileRiderController extends Controller
                     
                     if ($driver->account_status == "ACTIVE"){
                             $driver_data = company_rider::where('company_rider_id', $driver->rider_id)->first();
+                            $company_name = company_rider::join('companies_riders','company_riders.company_rider_id','companoes_riders.company_riderscompany_rider_id')
+                            ->join('companies','companies_riders.companiescompanies_id','companies.companies_id')
+                            ->select('company_name')->first();
                             return response()->json([
                             'success_cue' => 'Success',
                             'rider_id' => $driver->rider_id,
@@ -28,7 +31,8 @@ class MobileRiderController extends Controller
                             'phone_number' => $driver->phone_number,
                             'company_id' => $driver->company_id,
                             'first_time_sign_in' => $driver->first_time_sign_in,
-                            'account_status' => $driver->account_status
+                            'account_status' => $driver->account_status,
+                            'company_name'=> $company_name
                         ]);
                     } else {
                             return response()->json([

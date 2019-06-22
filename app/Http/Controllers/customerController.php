@@ -123,7 +123,8 @@ class customerController extends Controller
         ->join('company_riders', 'transactions.company_riderscompany_rider_id', 'company_riders.company_rider_id')
         ->join('motor_bikes', 'transactions.motor_bikesbike_id', 'motor_bikes.bike_id')
         ->where('transactions.customerscustomer_id', $request->customer_id)
-        ->get();
+        ->get()
+        ->orderBy('transactions.created_at');
 
         return response()->json($transactions);
 
@@ -165,4 +166,18 @@ class customerController extends Controller
         }
 
     }
+
+
+
+    //Cancel errand in session 
+
+    public function customererrandsessioncancel(Request $request){
+        Transaction::where('transaction_id',$request->transactions_id)->update([
+            "delivery_status" => "CANCELLED"
+        ]);
+
+        return response()->json("done");
+
+    }
+
 }
