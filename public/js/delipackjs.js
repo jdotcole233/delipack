@@ -125,7 +125,7 @@ $(document).ready(function(e){
 
         $.ajax({
             method: 'POST',
-            url: '/queryCompanyTransactionData/',
+            url: '/queryCompanyTransactionData',
             data: $('#reportforms').serialize(),
             success: function(data){
                 $('#reportstable').DataTable().destroy();
@@ -142,6 +142,7 @@ $(document).ready(function(e){
                     ]
                 })
                 $('#totalresult').text("GHC " + data.total);
+                $('#totalcommission').text("GHC " + data.commision);
             },
             error: function(error){
             }
@@ -175,6 +176,10 @@ $(document).ready(function(e){
 
 
     $('#employeecurrentactivitytable').on('click','.viewtodaysalesbtn',function(){
+        $('#tripssum').text(0);
+        $('#salessum').text(0);
+        $('#commissionsum').text(0);
+        $('#totalsale').text(0);
         $('#exampleModalCenter').modal('show');
         let today = new Date();
         $('#exampleModalLongTitle').html($(this).parent().parent().find('#ridernameid').text() + " sales <br>" +
@@ -196,11 +201,18 @@ $(document).ready(function(e){
 
     $('#transactionstable').on('click','.quickviewButton',function(){
         let dataitemobj = $(this).data('transactions');
+        $('#rating_tag').barrating('destroy');
         $('#transaction_title').text("From: " + dataitemobj.source + " To: " + dataitemobj.destination);
-        $('#transaction_number').text("00" + dataitemobj.transaction_id);
+        $('#transaction_number').text(dataitemobj.transaction_number);
         $('#created_at').text(dataitemobj.paidon);
         $('#brand_name').text(dataitemobj.brand_name);
-        $('#rating').text(dataitemobj.rate_value);
+        // $('#rating').text(dataitemobj.rate_value);
+        console.log(parseInt(dataitemobj.rate_value));
+            $('#rating_tag').barrating({
+              theme: 'fontawesome-stars',
+              initialRating: parseInt(dataitemobj.rate_value),
+              readonly: 'true'
+            });
         $('#registered_number').text(dataitemobj.registered_number);
         $('#delivery_fee').text(dataitemobj.delivery_charge);
         $('#commission').text(dataitemobj.commission_charge);
@@ -215,6 +227,17 @@ $(document).ready(function(e){
         $('#pickup').val(dataitemobj.source);
         $('#delivery').val(dataitemobj.destination);
         $('#deliverystatus').val(dataitemobj.delivery_status);
+        if(dataitemobj.delivery_status == "CANCELLED"){
+            $('#deliverystatus').css({
+                'background-color':'#b30000',
+                'color': 'white'
+            });
+        }else if(dataitemobj.delivery_status == "ACTIVE"){
+            $('#deliverystatus').css({
+                'background-color':'#009900',
+                'color': 'white'
+            });
+        }
         $('.bd-quickview-modal-lg').modal('show');
     });
     

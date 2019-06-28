@@ -64,8 +64,6 @@ Route::post('/editrideinformation', 'rideController@editmotorinformation');
 Route::post('/editridersprofile', 'riderController@editriderprofile');
 Route::post('/unassignedmotorbike', 'riderController@unassignbiker');
 
-Route::post('/registercutomer', 'customerController@registerCustomer');
-
 Route::post('/registerride', 'rideController@regRide');
 Route::get('/gerregrides','rideController@getregRides');
 Route::get('/getTransactionsforcompany', 'CompanyController@transactionquery');

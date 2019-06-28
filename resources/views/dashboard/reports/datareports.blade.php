@@ -51,6 +51,7 @@
                       <th> Delivery</th>
                       <th> Rider </th>
                       <th> Date & Time </th>
+                      <th> Commission </th>
                       <th> Charge </th>
                     </thead>
                     <tbody>
@@ -69,8 +70,12 @@
                                     <div class="col-md-4">
                                         <table class="table table-bordered">
                                             <tr>
-                                                <td><strong>Total</strong></td>
+                                                <td><strong>Total Charges</strong></td>
                                                 <td id="totalresult">{GHC 00.00}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Total Commission</strong></td>
+                                                <td id="totalcommission">{GHC 00.00}</td>
                                             </tr>
                                         </table>
                                     </div>

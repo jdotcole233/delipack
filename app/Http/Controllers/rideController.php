@@ -28,13 +28,23 @@ class rideController extends Controller
         if ($registeredbikes != null){
             foreach ($registeredbikes as $registeredbike) {
                 $recbike = array();
-                array_push($recbike, 
-                $registeredbike->brand_name,
-                $registeredbike->registered_number,
-                $registeredbike->date_of_expiry,
-                '<button class="btn btn-primary editmotor" id="'.$registeredbike->bike_id.'">View</button>',
-                '<button data-id="'.$registeredbike->bike_id.'" class="btn btn-primary motorBikeDeleteBtn">Delete</button>'
-                );
+                if($registeredbike->status == 1){
+                    array_push($recbike, 
+                    $registeredbike->brand_name,
+                    $registeredbike->registered_number,
+                    $registeredbike->date_of_expiry,
+                    '<button class="btn btn-primary editmotor" id="'.$registeredbike->bike_id.'">View</button>',
+                    '<button data-id="'.$registeredbike->bike_id.'" class="btn btn-primary motorBikeDeleteBtn disabled">Delete</button>'
+                    );
+                }else{
+                    array_push($recbike, 
+                    $registeredbike->brand_name,
+                    $registeredbike->registered_number,
+                    $registeredbike->date_of_expiry,
+                    '<button class="btn btn-primary editmotor" id="'.$registeredbike->bike_id.'">View</button>',
+                    '<button data-id="'.$registeredbike->bike_id.'" class="btn btn-primary motorBikeDeleteBtn">Delete</button>'
+                    );
+                }
                 array_push($regarray, $recbike);
             }
         } else {

@@ -19,30 +19,44 @@ use Carbon\Carbon;
 class customerController extends Controller
 {
     function registerCustomer(Request $request){
-        $customer_id = Customer::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number
-        ])->latest()->value("customer_id");
 
-        // $encryptCustomerPassword = bcrypt($request->password);
-        customer_login::create([
-            'phone_number' => $request->phone_number,
-            'password' => bcrypt($request->password),
-            'customerscustomer_id' => $customer_id,
-            'account_status' => 'ACTIVE'
-        ]);
+        $isRegistered = Customer::where('phone_number',$request->phone_number)->first();
+        if($isRegistered == null){
+            $customer_id = Customer::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number
+            ])->latest()->value("customer_id");
+    
+            // $encryptCustomerPassword = bcrypt($request->password);
+            customer_login::create([
+                'phone_number' => $request->phone_number,
+                'password' => bcrypt($request->password),
+                'customerscustomer_id' => $customer_id,
+                'account_status' => 'ACTIVE'
+            ]);
+    
+            $customer_data = Customer::where('customer_id', $customer_id)->first();
+    
+            return response()->json([
+                            'success_cue' => 'Success',
+                            'customer_id' => $customer_id,
+                            'first_name' => $customer_data->first_name,
+                            'last_name' => $customer_data->last_name,
+                            'phone_number' => $customer_data->phone_number
+                 ]);
+        }else{
+            return response()->json([
+                'success_cue' => 'Failed',
+                'customer_id' => "",
+                'first_name' => "",
+                'last_name' => "",
+                'phone_number' => ""
+     ]);
+        }
 
-        $customer_data = Customer::where('customer_id', $customer_id)->first();
-
-        return response()->json([
-                        'success_cue' => 'Success',
-                        'customer_id' => $customer_id,
-                        'first_name' => $customer_data->first_name,
-                        'last_name' => $customer_data->last_name,
-                        'phone_number' => $customer_data->phone_number
-             ]);
+        
     }
 
 

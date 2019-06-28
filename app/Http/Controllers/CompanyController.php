@@ -35,6 +35,7 @@ class CompanyController extends Controller
 
         $totalerrands = Transaction::where('companiescompanies_id', Auth::user()->companiescompanies_id)
         ->select(DB::raw("DATE_FORMAT(transactions.created_at, '%m') as month"),DB::raw('companiescompanies_id'))
+        ->where('transactions.delivery_status', 'ACTIVE')
         ->get()
         ->groupBy('month');
 
@@ -86,7 +87,7 @@ class CompanyController extends Controller
         ->join('company_riders', 'transactions.company_riderscompany_rider_id','company_riders.company_rider_id')
         ->join('motor_bikes','transactions.motor_bikesbike_id','motor_bikes.bike_id')
         ->join('ratings', 'transactions.transaction_id', 'ratings.transactions_id')
-        ->select('transaction_id','rate_value','brand_name','registered_number','destination','source','delivery_status','payments.created_at as paidon', 'delivery_charge', 'commission_charge', 'payment_type', 'total_charge', 'customers.first_name as customerFirstName',
+        ->select('transaction_number','rate_value','brand_name','registered_number','destination','source','delivery_status','payments.created_at as paidon', 'delivery_charge', 'commission_charge', 'payment_type', 'total_charge', 'customers.first_name as customerFirstName',
                  'customers.last_name as customerLastName', 'customers.phone_number as customerPhoneNumber', 'company_riders.first_name as ridersFirstName', 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 'work_phone', 'personal_phone')
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->orderBy('transactions.created_at')
@@ -98,7 +99,7 @@ class CompanyController extends Controller
                 $inittrans = [];
                 $encodeData = json_encode($transaction);
                 array_push($inittrans,
-                    $transaction->rate_value, //change this
+                    $transaction->transaction_number, //change this
                     $transaction->customerFirstName . " " . $transaction->customerLastName,
                     $transaction->customerPhoneNumber,
                     $transaction->source,
@@ -162,55 +163,63 @@ class CompanyController extends Controller
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->join('company_riders', 'transactions.company_riderscompany_rider_id','company_riders.company_rider_id')
         ->join('motor_bikes','transactions.motor_bikesbike_id','motor_bikes.bike_id')
-        ->select('transaction_id','delivery_charge','registered_number','destination','source','delivery_status',
+        ->select('transaction_number','delivery_charge','registered_number','destination','source','delivery_status',
                 'payments.created_at as paidon', 'commission_charge', 'payment_type', 'total_charge',
                 'customers.first_name as customerFirstName','customers.last_name as customerLastName', 
                 'customers.phone_number as customerPhoneNumber', 'company_riders.first_name as ridersFirstName',
                 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 
                 'work_phone', 'personal_phone')
         ->whereBetween('transactions.created_at', [$request->fromdate, $request->todate])
-        ->where('transactions.companiescompanies_id', 1)
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->orderBy('transactions.created_at')
         ->get();
 
         $totaltransactioncharges = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereBetween('transactions.created_at', [$request->fromdate, $request->todate])
-        ->where('transactions.companiescompanies_id', 1)
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->sum('delivery_charge');
+        
+        $totalcommissioncharges = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+        ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
+        ->whereBetween('transactions.created_at', [$request->fromdate, $request->todate])
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->sum('commission_charge');
 
         $trans = [];
-        $em_array  =["1", "2", "3", "4", "5", "6", "7", "8"];
+        $em_array  =["1", "2", "3", "4", "5", "6", "7", "8","9"];
         if(sizeof($transactions) != 0){
             foreach($transactions as $transaction){
                 $inittrans = [];
                 $encodeData = json_encode($transaction);
                 array_push($inittrans,
-                    $transaction->transaction_id, //change this
+                    $transaction->transaction_number,
                     $transaction->customerFirstName . " " . $transaction->customerLastName,
                     $transaction->source,
                     $transaction->destination,
                     $transaction->ridersFirstName . " " . $transaction->ridersLastName,
                     $transaction->paidon,
+                    $transaction->commission_charge,
                     $transaction->delivery_charge
                  );
 
                  array_push($trans, $inittrans);
             }
         } else {
-            $em_array = ["", "", "", "", "", "", ""];
+            $em_array = ["", "", "", "", "", "", "",""];
             array_push($trans,$em_array);
 
         } 
 
 
-        return response()->json(['data' => $trans, 'total' => $totaltransactioncharges]);
+        return response()->json(['data' => $trans, 'total' => $totaltransactioncharges,'commision'=>$totalcommissioncharges]);
    }
 
 
-   public function getridersalesfortoday(){
+   public function getridersalesfortoday($rider_id){
 
       $totaltransactionstoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+        ->where('company_riderscompany_rider_id',$rider_id)
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
@@ -218,6 +227,7 @@ class CompanyController extends Controller
         ->count('transactions.transaction_id');
 
         $totalchargestoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+        ->where('company_riderscompany_rider_id',$rider_id)
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
@@ -225,6 +235,7 @@ class CompanyController extends Controller
         ->sum('delivery_charge');
 
          $totalcommissiontoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+         ->where('company_riderscompany_rider_id',$rider_id)
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
@@ -232,6 +243,7 @@ class CompanyController extends Controller
         ->sum('commission_charge');
 
         $totaltoday = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+        ->where('company_riderscompany_rider_id',$rider_id)
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereDay('transactions.created_at', date_format(Carbon::now()->toDate(),'d'))
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
