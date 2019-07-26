@@ -21,9 +21,9 @@ class rideController extends Controller
 
     function getregRides(){
         $registeredbikes = Motor_bike::where('companiescompanies_id',Auth::user()->companiescompanies_id)
-
         ->where("delete_status","NOT DELETED")
         ->get();
+
         $regarray = array();
         if ($registeredbikes != null){
             foreach ($registeredbikes as $registeredbike) {
@@ -53,7 +53,6 @@ class rideController extends Controller
     function editmotorinformation(Request $request){
         Motor_bike::where('bike_id', $request->bike_id)
         ->update($request->all());
-
         return response()->json("Updated successfully");
     }
 
@@ -62,7 +61,6 @@ class rideController extends Controller
         Motor_bike::where('bike_id',$id)->update([
             "delete_status" => "DELETED"
         ]);
-
         return response()->json("Motor Bike  removed successfully");
     }
 }

@@ -138,7 +138,6 @@ class riderController extends Controller
 
 
     function getallrides(){
-        
         return view('dashboard.riders.riders');
     }
 
@@ -147,7 +146,6 @@ class riderController extends Controller
         ->where('status', 0)
         ->where('delete_status', 'NOT DELETED')
         ->get();
-
         return response()->json($rides);
     }
 
