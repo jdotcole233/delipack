@@ -40,9 +40,7 @@ Route::get('/rides', function(){
     return view('dashboard.rides.rides');
 });
 
-Route::get('/deliveries', function(){
-    return view('dashboard.deliveries.deliveries');
-});
+Route::get('/deliveries','CompanyController@renderDeliveries');
 
 Route::get('/reports', function(){
     return view('dashboard.reports.datareports');
@@ -74,7 +72,7 @@ Route::post('/gettotalsales','CompanyController@totalSales');
 
 
 
-
+Route::post('/upload_manual_record','CompanyController@manual_record_upload');
 Route::get('/getridersalesdfortoday/{id}','CompanyController@getridersalesfortoday');
 Route::get('/deactivteRider/{id}','riderController@deactivateRider');
 Route::get('/deleteBike/{id}','rideController@deleteBike');

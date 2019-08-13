@@ -26,8 +26,9 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" />
   <link href="https://cdn.datatables.net/1.10.19/css/dataTables.semanticui.min.css" rel="stylesheet" />
   <link href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.semanticui.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{asset('assets/demo/demo.css')}}">
 
-  
+
 
 </head>
 
@@ -48,7 +49,7 @@
               @auth
                 {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}}
               @endauth
-              </a> 
+              </a>
               <a class="simple-text logo-normal">
               @auth
                 {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_name')}}
@@ -69,25 +70,25 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="{{ (request()->is('deliveries')) ? 'active' : '' }}"}>
+          <li class="{{ (request()->is('deliveries')) ? 'active' : '' }}">
             <a href="{{ url('/deliveries')}}">
               <i class="now-ui-icons business_money-coins"></i>
               <p>Deliveries</p>
             </a>
           </li>
-          <li class="{{ (request()->is('riders')) ? 'active' : '' }}"}>
+          <li class="{{ (request()->is('riders')) ? 'active' : '' }}">
             <a href="{{ url('/riders')}}">
               <i class="now-ui-icons sport_user-run"></i>
               <p>Delivery guys</p>
             </a>
           </li>
-          <li class="{{ (request()->is('rides')) ? 'active' : '' }}"}>  
+          <li class="{{ (request()->is('rides')) ? 'active' : '' }}">
             <a href="{{url('/rides')}}">
               <i class="now-ui-icons shopping_delivery-fast"></i>
               <p>Rides</p>
             </a>
           </li>
-          <li class="{{ (request()->is('reports')) ? 'active' : '' }}"}>
+          <li class="{{ (request()->is('reports')) ? 'active' : '' }}">
             <a href="{{url('/reports')}}">
               <i class="now-ui-icons business_chart-pie-36"></i>
               <p>Generate reports</p>
@@ -114,7 +115,7 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">Dashboard</a>
+            <a class="navbar-brand" href="{{url('maindashboard')}}">Dashboard</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -254,11 +255,11 @@
              <div class="form-group">
                 <label for="new-pasword">New password</label>
                 <input type="password" id="newPass" name="password" class="form-control" placeholder="Enter new password">
-             </div> 
+             </div>
              <div class="form-group">
                 <label for="confirm_password">Confirm password</label>
                 <input type="password" id="confirmPass" name="confirm_password" class="form-control" placeholder="Confirm password">
-             </div> 
+             </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -306,7 +307,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
- 
+
 
 
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->

@@ -10,6 +10,7 @@ use App\Company_rider;
 use App\Company_address;
 use App\User;
 use App\Company;
+use App\Customer;
 use DB;
 use Hash;
 use Auth;
@@ -69,7 +70,7 @@ class CompanyController extends Controller
             $sizeofarray = count($totalsale);
              for($i = 0; $i < $sizeofarray; $i++){
                         if($totalsale[$i]->$keyname != null){
-                        $totalamount = $totalamount + $totalsale[$i]->$keyname;  
+                        $totalamount = $totalamount + $totalsale[$i]->$keyname;
                   }
             }
             if($keyname == "rate_value"){
@@ -92,7 +93,7 @@ class CompanyController extends Controller
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->orderBy('transactions.created_at')
         ->get();
-        
+
         $trans = [];
         if($transactions != null){
             foreach($transactions as $transaction){
@@ -113,7 +114,7 @@ class CompanyController extends Controller
         } else {
             $empty_array = array(" ", " ", "", "", " ", "  ", " ", " ");
             array_push($trans,$empty_array);
-        } 
+        }
         return response()->json(['data' => $trans]);
     }
 
@@ -151,12 +152,12 @@ class CompanyController extends Controller
             $em_array = ["", "", "", "", "", "", "", ""];
             array_push($trans,$em_array);
 
-        } 
+        }
 
 
        return response()->json(['data' => $trans]);
    }
-   
+
 
    public function queryCompanyData(Request $request){
        $transactions =  Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
@@ -165,9 +166,9 @@ class CompanyController extends Controller
         ->join('motor_bikes','transactions.motor_bikesbike_id','motor_bikes.bike_id')
         ->select('transaction_number','delivery_charge','registered_number','destination','source','delivery_status',
                 'payments.created_at as paidon', 'commission_charge', 'payment_type', 'total_charge',
-                'customers.first_name as customerFirstName','customers.last_name as customerLastName', 
+                'customers.first_name as customerFirstName','customers.last_name as customerLastName',
                 'customers.phone_number as customerPhoneNumber', 'company_riders.first_name as ridersFirstName',
-                'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 
+                'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName',
                 'work_phone', 'personal_phone')
         ->whereBetween('transactions.created_at', [$request->fromdate, $request->todate])
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
@@ -179,7 +180,7 @@ class CompanyController extends Controller
         ->whereBetween('transactions.created_at', [$request->fromdate, $request->todate])
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->sum('delivery_charge');
-        
+
         $totalcommissioncharges = Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->whereBetween('transactions.created_at', [$request->fromdate, $request->todate])
@@ -209,7 +210,7 @@ class CompanyController extends Controller
             $em_array = ["", "", "", "", "", "", "",""];
             array_push($trans,$em_array);
 
-        } 
+        }
 
 
         return response()->json(['data' => $trans, 'total' => $totaltransactioncharges,'commision'=>$totalcommissioncharges]);
@@ -309,5 +310,55 @@ class CompanyController extends Controller
         return response()->json($ridersids);
     }
 
+    public function renderDeliveries(){
+      $company_rider_bikes =  Company_rider::join('rider_assigned_motor_bikes','company_riders.company_rider_id','rider_assigned_motor_bikes.company_riderscompany_rider_id')
+      ->join('motor_bikes','rider_assigned_motor_bikes.motor_bikesbike_id','motor_bikes.bike_id')
+      ->select('first_name', 'last_name', 'brand_name','registered_number', 'company_rider_id', 'bike_id','rider_assigned_motor_bikes.companiescompanies_id')
+      ->where('rider_assigned_motor_bikes.companiescompanies_id', 1)
+      ->where('company_riders.delete_status','NOT DELETED')
+      ->get();
+      return view('dashboard.deliveries.deliveries', compact('company_rider_bikes'));
+      // return response()->json($company_rider_bike);
+    }
+
+    //method to upload the manual record
+    public function manual_record_upload(Request $request){
+      $trans_generate = date('Y',strtotime(Carbon::now())) . date('i',strtotime(Carbon::now()));
+      $rider_details = json_decode($request->rider_details);
+
+      //check if the customer exists
+      if(Customer::where('phone_number',"+233".$request->phone_number)->exists()){
+        //get the customer with the particular phone number
+        $customer = Customer::where('phone_number',"+233".$request->phone_number)->first();
+      }else{
+        //split the name into parts
+        $name = explode(" ",$request->customer_name);
+        $customer = Customer::create([
+          "first_name"=>$name[0],
+          "last_name"=>count($name) > 1 ? $name[1]: "",
+          "phone_number"=>"+233".$request->phone_number
+        ])->latest();
+      }
+
+      $trans = Transaction::create([
+        "company_riderscompany_rider_id"=>$rider_details->company_rider_id,
+        "customerscustomer_id"=>$customer->customer_id,
+        "companiescompanies_id"=>$rider_details->companiescompanies_id,
+        "motor_bikesbike_id"=>$rider_details->bike_id,
+        "destination"=>$request->destination,
+        "source"=>$request->source,
+        "delivery_status"=>"MANUAL DELIVERY",
+      ]);
+
+      Payment::create([
+        "transactionstransaction_id"=>$trans->transaction_id,
+        "customerscustomer_id"=>$customer->customer_id,
+        "transaction_number"=>$trans_generate. $trans->transaction_id,//generate trans number
+        "delivery_charge"=>$request->delivery_charge,
+        "total_charge"=>$request->delivery_charge,
+        "payment_type"=>$request->payment_type,
+      ]);
+      return response()->json("done");
+    }
 
 }
