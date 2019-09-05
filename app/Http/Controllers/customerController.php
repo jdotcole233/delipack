@@ -14,34 +14,49 @@ use App\Transaction;
 use App\Payment;
 use App\Rating;
 use App\Android_report;
+use Carbon\Carbon;
 
 class customerController extends Controller
 {
     function registerCustomer(Request $request){
-        $customer_id = Customer::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'phone_number' => $request->phone_number
-        ])->latest()->value("customer_id");
 
-        // $encryptCustomerPassword = bcrypt($request->password);
-        customer_login::create([
-            'phone_number' => $request->phone_number,
-            'password' => bcrypt($request->password),
-            'customerscustomer_id' => $customer_id,
-            'account_status' => 'ACTIVE'
-        ]);
+        $isRegistered = Customer::where('phone_number',$request->phone_number)->first();
+        if($isRegistered == null){
+            $customer_id = Customer::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number
+            ])->latest()->value("customer_id");
+    
+            // $encryptCustomerPassword = bcrypt($request->password);
+            customer_login::create([
+                'phone_number' => $request->phone_number,
+                'password' => bcrypt($request->password),
+                'customerscustomer_id' => $customer_id,
+                'account_status' => 'ACTIVE'
+            ]);
+    
+            $customer_data = Customer::where('customer_id', $customer_id)->first();
+    
+            return response()->json([
+                            'success_cue' => 'Success',
+                            'customer_id' => $customer_id,
+                            'first_name' => $customer_data->first_name,
+                            'last_name' => $customer_data->last_name,
+                            'phone_number' => $customer_data->phone_number
+                 ]);
+        }else{
+            return response()->json([
+                'success_cue' => 'Failed',
+                'customer_id' => "",
+                'first_name' => "",
+                'last_name' => "",
+                'phone_number' => ""
+     ]);
+        }
 
-        $customer_data = Customer::where('customer_id', $customer_id)->first();
-
-        return response()->json([
-                        'success_cue' => 'Success',
-                        'customer_id' => $customer_id,
-                        'first_name' => $customer_data->first_name,
-                        'last_name' => $customer_data->last_name,
-                        'phone_number' => $customer_data->phone_number
-             ]);
+        
     }
 
 
@@ -57,6 +72,7 @@ class customerController extends Controller
     }
 
     function updateCustomerTransaction(Request $request){
+            $trans_generate = date('Y',strtotime(Carbon::now())) . date('i',strtotime(Carbon::now()));
             $transactionResponse = "";
             $transaction = new Transaction();
             $transaction->company_riderscompany_rider_id = $request->company_riderscompany_rider_id;
@@ -71,7 +87,7 @@ class customerController extends Controller
                 $payment = new Payment();
                 $payment->transactionstransaction_id = $transaction->transaction_id;
                 $payment->customerscustomer_id = $request->customerscustomer_id;
-                $payment->transaction_number = "";
+                $payment->transaction_number = $trans_generate. $transaction->transaction_id;
                 $payment->delivery_charge = $request->delivery_charge;
                 $payment->commission_charge = $request->commission_charge;
                 $payment->payment_type = $request->payment_type;
@@ -120,8 +136,10 @@ class customerController extends Controller
         ->join('companies', 'transactions.companiescompanies_id', 'companies.companies_id')
         ->join('company_riders', 'transactions.company_riderscompany_rider_id', 'company_riders.company_rider_id')
         ->join('motor_bikes', 'transactions.motor_bikesbike_id', 'motor_bikes.bike_id')
+        ->select('companies_id','company_name','source','destination','delivery_status','payment_type','total_charge','first_name','last_name','registered_number','transactions.created_at','transaction_number','company_logo_path')
         ->where('transactions.customerscustomer_id', $request->customer_id)
         ->get();
+        // ->orderBy('transactions.created_at');
 
         return response()->json($transactions);
 
@@ -163,4 +181,18 @@ class customerController extends Controller
         }
 
     }
+
+
+
+    //Cancel errand in session 
+
+    public function customererrandsessioncancel(Request $request){
+        Transaction::where('transaction_id',$request->transactions_id)->update([
+            "delivery_status" => "CANCELLED"
+        ]);
+
+        return response()->json("done");
+
+    }
+
 }

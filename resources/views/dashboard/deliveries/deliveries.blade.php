@@ -85,7 +85,15 @@
                                     </tr>
                                     <tr>
                                         <td><strong>Rating</strong></td>
-                                        <td id="rating">{*****}</td>
+                                        <td id="rating">
+                                            <select id="rating_tag">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>  
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><strong>Ride Number</strong></td>
@@ -177,7 +185,7 @@
 
 
 
-                    <fieldset class="border p-2">
+                    <fieldset class="border delivery_box p-2">
                         <legend class="w-auto">Errand's Information</legend>
                         <div class="row">
                             <div class="col-md-6">

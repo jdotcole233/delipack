@@ -19,17 +19,44 @@ class MobileRiderController extends Controller
                     $driver = Rider_login::where('phone_number', $driver_phoneNumber)->first();
                     
                     if ($driver->account_status == "ACTIVE"){
-                            $driver_data = company_rider::where('company_rider_id', $driver->rider_id)->first();
-                            return response()->json([
-                            'success_cue' => 'Success',
-                            'rider_id' => $driver->rider_id,
-                            'first_name' => $driver_data->first_name,
-                            'last_name' => $driver_data->last_name,
-                            'phone_number' => $driver->phone_number,
-                            'company_id' => $driver->company_id,
-                            'first_time_sign_in' => $driver->first_time_sign_in,
-                            'account_status' => $driver->account_status
-                        ]);
+                            $driver_data = company_rider::where('company_rider_id', $driver->rider_id)
+                                            ->join('rider_assigned_motor_bikes','company_riders.company_rider_id','rider_assigned_motor_bikes.company_riderscompany_rider_id')
+                                            ->first();
+                            $company_name = company_rider::join('companies_riders','company_riders.company_rider_id','companoes_riders.company_riderscompany_rider_id')
+                            ->join('companies','companies_riders.companiescompanies_id','companies.companies_id')
+                            ->select('company_name','company_logo_path')->first();
+
+                            if ($driver_data != null) {
+                                return response()->json([
+                                    'success_cue' => 'Success',
+                                    'rider_id' => $driver->rider_id,
+                                    'first_name' => $driver_data->first_name,
+                                    'last_name' => $driver_data->last_name,
+                                    'phone_number' => $driver->phone_number,
+                                    'company_id' => $driver->company_id,
+                                    'first_time_sign_in' => $driver->first_time_sign_in,
+                                    'account_status' => $driver->account_status,
+                                    'company_name'=> $company_name->company_name,
+                                    'company_logo_path' => $company_name->company_logo_path
+                                ]);
+                            } else {
+                                $driver_data = company_rider::where('company_rider_id', $driver->rider_id)
+                                ->first();
+                                return response()->json([
+                                    'success_cue' => 'NOT ASSIGNED',
+                                    'rider_id' => $driver->rider_id,
+                                    'first_name' => $driver_data->first_name,
+                                    'last_name' => $driver_data->last_name,
+                                    'phone_number' => $driver->phone_number,
+                                    'company_id' => $driver->company_id,
+                                    'first_time_sign_in' => $driver->first_time_sign_in,
+                                    'account_status' => $driver->account_status,
+                                     'company_name'=> $company_name->company_name,
+                                    'company_logo_path' => $company_name->company_logo_path
+                                ]);
+                            }
+
+                            
                     } else {
                             return response()->json([
                             'success_cue' => 'Deactivated',

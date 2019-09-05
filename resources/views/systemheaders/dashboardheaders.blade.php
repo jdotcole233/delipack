@@ -17,7 +17,11 @@
   <!-- CSS Files -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../assets/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
+<<<<<<< HEAD
   <!-- CSS Just for demo purpose, don't include it in your project -->
+=======
+  <!-- <link rel="stylesheet" href="{{asset('css/delipack.css')}}"> -->
+>>>>>>> 924050b7070fb01181bc3d325a24f74527b5a908
 
   <!-- <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" /> -->
   <link href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css" rel="stylesheet" />
@@ -37,7 +41,7 @@
       <div class="logo">
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center">
-                <img  src="http://192.168.100.5:8001/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="">
+                <img  src="http://superuser.delipackport.com/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="">
             </div>
         </div>
         <div class="row d-flex justify-content-center">
@@ -306,7 +310,10 @@
  
 
 
-
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/jquery.barrating.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/themes/fontawesome-stars.css"/>
 
 
 

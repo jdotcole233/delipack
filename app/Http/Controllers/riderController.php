@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
-use App\company_rider;
+use App\Company_rider;
 use App\Companies_rider;
 use App\Riders_address;
 use App\Riders_license;
@@ -25,7 +25,7 @@ class riderController extends Controller
     }
 
     function func_registerrider(Request $request){
-        $rider_id = company_rider::create($request->all())->latest()->value('company_rider_id');
+        $rider_id = Company_rider::create($request->all())->latest()->value('company_rider_id');
         Riders_address::create([
             'company_riderscompany_rider_id' => $rider_id,
             'address' => $request->address,
@@ -122,7 +122,7 @@ class riderController extends Controller
 
     function riderinformation($riderID){
         //transactions
-        $company_rider_name = company_rider::where('company_rider_id', $riderID)->select('first_name', 'last_name', 'company_rider_id')->first();
+        $company_rider_name = Company_rider::where('company_rider_id', $riderID)->select('first_name', 'last_name', 'company_rider_id')->first();
         return view("dashboard.riders.aboutrider", compact('company_rider_name'));
     }
 
@@ -154,7 +154,7 @@ class riderController extends Controller
         Motor_bike::where('bike_id', $request->motor_bikesbike_id)->update([
             'status' => 1
         ]);
-        company_rider::where('company_rider_id', $request->company_riderscompany_rider_id)
+        Company_rider::where('company_rider_id', $request->company_riderscompany_rider_id)
         ->update([
             'assigned_bike' => 1
         ]);
@@ -163,7 +163,7 @@ class riderController extends Controller
     }
 
     function editriderprofile(Request $request){
-        company_rider::where('company_rider_id', $request->rider_id)
+        Company_rider::where('company_rider_id', $request->rider_id)
         ->update([
             'first_name' => $request->first_name,
             'other_name' => $request->other_name,
@@ -193,7 +193,7 @@ class riderController extends Controller
 
     function unassignbiker(Request $request){
         $unassign= Rider_assigned_motor_bike::where('company_riderscompany_rider_id', $request->rider_id)->latest()->first();
-        company_rider::where('company_rider_id', $unassign->company_riderscompany_rider_id)
+        Company_rider::where('company_rider_id', $unassign->company_riderscompany_rider_id)
         ->update([
             'assigned_bike' => 0
         ]);

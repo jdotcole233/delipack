@@ -205,11 +205,11 @@
                       <th>Total sale</th>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr style="font-family:sans-serif; font-size:1.2em; text-align:center;">
                           <td id="tripssum">2</td>
                           <td id="salessum">2</td>
                           <td id="commissionsum">2</td>
-                          <td id="totalsale">2</td>
+                          <td style="font-weight:bolder;" id="totalsale">2</td>
                         </tr>
                     </tbody>
                 </table>
