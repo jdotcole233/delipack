@@ -1,18 +1,61 @@
 $(document).ready(function(e){
+  $('#payment_mode').hide();
 
+  $('#phone_num').keyup(function(){
+    $(this).val($(this).val().replace(/^0+/, ""))
+  })
+
+    //when the select input changes
+    //listen for the change in value
+    $('#payment_type').change(function(){
+      //get the value that is being switched to
+      let selected_mode = $(this).children("option:selected").val();
+
+      if(selected_mode == "cash"){//if it is by mode of cash
+        $('#payment_mode').show();//show the input for mode of payment
+      }else{
+        $('#payment_mode').hide(); //hide it
+      }
+    })
+
+
+    $('#select_rider_input').change(function(){
+      let selected_value_data = $(this).children("option:selected").data('rider');
+      $('#brand_name14').val(selected_value_data['brand_name'])
+      $('#rider_details123').val( JSON.stringify($(this).children("option:selected").data('rider')));
+      $('#reg_number').val(selected_value_data['registered_number'])
+      console.log($('#rider_details123').val());
+    })
+
+    $('#manual_record_form_button').on('click',(event)=>{
+      console.log("Hello");
+      const isValidated = validateForms('manual_record_form', event);
+      console.log(isValidated);
+      if (isValidated == true){
+        $('#manual_record_modal').modal('hide');
+        // $('#modalloader').modal('show');
+        let isrequestback = postInformation($('.manual_record_form').serialize(),
+        '',
+        '',
+        '',
+        '/upload_manual_record');
+      } else {
+        nowuiDashboards.showNotification('top', 'right', 'primary','Fill out all mandatory fields');
+      }
+    });
 
     $('#initialregisterbtn').on('click', ()=> {$('.rideregistrationforms').modal('show')});
 
 
     $('#ridersubmitbtn').on('click', (event) => {
        let formvalid =  validateForms('needs-validation', event);
-        if (formvalid == true){ 
+        if (formvalid == true){
             // let ridersinfomation = $('.needs-validation').serialize();
             // console.log(ridersinfomation);
             $('.rideregistrationforms').modal('hide');
             // $('#modalloader').modal('show');
-            let isrequestback = postInformation($('.needs-validation').serialize(), 
-            '#modalloader', 
+            let isrequestback = postInformation($('.needs-validation').serialize(),
+            '#modalloader',
             '',
             '',
             '/registerrider');
@@ -42,9 +85,9 @@ $(document).ready(function(e){
             $('.assignform').trigger('reset');
             // $('').text('Unassign');
             // location.reload();
-        } 
+        }
     });
- 
+
 
 
 
@@ -73,11 +116,11 @@ $(document).ready(function(e){
                 }
                 nowuiDashboards.showNotification('top', 'right', 'success',  data);
 
-            }, 
+            },
             error: function (error){
                 $(loader).modal('hide');
                 $(mainform).modal('show');
-                nowuiDashboards.showNotification('top', 'right', 'danger', error);
+                nowuiDashboards.showNotification('top', 'right', 'danger', error.message);
 
             }
         });
@@ -113,7 +156,7 @@ $(document).ready(function(e){
             'destroy':true
         });
     }
-   
+
 
     $('.querydatabtn').on('click', function(e){
         e.preventDefault();
@@ -146,8 +189,8 @@ $(document).ready(function(e){
             },
             error: function(error){
             }
-        }); 
-        
+        });
+
     });
 
 
@@ -167,7 +210,7 @@ $(document).ready(function(e){
         appId: "1:636386670726:web:97c67f0f90e2d761"
       };
       let app = firebase.initializeApp(firebaseConfig);
-   
+
 
 
 
@@ -194,10 +237,10 @@ $(document).ready(function(e){
                 $('#totalsale').text(data[3]);
             },
         });
-    
+
     });
 
-    
+
 
     $('#transactionstable').on('click','.quickviewButton',function(){
         let dataitemobj = $(this).data('transactions');
@@ -240,8 +283,8 @@ $(document).ready(function(e){
         }
         $('.bd-quickview-modal-lg').modal('show');
     });
-    
-    let ridesinfo = $('#ridestable').DataTable({  
+
+    let ridesinfo = $('#ridestable').DataTable({
         'ajax': '/gerregrides',
         'deferRender': true
       });
@@ -341,7 +384,7 @@ $('.riderprofilebtn').on('click', function(e){
     });
 
 
-    // rider edit function 
+    // rider edit function
     $('#ridestable').on('click', '.editmotor', function (e){
         $('.bd-rideeditform-modal-lg').modal('show');
         let motor_id = $(this).attr('id');
@@ -445,7 +488,7 @@ function updateAssignmentBike(){
 // setInterval(updateAssignmentBike, 3000);
 
 
-    //Delete Motor Bike from the list 
+    //Delete Motor Bike from the list
     $('#ridestable').on('click', '.motorBikeDeleteBtn', function () {
         let id = $(this).data('id');
         Swal.fire({
@@ -567,8 +610,8 @@ function updateAssignmentBike(){
             $('#newPass').css(mandcss);
             $('#confirmPass').css(mandcss);
             return;
-        } 
-        
+        }
+
         if(newPass.length >= 8){
             if(confirmPass.length >= 8){
                 if(confirmPass != newPass){
@@ -616,7 +659,3 @@ function updateAssignmentBike(){
     });
 
 });
-
-
-
-
