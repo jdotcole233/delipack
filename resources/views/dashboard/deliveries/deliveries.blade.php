@@ -236,8 +236,8 @@
               <div class="row mb-2">
                 <div class="form-group col-md-12">
                   <label for="riders">Select rider</label>
-                  <select class="form-control" name="rider" id="select_rider_input" required>
-                      <option value="">Choose one</option>
+                  <select multiple class="form-control" name="rider" id="select_rider_input" required>
+                      {{-- <option value="">Choose one</option> --}}
                       @foreach($company_rider_bikes as $rider)
                       <option value="{{$rider->company_rider_id}}" data-rider="{{$rider}}">{{$rider->first_name }} {{$rider->last_name}}</option>
                       @endforeach
@@ -248,14 +248,14 @@
                 <div class="form-group col-md-6">
                   <meta name="csrf-token" content="{{csrf_token()}}">
                   <label for="brand">Motor Brand</label>
-                  <input type="text" name="brand" value="" id="brand_name14" class="form-control" readonly>
+                  <input type="text" name="brand" value="" id="brand_name14" class="form-control" readonly required>
                 </div>
                 <div style="display:none" class="form-group col-md-6">
                   <input type="text" name="rider_details" id="rider_details123" value="Hello" class="form-control">
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Registration Number</label>
-                  <input type="text" name="registered_number" value="" id="reg_number" class="form-control" readonly>
+                  <input type="text" name="registered_number" value="" id="reg_number" class="form-control" readonly required>
                 </div>
               </div>
               <div class="row mb-2">
@@ -305,7 +305,7 @@
       </div>
       <div class="modal-footer">
           <button type="button" id="manual_record_form_button" name="button" class="btn btn-success pull-right">Submit</button>
-          <button type="button" name="button" data-dismiss="modal" class="btn btn-secondary pull-right">Cancel</button>
+          <button type="button" name="button" data-dismiss="modal" id="manual_cancel" class="btn btn-secondary pull-right">Cancel</button>
       </div>
     </div>
   </div>

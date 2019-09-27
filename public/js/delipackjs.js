@@ -21,10 +21,17 @@ $(document).ready(function(e){
 
     $('#select_rider_input').change(function(){
       let selected_value_data = $(this).children("option:selected").data('rider');
-      $('#brand_name14').val(selected_value_data['brand_name'])
-      $('#rider_details123').val( JSON.stringify($(this).children("option:selected").data('rider')));
-      $('#reg_number').val(selected_value_data['registered_number'])
-      console.log($('#rider_details123').val());
+      console.log("nothing selected " + selected_value_data);
+      if (selected_value_data == undefined){
+            console.log("nothing selected ");
+            $('#brand_name14').val("")
+            $('#rider_details123').val("");
+            $('#reg_number').val("")
+      } else {
+            $('#brand_name14').val(selected_value_data['brand_name'])
+            $('#rider_details123').val(JSON.stringify($(this).children("option:selected").data('rider')));
+            $('#reg_number').val(selected_value_data['registered_number'])
+      }
     })
 
     $('#manual_record_form_button').on('click',(event)=>{
@@ -49,6 +56,11 @@ $(document).ready(function(e){
             }
       }
       
+    });
+
+
+    $('#manual_cancel').on('click', function(){
+          $('.manual_record_form').trigger("reset");
     });
 
     $('#initialregisterbtn').on('click', ()=> {$('.rideregistrationforms').modal('show')});
