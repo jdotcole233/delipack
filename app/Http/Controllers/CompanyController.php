@@ -325,6 +325,8 @@ class CompanyController extends Controller
     public function manual_record_upload(Request $request){
       $trans_generate = date('Y',strtotime(Carbon::now())) . date('i',strtotime(Carbon::now()));
       $rider_details = json_decode($request->rider_details);
+      $customer;
+      $name;
 
       //check if the customer exists
       if(Customer::where('phone_number',"+233".$request->phone_number)->exists()){
@@ -337,7 +339,7 @@ class CompanyController extends Controller
           "first_name"=>$name[0],
           "last_name"=>count($name) > 1 ? $name[1]: "",
           "phone_number"=>"+233".$request->phone_number
-        ])->latest();
+        ]);
       }
 
       $trans = Transaction::create([
@@ -350,6 +352,7 @@ class CompanyController extends Controller
         "delivery_status"=>"MANUAL DELIVERY",
       ]);
 
+
       Payment::create([
         "transactionstransaction_id"=>$trans->transaction_id,
         "customerscustomer_id"=>$customer->customer_id,
@@ -358,7 +361,16 @@ class CompanyController extends Controller
         "total_charge"=>$request->delivery_charge,
         "payment_type"=>$request->payment_type,
       ]);
-      return response()->json("done");
+
+      Rating::create([
+          "rate_value" => 1,
+          "transactions_id" => $trans->transaction_id,
+          "company_riderscompany_rider_id" => $rider_details->company_rider_id,
+          "customerscustomer_id" => $customer->customer_id,
+          "company_id" => Auth::user()->companiescompanies_id
+      ]);
+      
+      return response()->json(["transaction " => $trans, "customer" => $customer]);
     }
 
 }

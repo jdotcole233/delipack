@@ -239,7 +239,7 @@
                   <select class="form-control" name="rider" id="select_rider_input" required>
                       <option value="">Choose one</option>
                       @foreach($company_rider_bikes as $rider)
-                      <option value="{{$rider->company_rider_id}}" data-rider="{{$rider}}">{{$rider->first_name }} {{$rider->first_name}}</option>
+                      <option value="{{$rider->company_rider_id}}" data-rider="{{$rider}}">{{$rider->first_name }} {{$rider->last_name}}</option>
                       @endforeach
                   </select>
                 </div>

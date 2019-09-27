@@ -31,17 +31,24 @@ $(document).ready(function(e){
       console.log("Hello");
       const isValidated = validateForms('manual_record_form', event);
       console.log(isValidated);
-      if (isValidated == true){
-        $('#manual_record_modal').modal('hide');
-        // $('#modalloader').modal('show');
-        let isrequestback = postInformation($('.manual_record_form').serialize(),
-        '',
-        '',
-        '',
-        '/upload_manual_record');
+        if ($('#phone_num').val().length > 9 || $('#phone_num').val().length < 9) {
+            nowuiDashboards.showNotification('top', 'right', 'primary', 'Contact number must be 9 characters without the preceeding 0');
+            return;
       } else {
-        nowuiDashboards.showNotification('top', 'right', 'primary','Fill out all mandatory fields');
+            if (isValidated == true) {
+                $('#manual_record_modal').modal('hide');
+                let isrequestback = postInformation($('.manual_record_form').serialize(),
+                    '',
+                    '',
+                    '',
+                    '/upload_manual_record');
+                  $('.manual_record_form').trigger("reset");
+
+            } else {
+                nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
+            }
       }
+      
     });
 
     $('#initialregisterbtn').on('click', ()=> {$('.rideregistrationforms').modal('show')});
@@ -108,12 +115,10 @@ $(document).ready(function(e){
             url: url,
             data: inputforms,
             success: function(data){
-
-                // $(loader).modal('hide');
-                // console.log('after modal hide');
                 if (optionalmodal != null) {
                     $(optionalmodal).modal('show');
                 }
+                $(inputforms).trigger('reset');
                 nowuiDashboards.showNotification('top', 'right', 'success',  data);
 
             },
@@ -293,10 +298,12 @@ $(document).ready(function(e){
         'ajax': '/getTransactionsforcompany',
         'deferRender': true
     });
+ 
 
       setInterval(function(){
         riderinfo.ajax.reload(null, false);
         ridesinfo.ajax.reload(null, false);
+        transactioninfo.ajax.reload(null, false);
       },3000);
 
 
