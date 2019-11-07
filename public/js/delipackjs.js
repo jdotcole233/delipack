@@ -707,10 +707,30 @@ function updateAssignmentBike(){
         }
     });
 
+    $('#schedule_action_type').change((e)=>{
+        let scheduleOption = $('#schedule_action_type').children("option:selected").val();
+        console.log(scheduleOption);
+        if (scheduleOption == "Scheduled Delivery") {
+            $('.scheduleOption').show();
+            $('#schedule_date').attr("required", true);
+            $('#schedule_time').attr("required", true);
+        } else if (scheduleOption == "Completed Delivery") {
+            $('.scheduleOption').hide();
+            $('#schedule_date').removeAttr("required");
+            $('#schedule_time').removeAttr("required");
+        } else {
+            $('.scheduleOption').hide();
+            $('#schedule_date').removeAttr("required");
+            $('#schedule_time').removeAttr("required");
+        }
+    });
+
 
     $(document).keydown((key) => {
         console.log(key.which);
         switch(parseInt(key.which, 10)){
+            case 18:
+                $('#searchDataClient').modal('show');
 
         }
     });

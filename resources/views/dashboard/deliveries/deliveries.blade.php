@@ -86,8 +86,8 @@
 
 
 
-      <div class="modal-body">
-          <div class="content">
+<div class="modal-body">
+<div class="content">
 <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -298,22 +298,22 @@
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
-                  <label for="brand">Pick up From</label>
+                  <label for="brand">Customer Name</label>
+                  <input type="text" name="customer_name" value="" class="form-control" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="brand">Customer Phone Number</label>
+                  <input type="text" name="phone_number" value="" class="form-control" id="phone_num" required>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="form-group col-md-6">
+                  <label for="brand">Pick Up From</label>
                   <input type="text" name="source" value="" class="form-control" required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Deliver To</label>
                   <input type="text" name="destination" value="" class="form-control" required>
-                </div>
-              </div>
-              <div class="row mb-2">
-                <div class="form-group col-md-6">
-                  <label for="brand">Customer Name</label>
-                  <input type="text" name="customer_name" value="" class="form-control" required>
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="brand">Customer Contact</label>
-                  <input type="text" name="phone_number" value="" class="form-control" id="phone_num" required>
                 </div>
               </div>
               <div class="row mb-2">
@@ -337,6 +337,26 @@
                     <option value="pay at pick up">Pay at pick up</option>
                       <option value="pay on delivery">Pay on delivery</option>
                   </select>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="form-group col-md-12">
+                  <label for="schediule Action">Schedule Action</label>
+                  <select class="form-control" id="schedule_action_type" name="schedule_action_type" required>
+                    <option value="">Choose one</option>
+                    <option value="Scheduled Delivery">Schedule Delivery</option>
+                    <option value="Completed Delivery">Completed Delivery</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-2 scheduleOption" style="display:none;">
+                <div class="form-group col-md-6">
+                   <label for="brand">Scheduled Date</label>
+                  <input type="Date" name="schedule_date" id="schedule_date" value="" class="form-control" >
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="brand">Schedule Time</label>
+                  <input type="time" name="schedule_time" id="schedule_time" value="" class="form-control" >
                 </div>
               </div>
           </form>

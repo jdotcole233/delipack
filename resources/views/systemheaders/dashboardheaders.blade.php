@@ -192,6 +192,25 @@
       @yield('content')
       <!-- Content of the pages are extended in here -->
 
+<div class="modal fade " id="searchDataClient" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title text-center"> Quick Search </div>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                  <div class="col-md-12">
+                         <div class="form-group">
+                            <input type="text" id="searchDataInput" name="searchData" class="form-control" placeholder="Enter Reference Number or Phone Number">
+                        </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
 
       <div class="modal fade" id="modalloader" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered"  role="document">
@@ -284,6 +303,10 @@
 </div>
 
 <!-- / -->
+
+
+
+
 
 
   <!--   Core JS Files   -->
