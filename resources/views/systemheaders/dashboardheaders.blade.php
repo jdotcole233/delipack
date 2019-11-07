@@ -29,12 +29,19 @@
   <link rel="stylesheet" href="{{asset('assets/demo/demo.css')}}">
 
 
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
+
+
 
 </head>
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="blue">
+    <div class="sidebar" data-color="orange">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
@@ -68,6 +75,12 @@
             <a href="{{url('maindashboard')}}">
               <i class="now-ui-icons design_app"></i>
               <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="{{ (request()->is('customers')) ? 'active' : '' }}">
+            <a href="{{url('/customers')}}">
+              <i class="now-ui-icons users_circle-08"></i>
+              <p>Clients</p>
             </a>
           </li>
           <li class="{{ (request()->is('deliveries')) ? 'active' : '' }}">
@@ -282,7 +295,7 @@
 <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="../assets/js/core/popper.min.js"></script>
+  <!-- <script src="../assets/js/core/popper.min.js"></script> -->
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!--  Google Maps Plugin    -->
@@ -315,6 +328,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/jquery.barrating.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/themes/fontawesome-stars.css"/>
 
+<!-- include summernote css/js -->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
 
 
 
@@ -338,6 +354,7 @@
     });
 } );
   </script>
+
 <!-- https://code.jquery.com/jquery-3.3.1.js -->
 </body>
 </html>

@@ -314,7 +314,7 @@ class CompanyController extends Controller
       $company_rider_bikes =  Company_rider::join('rider_assigned_motor_bikes','company_riders.company_rider_id','rider_assigned_motor_bikes.company_riderscompany_rider_id')
       ->join('motor_bikes','rider_assigned_motor_bikes.motor_bikesbike_id','motor_bikes.bike_id')
       ->select('first_name', 'last_name', 'brand_name','registered_number', 'company_rider_id', 'bike_id','rider_assigned_motor_bikes.companiescompanies_id')
-      ->where('rider_assigned_motor_bikes.companiescompanies_id', 1)
+      ->where('rider_assigned_motor_bikes.companiescompanies_id', Auth::user()->companiescompanies_id)
       ->where('company_riders.delete_status','NOT DELETED')
       ->get();
       return view('dashboard.deliveries.deliveries', compact('company_rider_bikes'));

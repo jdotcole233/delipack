@@ -4,6 +4,38 @@
 </div>
 
 
+<div class="container-fluid content" >
+    <div class="row" >
+        <div class="col-md-12">
+        <div class="card" style="height:600px;">
+              <div class="card-header">
+                <h4 class="card-title"> Scheduled Deliveries </h4>
+                <button type="button" class="btn btn-info btn-outline pull-right" name="button" data-toggle="modal" data-target="#manual_record_modal">Manual Record</button>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table" id="transactionstablee">
+                    <thead class=" text-primary">
+                      <th> Ref </th>
+                      <th> Customer</th>
+                      <th> Phone </th>
+                      <th> Pick-up </th>
+                      <th> Delivery </th>
+                      <th> Date </th>
+                      <th> Rider name </th>
+                      <th> Action </th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="content">
     <div class="row">
@@ -11,7 +43,7 @@
         <div class="card">
               <div class="card-header">
                 <h4 class="card-title"> All Deliveries </h4>
-                <button type="button" class="btn btn-info btn-outline pull-right" name="button" data-toggle="modal" data-target="#manual_record_modal">Manual Record</button>
+                {{-- <button type="button" class="btn btn-info btn-outline pull-right" name="button" data-toggle="modal" data-target="#manual_record_modal">Manual Record</button> --}}
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -36,6 +68,12 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
 
 
 

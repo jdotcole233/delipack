@@ -46,6 +46,10 @@ Route::get('/reports', function(){
     return view('dashboard.reports.datareports');
 });
 
+Route::get('/customers', function(){
+    return view('dashboard.customers.company_customer');
+});
+
 
 Route::get('/dashboardprofile', 'CompanyController@profilePage');
 

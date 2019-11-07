@@ -55,7 +55,7 @@ $(document).ready(function(e){
                 nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
             }
       }
-      
+
     });
 
 
@@ -310,7 +310,7 @@ $(document).ready(function(e){
         'ajax': '/getTransactionsforcompany',
         'deferRender': true
     });
- 
+
 
       setInterval(function(){
         riderinfo.ajax.reload(null, false);
@@ -661,7 +661,7 @@ function updateAssignmentBike(){
                             },2000);
                         },
                         error:function(error){
-                            nowuiDashboards.showNotification('top', 'right', 'danger', "Whoops couldn't chnage your password");
+                            nowuiDashboards.showNotification('top', 'right', 'danger', "Whoops couldn't change your password");
                         }
                     });
                 }
@@ -677,4 +677,47 @@ function updateAssignmentBike(){
         }
     });
 
+    $('.editClientDetailsBtn').on('click', (e) =>{
+        $('.toggleInput').each((value, index) => {
+            $(index).removeAttr("readonly");
+        });
+        $('.emailsmssection').hide();
+        // $('#client_record_form_button').text("Send Message");
+    });
+
+
+    $('#clientActionChange').on('change', () => {
+        let selection = $("#clientActionChange").children("option:selected").val();
+        if (selection == "Send Email") {
+            $('.emailsmssection').show();
+            $('#clientToggleMore').hide();
+            $('#client_record_form_button').text("Send Message");
+            $('.editClientDetailsBtn').hide();
+
+        } else if (selection == "Send SMS"){
+            $('.emailsmssection').hide();
+             swal.fire({
+                 title: "SMS Unavailable",
+                 text: "SMS mode not available to you at this moment. Try Again later",
+             });
+            $('#clientToggleMore').show();
+            $('.editClientDetailsBtn').show();
+            $('#client_record_form_button').text("Submit");
+
+        }
+    });
+
+
+    $(document).keydown((key) => {
+        console.log(key.which);
+        switch(parseInt(key.which, 10)){
+
+        }
+    });
+
 });
+
+
+
+
+
