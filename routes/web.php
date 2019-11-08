@@ -84,3 +84,5 @@ Route::get('/getcompanybikesforassignment','riderController@getCompanyRidersToAs
 Route::post('/updateProfile','CompanyController@updateProfile');
 Route::post('/updatepassword','CompanyController@updatepassword');
 Route::get('/getcompanyridersids', 'CompanyController@companyridersIdentifications');
+
+Route::post('/client_record', 'CompanyController@inputCompanyClient');

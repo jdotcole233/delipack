@@ -37,7 +37,7 @@ $(document).ready(function(e){
     $('#manual_record_form_button').on('click',(event)=>{
       console.log("Hello");
       const isValidated = validateForms('manual_record_form', event);
-      console.log(isValidated);
+    //   console.log(isValidated);
         if ($('#phone_num').val().length > 9 || $('#phone_num').val().length < 9) {
             nowuiDashboards.showNotification('top', 'right', 'primary', 'Contact number must be 9 characters without the preceeding 0');
             return;
@@ -161,7 +161,7 @@ $(document).ready(function(e){
         if (location.pathname.substring(1, 12) == "aboutriders"){
             riderfound_id = location.pathname.substring(13);
         }
-        console.log(riderfound_id);
+        //console.log(riderfound_id);
 
     })();
 
@@ -421,8 +421,8 @@ $('.riderprofilebtn').on('click', function(e){
 
 
     //send editted information
-    $('.editridebtn').on('click', function(e){
-        let isvalidated = validateForms('editrideform',e);
+    $('.editridebtn').on('click', function(event){
+        let isvalidated = validateForms('editrideform',event);
         if (isvalidated == true){
             postInformation($('.editrideform').serialize(), '', '', '', '/editrideinformation')
             $('.editrideform').trigger('reset');
@@ -447,7 +447,7 @@ $('.riderprofilebtn').on('click', function(e){
     function validateForms(classname, event){
         let forms = document.getElementsByClassName(classname);
         let isvalid = false;
-        let validation = Array.prototype.filter.call(forms, function (form) {
+        Array.prototype.filter.call(forms, function (form) {
             if (form.checkValidity() == false) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -561,7 +561,7 @@ function updateAssignmentBike(){
             method:"GET",
             url:"/getcompanyridersids",
             success: function(data){
-                console.log(data);
+                //console.log(data);
                 const riderlocationavailable = firebase.database().ref().child('RiderLocationAvailable');
                 const riderworking = firebase.database().ref().child("RiderFoundForCustomer");
                 riderlocationavailable.on('child_added', function (snapshot) {
@@ -726,12 +726,24 @@ function updateAssignmentBike(){
     });
 
 
+    $('#client_record_form_button').on('click', (e) => {
+        const isClientRecorded =  validateForms('client_record_form', e);
+        console.log(isClientRecorded);
+        if (isClientRecorded == true){
+            postInformation($('.client_record_form').serialize(), '', '', '', '/client_record');
+            $('.client_record_form').trigger("reset");
+        } else {
+            nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
+            console.log("Error");
+        }
+    });
+
+
     $(document).keydown((key) => {
-        console.log(key.which);
+        // console.log(key.which);
         switch(parseInt(key.which, 10)){
             case 18:
                 $('#searchDataClient').modal('show');
-
         }
     });
 

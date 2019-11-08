@@ -17,6 +17,7 @@ use Auth;
 use Carbon\Carbon;
 use Session;
 use App\Companies_rider;
+use App\Company_client;
 
 class CompanyController extends Controller
 {
@@ -369,8 +370,24 @@ class CompanyController extends Controller
           "customerscustomer_id" => $customer->customer_id,
           "company_id" => Auth::user()->companiescompanies_id
       ]);
-      
+
       return response()->json(["transaction " => $trans, "customer" => $customer]);
+    }
+
+
+
+    public function inputCompanyClient(Request $request){
+          $isCreated =  Company_client::create([
+                "client_first_name" => $request->first_name,
+                "client_last_name" => $request->last_name,
+                "client_primary_number" => $request->contact_number,
+                "client_alt_number" => $request->number_two,
+                "location" => $request->location,
+                "email_address" => $request->email,
+                "company_name" => $request->company_name
+            ]);
+
+            return response()->json($isCreated);
     }
 
 }

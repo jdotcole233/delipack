@@ -53,51 +53,50 @@
           <h5 class="modal-title">Add Client</h5>
       </div>
       <div class="modal-body">
-          <form class="form container manual_record_form" action="index.html" method="post">
-
+          <form class="form container client_record_form">
+            <meta name="csrf-token" content="{{csrf_token()}}">
               <div class="row mb-2">
                 <div class="form-group col-md-6">
-                  <meta name="csrf-token" content="{{csrf_token()}}">
-                  <label for="brand">First Name</label>
-                  <input type="text" name="client_first_name" value="" id="client_first_name" class="form-control" placeholder="John" required>
+                  <label for="First Name">First Name</label>
+                  <input type="text" name="first_name"  id="client_first_name" class="form-control" placeholder="John" required>
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="brand">Last Name</label>
-                  <input type="text" name="client_last_name" value="" id="client_last_name" class="form-control"  placeholder="Asare" required>
+                  <label for="Last Name">Last Name</label>
+                  <input type="text" name="last_name" id="client_last_name" class="form-control"  placeholder="Asare" required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
-                  <label for="brand">Primary Phone No.</label>
-                  <input type="text" name="client_contact_number" value="" class="form-control" placeholder="0203 444 4444" required>
+                  <label for="Primary Phone">Primary Phone No.</label>
+                  <input type="text" name="contact_number" class="form-control" placeholder="0203 444 4444" required>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="brand">Alt Phone No.</label>
-                  <input type="text" name="client_contact_number_two" value="" class="form-control" placeholder="0203 444 4444"  required>
+                  <label for="Alt Phone">Alt Phone No.</label>
+                  <input type="text" name="number_two" value="N/A" class="form-control" placeholder="0203 444 4444" >
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
-                  <label for="brand">Email (Optional)</label>
-                  <input type="text" name="email" value="" class="form-control" placeholder="kwame@me.com" required>
+                  <label for="Email">Email (Optional)</label>
+                  <input type="text" name="email"  class="form-control" value="N/A" placeholder="kwame@me.com" >
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="brand">Location</label>
-                  <input type="text" name="customer_location" value="" class="form-control" placeholder="Achimota" required>
+                  <label for="Location">Location</label>
+                  <input type="text" name="customer_location" class="form-control" placeholder="Achimota" required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-12">
-                  <label for="brand">Company Name (Optional)</label>
-                  <input type="text" name="company_name" value="" class="form-control" placeholder="Asare company Ltd" required>
+                  <label for="Company Name">Company Name (Optional)</label>
+                  <input type="text" name="company_name" class="form-control" value="N/A" placeholder="Asare company Ltd">
                 </div>
             </div>
           </form>
       </div>
       <div class="modal-footer">
-          <button type="button" id="manual_record_form_button" name="button" class="btn btn-success pull-right">Submit</button>
-          <button type="button" name="button" data-dismiss="modal" id="manual_cancel" class="btn btn-secondary pull-right">Cancel</button>
+          <button type="button" id="client_record_form_button" name="button" class="btn btn-success pull-right">Submit</button>
+          <button type="button" name="button" data-dismiss="modal" id="client_manual_cancel" class="btn btn-secondary pull-right">Cancel</button>
       </div>
     </div>
   </div>
@@ -114,50 +113,50 @@
           <button class="btn btn-info pull-right editClientDetailsBtn">Edit Details</button>
       </div>
       <div class="modal-body">
-          <form class="form container client_record_form" id="clientToggleMore" action="index.html" method="post">
+          <form class="form container client_record_form_more" id="clientToggleMore" action="index.html" method="post">
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <meta name="csrf-token" content="{{csrf_token()}}">
                   <label for="brand">First Name</label>
-                  <input type="text" name="client_first_name" value="" id="client_first_name" class="form-control toggleInput" placeholder="John" readonly required>
+                  <input type="text" name="client_first_name_more" value="" id="client_first_name_more" class="form-control toggleInput" placeholder="John" readonly required>
                 </div>
 
                 <div class="form-group col-md-6">
                   <label for="brand">Last Name</label>
-                  <input type="text" name="client_last_name" value="" id="client_last_name" class="form-control toggleInput"  placeholder="Asare" readonly required>
+                  <input type="text" name="client_last_name_more" value="" id="client_last_name_more" class="form-control toggleInput"  placeholder="Asare" readonly required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Primary Phone No.</label>
-                  <input type="text" name="client_contact_number" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly required>
+                  <input type="text" name="client_contact_number_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Alt Phone No.</label>
-                  <input type="text" name="client_contact_number_two" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly  required>
+                  <input type="text" name="client_contact_number_two_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly  required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Email (Optional)</label>
-                  <input type="text" name="email" value="" class="form-control toggleInput" placeholder="kwame@me.com" readonly required>
+                  <input type="text" name="email_more" value="" class="form-control toggleInput" placeholder="kwame@me.com" readonly required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Location</label>
-                  <input type="text" name="customer_location" value="" class="form-control toggleInput" placeholder="Achimota" readonly required>
+                  <input type="text" name="customer_location_more" value="" class="form-control toggleInput" placeholder="Achimota" readonly required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-12">
                   <label for="brand">Company Name (Optional)</label>
-                  <input type="text" name="company_name" value="" class="form-control toggleInput" placeholder="Asare company Ltd" readonly required>
+                  <input type="text" name="company_name_more" value="" class="form-control toggleInput" placeholder="Asare company Ltd" readonly required>
                 </div>
               </div>
           </form>
           <div class="row mb-2" >
                 <div class="form-group col-md-12">
                   <label for="">Select Action</label>
-                  <select class="form-control" id="clientActionChange" name="clientActionChange">
+                  <select class="form-control" id="clientActionChange" name="clientActionChange_more">
                     <option value="">No Action</option>
                     <option value="Send Email">Send Email</option>
                     <option value="Send SMS">Send SMS</option>
@@ -190,8 +189,8 @@
           </div>
       </div>
       <div class="modal-footer">
-          <button type="button" id="client_record_form_button" name="button" class="btn btn-success pull-right">Submit</button>
-          <button type="button" name="button" data-dismiss="modal" id="manual_cancel" class="btn btn-secondary pull-right">Cancel</button>
+          <button type="button" id="client_record_form_button_more" name="button" class="btn btn-success pull-right">Submit</button>
+          <button type="button" name="button" data-dismiss="modal" id="manual_cancel_more" class="btn btn-secondary pull-right">Cancel</button>
       </div>
     </div>
   </div>

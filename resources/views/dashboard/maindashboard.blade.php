@@ -104,11 +104,11 @@
               <div class="card-body">
                 <div id="map" style="width:100%; height:400px;">
                    <script>
-                  
- 
+
+
 
      function initMap(){
-  
+
                         var uluru = {lat: 5.64175, lng: -0.15190};
                         // The map, centered at Uluru
                         var map = new google.maps.Map(
@@ -122,8 +122,8 @@
                         //   });
                         // });
 
-                        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+                       // var markerCluster = new MarkerClusterer(map, markers,
+           // {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
                    }
 
@@ -173,8 +173,8 @@
                         <td> <button data-riderid="{{$riderassigneddata->company_rider_id}}" class="btn btn-warning viewtodaysalesbtn"> View sales </button> </td>
                       </tr>
                       @endforeach
-                       
-                      
+
+
                     </tbody>
                   </table>
                 </div>

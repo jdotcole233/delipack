@@ -375,7 +375,7 @@ demo = {
     gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
     gradientFill.addColorStop(1, hexToRGB('#2CA8FF', 0.6));
 
-    console.log(Object.values($('#ratingchart').data('ratings')));
+    //console.log(Object.values($('#ratingchart').data('ratings')));
 
     function sortDataItems(dataItems){
        let dataSet = [];

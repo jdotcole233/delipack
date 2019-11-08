@@ -299,21 +299,21 @@
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Customer Name</label>
-                  <input type="text" name="customer_name" value="" class="form-control" required>
+                  <input type="text" name="customer_name" value="" class="form-control" placeholder="Joana Nkebi" required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Customer Phone Number</label>
-                  <input type="text" name="phone_number" value="" class="form-control" id="phone_num" required>
+                  <input type="text" name="phone_number" value="" class="form-control" id="phone_num" placeholder="0203990987" required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Pick Up From</label>
-                  <input type="text" name="source" value="" class="form-control" required>
+                  <input type="text" name="source" value="" class="form-control" placeholder="Madina" required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Deliver To</label>
-                  <input type="text" name="destination" value="" class="form-control" required>
+                  <input type="text" name="destination" value="" class="form-control" placeholder="Lapaz"  required>
                 </div>
               </div>
               <div class="row mb-2">
@@ -327,7 +327,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Delivery Charge</label>
-                  <input type="text" name="delivery_charge" value="" class="form-control" required>
+                  <input type="text" name="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
                 </div>
               </div>
               <div class="row mb-2" id="payment_mode">
