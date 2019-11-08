@@ -48,7 +48,9 @@
       <div class="logo">
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center">
+                @auth
                 <img  src="http://superuser.delipackport.com/company_logos/{{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_logo_path')}}" alt="">
+                @endauth
             </div>
         </div>
         <div class="row d-flex justify-content-center">

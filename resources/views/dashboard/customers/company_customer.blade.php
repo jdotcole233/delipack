@@ -14,26 +14,18 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table" >
+                  <table class="table" id="companyclientstable">
                     <thead class=" text-primary">
                       <th> Client Name</th>
                       <th> Phone Number </th>
                       <th> Location </th>
                       <th> Email Address </th>
                       <th> Company Name  </th>
+                      <th> Created On </th>
                       <th> Action </th>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Kwame Ansah</td>
-                            <td>0235550099/0240555999</td>
-                            <td>Achimota</td>
-                            <td>N/A</td>
-                            <td>N/A</td>
-                            <td>
-                                <button class="btn btn-info btn-outline"  data-toggle="modal" data-target="#more_client_modal"> More </button>
-                            </td>
-                        </tr>
+                    <tbody id="clientTable">
+
                     </tbody>
                   </table>
                 </div>
@@ -109,7 +101,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-          <h5 class="modal-title">Client {Name}</h5>
+          <h5 class="modal-title" id="clientDetailsName">Client {Name}</h5>
           <button class="btn btn-info pull-right editClientDetailsBtn">Edit Details</button>
       </div>
       <div class="modal-body">
@@ -129,27 +121,27 @@
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Primary Phone No.</label>
-                  <input type="text" name="client_contact_number_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly required>
+                  <input type="text" name="client_contact_number_more" id="client_contact_number_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Alt Phone No.</label>
-                  <input type="text" name="client_contact_number_two_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly  required>
+                  <input type="text" name="client_contact_number_two_more" id="client_contact_number_two_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly  required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Email (Optional)</label>
-                  <input type="text" name="email_more" value="" class="form-control toggleInput" placeholder="kwame@me.com" readonly required>
+                  <input type="text" name="email_more" value="" id="email_more" class="form-control toggleInput" placeholder="kwame@me.com" readonly required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Location</label>
-                  <input type="text" name="customer_location_more" value="" class="form-control toggleInput" placeholder="Achimota" readonly required>
+                  <input type="text" name="customer_location_more" id="customer_location_more" value="" class="form-control toggleInput" placeholder="Achimota" readonly required>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-12">
                   <label for="brand">Company Name (Optional)</label>
-                  <input type="text" name="company_name_more" value="" class="form-control toggleInput" placeholder="Asare company Ltd" readonly required>
+                  <input type="text" name="company_name_more" id="company_name_more" value="" class="form-control toggleInput" placeholder="Asare company Ltd" readonly required>
                 </div>
               </div>
           </form>

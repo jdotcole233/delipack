@@ -125,7 +125,7 @@ $(document).ready(function(e){
         $.ajax({
             method: 'POST',
             url: url,
-            data: inputforms,
+            data: $(inputforms).serialize(),
             success: function(data){
                 if (optionalmodal != null) {
                     $(optionalmodal).modal('show');
@@ -146,6 +146,11 @@ $(document).ready(function(e){
     let riderinfo = $('#ridersoutputtable').DataTable({
         'ajax' : '/getridersinformation',
          'deferRender': true
+    });
+
+    $('#companyclientstable').DataTable({
+        'ajax': '/fetchCompanyClients',
+        'deferRender': true
     });
 
     let riderfound_id = "";
@@ -730,12 +735,31 @@ function updateAssignmentBike(){
         const isClientRecorded =  validateForms('client_record_form', e);
         console.log(isClientRecorded);
         if (isClientRecorded == true){
-            postInformation($('.client_record_form').serialize(), '', '', '', '/client_record');
-            $('.client_record_form').trigger("reset");
+            postInformation('.client_record_form',
+            '',
+            '',
+            '',
+            '/client_record');
+            $('#client_record_modal').modal('hide');
         } else {
             nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
             console.log("Error");
         }
+    });
+
+    $('#clientTable').on('click','.clientMoreBtn',(e) =>{
+        console.log($('.clientMoreBtn').data('clients'));
+        let clientDetails = $('.clientMoreBtn').data('clients');
+        $('#clientDetailsName').text("Edit " + clientDetails.client_first_name + " " + clientDetails.client_last_name + " Details");
+        $('#client_first_name_more').val(clientDetails.client_first_name);
+        $('#client_lasst_name_more').val(clientDetails.client_last_name);
+        $('#client_contact_number_more').val(clientDetails.client_primary_number);
+        $('#client_contact_number_two_more').val(clientDetails.client_alt_number);
+        $('#email_more').val(clientDetails.email_address);
+        $('#customer_location_more').val(clientDetails.location);
+        $('#company_name_more').val(clientDetails.company_name);
+        $('#more_client_modal').modal('show');
+
     });
 
 

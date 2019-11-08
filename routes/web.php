@@ -86,3 +86,4 @@ Route::post('/updatepassword','CompanyController@updatepassword');
 Route::get('/getcompanyridersids', 'CompanyController@companyridersIdentifications');
 
 Route::post('/client_record', 'CompanyController@inputCompanyClient');
+Route::get('/fetchCompanyClients', 'CompanyClientController@fetchCompanyClient');
