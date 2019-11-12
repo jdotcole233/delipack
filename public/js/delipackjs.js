@@ -11,7 +11,7 @@ $(document).ready(function(e){
       //get the value that is being switched to
       let selected_mode = $(this).children("option:selected").val();
 
-      if(selected_mode == "cash"){//if it is by mode of cash
+      if(selected_mode == "Cash"){//if it is by mode of cash
         $('#payment_mode').show();//show the input for mode of payment
       }else{
         $('#payment_mode').hide(); //hide it
@@ -43,12 +43,12 @@ $(document).ready(function(e){
             return;
       } else {
             if (isValidated == true) {
-                $('#manual_record_modal').modal('hide');
-                let isrequestback = postInformation($('.manual_record_form').serialize(),
+                let isrequestback = postInformation('.manual_record_form',
                     '',
                     '',
                     '',
                     '/upload_manual_record');
+                $('#manual_record_modal').hide();
                   $('.manual_record_form').trigger("reset");
 
             } else {
@@ -316,11 +316,17 @@ $(document).ready(function(e){
         'deferRender': true
     });
 
+    const scheduledTransactions = $('#scheduletransactionstable').DataTable({
+        'ajax': '/getScheduledDeliveries',
+        'defereRender':true
+    });
+
 
       setInterval(function(){
         riderinfo.ajax.reload(null, false);
         ridesinfo.ajax.reload(null, false);
         transactioninfo.ajax.reload(null, false);
+        // scheduledTransactions.ajax.reload(null, false);
       },3000);
 
 
@@ -693,12 +699,20 @@ function updateAssignmentBike(){
 
     $('#clientActionChange').on('change', () => {
         let selection = $("#clientActionChange").children("option:selected").val();
-        if (selection == "Send Email") {
-            $('.emailsmssection').show();
-            $('#clientToggleMore').hide();
-            $('#client_record_form_button').text("Send Message");
-            $('.editClientDetailsBtn').hide();
+        const getClientEmail = $('#clientSendEmailAddress').val();
 
+        if (selection == "Send Email") {
+            if(getClientEmail != "N/A"){
+                $('.emailsmssection').show();
+                $('#clientToggleMore').hide();
+                $('#client_record_form_button').text("Send Message");
+                $('.editClientDetailsBtn').hide();
+            } else {
+                swal.fire({
+                    title: "Email Unavailable",
+                    text: "Include a valid email for " + $('#client_first_name_more').val() +" to use this feature",
+                });
+            }
         } else if (selection == "Send SMS"){
             $('.emailsmssection').hide();
              swal.fire({
@@ -709,7 +723,18 @@ function updateAssignmentBike(){
             $('.editClientDetailsBtn').show();
             $('#client_record_form_button').text("Submit");
 
+        } else {
+            $('.emailsmssection').hide();
+            $('#clientToggleMore').show();
+            $('.editClientDetailsBtn').show();
+            $('#client_record_form_button').text("Submit");
         }
+    });
+
+
+    $('#manual_cancel_more').on('click', function(){
+        $('.client_record_form_more').trigger("reset");
+
     });
 
     $('#schedule_action_type').change((e)=>{
@@ -747,19 +772,44 @@ function updateAssignmentBike(){
         }
     });
 
-    $('#clientTable').on('click','.clientMoreBtn',(e) =>{
-        console.log($('.clientMoreBtn').data('clients'));
-        let clientDetails = $('.clientMoreBtn').data('clients');
+    $('#clientTable').on('click','.clientMoreBtn',function(){
+        $('#more_client_modal').modal('show');
+        const selectOption = $('#clientActionChange').val();
+        if (selectOption != "No Action"){
+            $('.emailsmssection').hide();
+            $('#clientToggleMore').show();
+            $('.editClientDetailsBtn').show();
+            $('#client_record_form_button').text("Submit");
+            $('#clientActionChange').val("No Action");
+            return;
+        }
+        const clientDetails = $(this).data('clients');
         $('#clientDetailsName').text("Edit " + clientDetails.client_first_name + " " + clientDetails.client_last_name + " Details");
         $('#client_first_name_more').val(clientDetails.client_first_name);
-        $('#client_lasst_name_more').val(clientDetails.client_last_name);
+        $('#client_last_name_more').val(clientDetails.client_last_name);
         $('#client_contact_number_more').val(clientDetails.client_primary_number);
         $('#client_contact_number_two_more').val(clientDetails.client_alt_number);
         $('#email_more').val(clientDetails.email_address);
         $('#customer_location_more').val(clientDetails.location);
         $('#company_name_more').val(clientDetails.company_name);
-        $('#more_client_modal').modal('show');
+        $('#clientSendEmailAddress').val(clientDetails.email_address);
 
+    });
+
+
+    $('#known_clients_input').on('input',function(){
+        const f_value = $(this).val();
+        const d_value = $('#known_clients [value="' + f_value + '"]').data('companyclients');
+        console.log($('#known_clients [value="' + f_value +'"]').data('companyclients'));
+        if(f_value == ""){
+            $('#client_identification').val("-1");
+            $('#phone_num').val("");
+        } else {
+            console.log($(this) );
+            let client_phone = Array.from(d_value.client_primary_number).slice(1, 10).join("");
+            $('#phone_num').val(client_phone);
+            $('#client_identification').val(d_value.company_clients_id);
+        }
     });
 
 

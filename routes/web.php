@@ -87,3 +87,4 @@ Route::get('/getcompanyridersids', 'CompanyController@companyridersIdentificatio
 
 Route::post('/client_record', 'CompanyController@inputCompanyClient');
 Route::get('/fetchCompanyClients', 'CompanyClientController@fetchCompanyClient');
+Route::get('/getScheduledDeliveries', 'CompanyController@getScheduledTransaction');

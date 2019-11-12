@@ -7,14 +7,14 @@
 <div class="container-fluid content" >
     <div class="row" >
         <div class="col-md-12">
-        <div class="card" style="height:600px;">
+        <div class="card" >
               <div class="card-header">
                 <h4 class="card-title"> Scheduled Deliveries </h4>
                 <button type="button" class="btn btn-info btn-outline pull-right" name="button" data-toggle="modal" data-target="#manual_record_modal">Manual Record</button>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table" id="transactionstablee">
+                  <table class="table" id="scheduletransactionstable">
                     <thead class=" text-primary">
                       <th> Ref </th>
                       <th> Customer</th>
@@ -270,15 +270,17 @@
           <h5 class="modal-title">Add Manual record</h5>
       </div>
       <div class="modal-body">
-          <form class="form container manual_record_form" action="index.html" method="post">
+          <form class="form container manual_record_form" method="post">
               <div class="row mb-2">
                 <div class="form-group col-md-12">
                   <label for="riders">Select rider</label>
                   <select multiple class="form-control" name="rider" id="select_rider_input" required>
                       {{-- <option value="">Choose one</option> --}}
-                      @foreach($company_rider_bikes as $rider)
-                      <option value="{{$rider->company_rider_id}}" data-rider="{{$rider}}">{{$rider->first_name }} {{$rider->last_name}}</option>
-                      @endforeach
+                      @if ($company_rider_bikes != null)
+                        @foreach($company_rider_bikes as $rider)
+                            <option value="{{$rider->company_rider_id}}" data-rider="{{$rider}}">{{$rider->first_name }} {{$rider->last_name}}</option>
+                        @endforeach
+                      @endif
                   </select>
                 </div>
               </div>
@@ -297,9 +299,19 @@
                 </div>
               </div>
               <div class="row mb-2">
+                  <div class="form-group col-md-6" style="display:none;">
+                  <input type="hidden" name="client_identification"  id="client_identification" class="form-control">
+                </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Customer Name</label>
-                  <input type="text" name="customer_name" value="" class="form-control" placeholder="Joana Nkebi" required>
+                 <input type="text" list="known_clients" id="known_clients_input" name="customer_name" class="form-control" placeholder="Joana Nkebi" required>
+                  <datalist id="known_clients">
+                       @if ($company_clients != null)
+                            @foreach ($company_clients as $company_client)
+                              <option value="{{$company_client->client_first_name}} {{$company_client->client_last_name}}" data-companyclients="{{$company_client}}" >
+                            @endforeach
+                       @endif
+                  </datalist>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Customer Phone Number</label>
@@ -321,13 +333,13 @@
                   <label for="brand">Payment Type</label>
                   <select class="form-control" id="payment_type" name="payment_type" required>
                     <option value="">Choose one</option>
-                    <option value="cash">Cash</option>
-                    <option value="mobilemoney">Mobile Money</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Mobile Money">Mobile Money</option>
                   </select>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Delivery Charge</label>
-                  <input type="text" name="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
+                  <input type="number" name="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
                 </div>
               </div>
               <div class="row mb-2" id="payment_mode">

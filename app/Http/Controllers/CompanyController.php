@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Session;
 use App\Companies_rider;
 use App\Company_client;
+use App\Company_schedule;
 
 class CompanyController extends Controller
 {
@@ -318,7 +319,10 @@ class CompanyController extends Controller
       ->where('rider_assigned_motor_bikes.companiescompanies_id', Auth::user()->companiescompanies_id)
       ->where('company_riders.delete_status','NOT DELETED')
       ->get();
-      return view('dashboard.deliveries.deliveries', compact('company_rider_bikes'));
+
+      $company_clients = Company_client::select('client_first_name', 'client_last_name', 'client_primary_number','company_clients_id')->where('company_id', Auth::user()->companiescompanies_id)->get();
+
+      return view('dashboard.deliveries.deliveries', compact('company_rider_bikes','company_clients'));
       // return response()->json($company_rider_bike);
     }
 
@@ -329,34 +333,41 @@ class CompanyController extends Controller
       $customer;
       $name;
 
-      //check if the customer exists
-      if(Customer::where('phone_number',"+233".$request->phone_number)->exists()){
-        //get the customer with the particular phone number
-        $customer = Customer::where('phone_number',"+233".$request->phone_number)->first();
-      }else{
-        //split the name into parts
+      if ($request->client_identification != -1){
+           $customer = Company_client::where('company_clients_id', $request->client_identification)->first();
+      } else {
         $name = explode(" ",$request->customer_name);
-        $customer = Customer::create([
-          "first_name"=>$name[0],
-          "last_name"=>count($name) > 1 ? $name[1]: "",
-          "phone_number"=>"+233".$request->phone_number
+        $customer = Company_client::create([
+        "client_first_name"=>$name[0],
+        "client_last_name"=>count($name) > 1 ? $name[1]: " ",
+        "client_primary_number"=>"+233".$request->phone_number
         ]);
       }
 
+
+
       $trans = Transaction::create([
         "company_riderscompany_rider_id"=>$rider_details->company_rider_id,
-        "customerscustomer_id"=>$customer->customer_id,
+        "company_client_id"=>$customer->company_clients_id,
         "companiescompanies_id"=>$rider_details->companiescompanies_id,
         "motor_bikesbike_id"=>$rider_details->bike_id,
         "destination"=>$request->destination,
         "source"=>$request->source,
-        "delivery_status"=>"MANUAL DELIVERY",
+        "delivery_status"=> $request->schedule_action_type,
       ]);
+
+      if ($request->schedule_action_type == "Scheduled Delivery") {
+            Company_schedule::create([
+                "transactionstransaction_id" => $trans->transaction_id,
+                "schedule_date" => $request->schedule_date,
+                "schedule_time" => $request->schedule_time
+            ]);
+      }
 
 
       Payment::create([
         "transactionstransaction_id"=>$trans->transaction_id,
-        "customerscustomer_id"=>$customer->customer_id,
+        "company_client_id"=>$customer->company_clients_id,
         "transaction_number"=>$trans_generate. $trans->transaction_id,//generate trans number
         "delivery_charge"=>$request->delivery_charge,
         "total_charge"=>$request->delivery_charge,
@@ -367,12 +378,45 @@ class CompanyController extends Controller
           "rate_value" => 1,
           "transactions_id" => $trans->transaction_id,
           "company_riderscompany_rider_id" => $rider_details->company_rider_id,
-          "customerscustomer_id" => $customer->customer_id,
+          "company_client_id" => $customer->company_clients_id,
           "company_id" => Auth::user()->companiescompanies_id
       ]);
 
       return response()->json(["transaction " => $trans, "customer" => $customer]);
     }
+
+
+    public function getScheduledTransaction(){
+        $company_clients = Company_client::join("transactions","company_clients.company_clients_id","transactions.company_client_id")
+            ->join("payments", "transactions.transaction_id","payments.transactionstransaction_id")
+            ->join("company_riders","transactions.company_riderscompany_rider_id","company_riders.company_rider_id")
+            ->join("company_schedules","transactions.transaction_id", "company_schedules.transactionstransaction_id")
+            ->where("transactions.companiescompanies_id", Auth::user()->companiescompanies_id)
+            ->get();
+            $clientset = [];
+
+            if ($company_clients != null){
+                foreach($company_clients as $company_client){
+                    $temp_client =[];
+                    array_push(
+                        $company_client->transaction_number,
+                        $company_client->client_first_name . " " . $company_client->client_last_name,
+                        $company_client->client_primary_number,
+                        $company_client->destination,
+                        $company_client->source,
+                        date("jS F Y", strtotime($company_client->schedule_date)),
+                        $company_client->first_name . " " . $company_client->last_name,
+                        "<button class='btn btn-info btn-outline clientMoreBtn'  data-clients=''> More </button>"
+                    ,$temp_client);
+                    array_push($clientset, $temp_client);
+                }
+            } else {
+                $empty_temp = ["","","","","","","",""];
+                array_push($clientset, $empty_temp);
+            }
+
+            return response()->json(["data" => $clientset]);
+        }
 
 
 

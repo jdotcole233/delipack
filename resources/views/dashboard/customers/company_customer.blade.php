@@ -149,7 +149,7 @@
                 <div class="form-group col-md-12">
                   <label for="">Select Action</label>
                   <select class="form-control" id="clientActionChange" name="clientActionChange_more">
-                    <option value="">No Action</option>
+                    <option value="No Action">No Action</option>
                     <option value="Send Email">Send Email</option>
                     <option value="Send SMS">Send SMS</option>
                   </select>
@@ -159,7 +159,7 @@
           <div class="row emailsmssection" style="display:none;">
                 <div class="form-group col-md-12">
                   <label for="emailaddress">Email To:</label>
-                  <input type="text" name="emailaddress" value="" class="form-control toggleInput" placeholder="asare@me.com"  required>
+                  <input type="text" name="emailaddress" value="" class="form-control toggleInput" id="clientSendEmailAddress"   required readonly>
                 </div>
                 <div class="form-group col-md-12">
                   <label for="subject">Subject: </label>

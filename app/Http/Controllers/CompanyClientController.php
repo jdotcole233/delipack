@@ -35,4 +35,6 @@ class CompanyClientController extends Controller
 
         return response()->json(['data' => $comp_client]);
     }
+
+
 }

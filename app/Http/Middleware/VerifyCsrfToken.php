@@ -27,7 +27,8 @@ class VerifyCsrfToken extends Middleware
         '/updateTransaction',
         '/ratedelivery',
         '/customertransactionhistory',
-        '/sendandroidcustomerreport'
+        '/sendandroidcustomerreport',
+        '/getScheduledDeliveries'
 
     ];
 }
