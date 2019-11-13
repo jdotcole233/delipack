@@ -4,7 +4,7 @@
 </div>
 
 
-<div class="container-fluid content" >
+<div class="container" >
     <div class="row" >
         <div class="col-md-12">
         <div class="card" >
@@ -37,7 +37,8 @@
 </div>
 
 
-<div class="content">
+
+<div class="container">
     <div class="row">
         <div class="col-md-12">
         <div class="card">
@@ -339,15 +340,15 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Delivery Charge</label>
-                  <input type="number" name="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
+                  <input type="text" name="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
                 </div>
               </div>
               <div class="row mb-2" id="payment_mode">
                 <div class="form-group col-md-12">
                   <label for="">Payment Mode</label>
-                  <select class="form-control" name="">
-                    <option value="pay at pick up">Pay at pick up</option>
-                      <option value="pay on delivery">Pay on delivery</option>
+                  <select class="form-control" name="payment_mode">
+                    <option value="Pay at pick up">Pay at pick up</option>
+                      <option value="Pay on delivery">Pay on delivery</option>
                   </select>
                 </div>
               </div>

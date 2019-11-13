@@ -326,7 +326,7 @@ $(document).ready(function(e){
         riderinfo.ajax.reload(null, false);
         ridesinfo.ajax.reload(null, false);
         transactioninfo.ajax.reload(null, false);
-        // scheduledTransactions.ajax.reload(null, false);
+        scheduledTransactions.ajax.reload(null, false);
       },3000);
 
 

@@ -330,30 +330,41 @@ class CompanyController extends Controller
     public function manual_record_upload(Request $request){
       $trans_generate = date('Y',strtotime(Carbon::now())) . date('i',strtotime(Carbon::now()));
       $rider_details = json_decode($request->rider_details);
-      $customer;
+      $customer = "";
       $name;
+      $company_client_identificaton = "";
 
       if ($request->client_identification != -1){
            $customer = Company_client::where('company_clients_id', $request->client_identification)->first();
+           if ($customer != null){
+                $company_client_identificaton = $customer->company_clients_id;
+           }
       } else {
         $name = explode(" ",$request->customer_name);
         $customer = Company_client::create([
         "client_first_name"=>$name[0],
         "client_last_name"=>count($name) > 1 ? $name[1]: " ",
-        "client_primary_number"=>"+233".$request->phone_number
+        "client_primary_number"=>"+233".$request->phone_number,
+        "company_id" => $rider_details->companiescompanies_id
         ]);
-      }
 
+        if ($customer != null) {
+            $customer = Company_client::where('client_primary_number', "+233".$request->phone_number)->first();
+            $company_client_identificaton = $customer->company_clients_id;
+        }
+
+      }
 
 
       $trans = Transaction::create([
         "company_riderscompany_rider_id"=>$rider_details->company_rider_id,
-        "company_client_id"=>$customer->company_clients_id,
+        "company_client_id"=> $company_client_identificaton,
         "companiescompanies_id"=>$rider_details->companiescompanies_id,
         "motor_bikesbike_id"=>$rider_details->bike_id,
         "destination"=>$request->destination,
         "source"=>$request->source,
         "delivery_status"=> $request->schedule_action_type,
+        "payment_mode" =>$request->payment_mode
       ]);
 
       if ($request->schedule_action_type == "Scheduled Delivery") {
@@ -367,7 +378,7 @@ class CompanyController extends Controller
 
       Payment::create([
         "transactionstransaction_id"=>$trans->transaction_id,
-        "company_client_id"=>$customer->company_clients_id,
+        "company_client_id"=>$company_client_identificaton,
         "transaction_number"=>$trans_generate. $trans->transaction_id,//generate trans number
         "delivery_charge"=>$request->delivery_charge,
         "total_charge"=>$request->delivery_charge,
@@ -378,7 +389,7 @@ class CompanyController extends Controller
           "rate_value" => 1,
           "transactions_id" => $trans->transaction_id,
           "company_riderscompany_rider_id" => $rider_details->company_rider_id,
-          "company_client_id" => $customer->company_clients_id,
+          "company_client_id" => $company_client_identificaton,
           "company_id" => Auth::user()->companiescompanies_id
       ]);
 
@@ -398,7 +409,7 @@ class CompanyController extends Controller
             if ($company_clients != null){
                 foreach($company_clients as $company_client){
                     $temp_client =[];
-                    array_push(
+                    array_push($temp_client,
                         $company_client->transaction_number,
                         $company_client->client_first_name . " " . $company_client->client_last_name,
                         $company_client->client_primary_number,
@@ -407,7 +418,7 @@ class CompanyController extends Controller
                         date("jS F Y", strtotime($company_client->schedule_date)),
                         $company_client->first_name . " " . $company_client->last_name,
                         "<button class='btn btn-info btn-outline clientMoreBtn'  data-clients=''> More </button>"
-                    ,$temp_client);
+                    );
                     array_push($clientset, $temp_client);
                 }
             } else {
