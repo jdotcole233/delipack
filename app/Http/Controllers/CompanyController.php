@@ -341,9 +341,20 @@ class CompanyController extends Controller
            }
       } else {
         $name = explode(" ",$request->customer_name);
+        $name_count = count($name);
+        $name_parts = [];
+        if ($name_count > 1){
+            for ($i = 0; $i < $name_count; $i++){
+                if ($name[$i] != null){
+                    array_push($name_parts, $name[$i]);
+                }
+            }
+        }
+
+
         $customer = Company_client::create([
-        "client_first_name"=>$name[0],
-        "client_last_name"=>count($name) > 1 ? $name[1]: " ",
+        "client_first_name"=> $name_parts[0],
+        "client_last_name"=> count($name_parts) > 1 ? $name_parts[1]: " ",
         "client_primary_number"=>"+233".$request->phone_number,
         "company_id" => $rider_details->companiescompanies_id
         ]);
@@ -417,7 +428,7 @@ class CompanyController extends Controller
                         $company_client->source,
                         date("jS F Y", strtotime($company_client->schedule_date)),
                         $company_client->first_name . " " . $company_client->last_name,
-                        "<button class='btn btn-info btn-outline clientMoreBtn'  data-clients=''> More </button>"
+                        "<button class='btn btn-info btn-outline updateScheduleDelivery'  data-clients=''> Update Schedule </button>"
                     );
                     array_push($clientset, $temp_client);
                 }

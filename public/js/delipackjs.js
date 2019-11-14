@@ -800,7 +800,7 @@ function updateAssignmentBike(){
     $('#known_clients_input').on('input',function(){
         const f_value = $(this).val();
         const d_value = $('#known_clients [value="' + f_value + '"]').data('companyclients');
-        console.log($('#known_clients [value="' + f_value +'"]').data('companyclients'));
+        // console.log($('#known_clients [value="' + f_value +'"]').data('companyclients'));
         if(f_value == ""){
             $('#client_identification').val("-1");
             $('#phone_num').val("");
@@ -810,6 +810,12 @@ function updateAssignmentBike(){
             $('#phone_num').val(client_phone);
             $('#client_identification').val(d_value.company_clients_id);
         }
+    });
+
+
+    $('#scheduletransactionstable').on('click','.updateScheduleDelivery', function (){
+        //  console.log($(this));
+         $('#manual_record_modal').modal('show');
     });
 
 
