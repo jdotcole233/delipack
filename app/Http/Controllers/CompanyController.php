@@ -413,6 +413,8 @@ class CompanyController extends Controller
             ->join("payments", "transactions.transaction_id","payments.transactionstransaction_id")
             ->join("company_riders","transactions.company_riderscompany_rider_id","company_riders.company_rider_id")
             ->join("company_schedules","transactions.transaction_id", "company_schedules.transactionstransaction_id")
+            ->select("transaction_number", "client_first_name", "client_last_name", "client_primary_number",
+             "destination", "source", "schedule_date", "first_name", "last_name")
             ->where("transactions.companiescompanies_id", Auth::user()->companiescompanies_id)
             ->get();
             $clientset = [];
@@ -420,6 +422,7 @@ class CompanyController extends Controller
             if ($company_clients != null){
                 foreach($company_clients as $company_client){
                     $temp_client =[];
+                    $encode_data =  json_encode($company_client);
                     array_push($temp_client,
                         $company_client->transaction_number,
                         $company_client->client_first_name . " " . $company_client->client_last_name,
@@ -428,7 +431,7 @@ class CompanyController extends Controller
                         $company_client->source,
                         date("jS F Y", strtotime($company_client->schedule_date)),
                         $company_client->first_name . " " . $company_client->last_name,
-                        "<button class='btn btn-info btn-outline updateScheduleDelivery'  data-clients=''> Update Schedule </button>"
+                        "<button class='btn btn-info btn-outline updateScheduleDelivery'  data-clients='$encode_data'> Update Schedule </button>"
                     );
                     array_push($clientset, $temp_client);
                 }

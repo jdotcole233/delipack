@@ -10,7 +10,7 @@
         <div class="card" >
               <div class="card-header">
                 <h4 class="card-title"> Scheduled Deliveries </h4>
-                <button type="button" class="btn btn-info btn-outline pull-right" name="button" data-toggle="modal" data-target="#manual_record_modal">Manual Record</button>
+                <button type="button" class="btn btn-info btn-outline pull-right" name="button" id="manual_btn">Manual Record</button>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -268,7 +268,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-          <h5 class="modal-title">Add Manual record</h5>
+          <h5 class="modal-title" id="modal_title_details">Add manual record</h5>
       </div>
       <div class="modal-body">
           <form class="form container manual_record_form" method="post">
@@ -322,11 +322,11 @@
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Pick Up From</label>
-                  <input type="text" name="source" value="" class="form-control" placeholder="Madina" required>
+                  <input type="text" name="source" value="" id="source" class="form-control" placeholder="Madina" required>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Deliver To</label>
-                  <input type="text" name="destination" value="" class="form-control" placeholder="Lapaz"  required>
+                  <input type="text" name="destination" value="" id="destination" class="form-control" placeholder="Lapaz"  required>
                 </div>
               </div>
               <div class="row mb-2">
@@ -340,7 +340,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Delivery Charge</label>
-                  <input type="text" name="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
+                  <input type="text" name="delivery_charge" id="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
                 </div>
               </div>
               <div class="row mb-2" id="payment_mode">
@@ -381,5 +381,10 @@
     </div>
   </div>
 </div>
+
+
+
+
+
 
 @endsection

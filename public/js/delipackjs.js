@@ -61,6 +61,8 @@ $(document).ready(function(e){
 
     $('#manual_cancel').on('click', function(){
           $('.manual_record_form').trigger("reset");
+        $('#modal_title_details').text('Add manuel record');
+        $('#manual_record_form_button').text('submit');
     });
 
     $('#initialregisterbtn').on('click', ()=> {$('.rideregistrationforms').modal('show')});
@@ -734,7 +736,6 @@ function updateAssignmentBike(){
 
     $('#manual_cancel_more').on('click', function(){
         $('.client_record_form_more').trigger("reset");
-
     });
 
     $('#schedule_action_type').change((e)=>{
@@ -814,9 +815,42 @@ function updateAssignmentBike(){
 
 
     $('#scheduletransactionstable').on('click','.updateScheduleDelivery', function (){
-        //  console.log($(this));
-         $('#manual_record_modal').modal('show');
+
+        $('#manual_record_modal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        const client_data = $(this).data('clients');
+        const rider_name = client_data.client_first_name + " " + client_data.client_last_name;
+        console.log(client_data);
+
+        $('#manual_record_form_button').text('Update schedule');
+        $('#modal_title_details').text('Update Schedule for ' + client_data.client_first_name + " " + client_data.client_last_name);
+        $('#select_rider_input').val(rider_name);
+        $('#brand_name14').val();
+        $('#rider_details123').val();
+        $('#reg_number').val();
+        $('#client_identification').val();
+        $('#known_clients_input').val();
+        $('#phone_num').val();
+        $('#source').val();
+        $('#destination').val();
+        $('#payment_type').val();
+        $('#delivery_charge').val();
+        $('#brand_name14').val();
+
     });
+
+
+    $('#manual_btn').on('click', function(){
+        $('#manual_record_modal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+    });
+
+
 
 
     $(document).keydown((key) => {
@@ -826,6 +860,7 @@ function updateAssignmentBike(){
                 $('#searchDataClient').modal('show');
         }
     });
+
 
 });
 
