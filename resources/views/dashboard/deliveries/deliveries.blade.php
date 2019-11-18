@@ -346,7 +346,7 @@
               <div class="row mb-2" id="payment_mode">
                 <div class="form-group col-md-12">
                   <label for="">Payment Mode</label>
-                  <select class="form-control" name="payment_mode">
+                  <select class="form-control" name="payment_mode" id="payment_mode">
                     <option value="Pay at pick up">Pay at pick up</option>
                       <option value="Pay on delivery">Pay on delivery</option>
                   </select>

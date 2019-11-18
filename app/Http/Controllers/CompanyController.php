@@ -412,9 +412,12 @@ class CompanyController extends Controller
         $company_clients = Company_client::join("transactions","company_clients.company_clients_id","transactions.company_client_id")
             ->join("payments", "transactions.transaction_id","payments.transactionstransaction_id")
             ->join("company_riders","transactions.company_riderscompany_rider_id","company_riders.company_rider_id")
+            ->join("rider_assigned_motor_bikes","company_riders.company_rider_id","rider_assigned_motor_bikes.company_riderscompany_rider_id")
+            ->join("motor_bikes","rider_assigned_motor_bikes.motor_bikesbike_id","motor_bikes.bike_id")
             ->join("company_schedules","transactions.transaction_id", "company_schedules.transactionstransaction_id")
-            ->select("transaction_number", "client_first_name", "client_last_name", "client_primary_number",
-             "destination", "source", "schedule_date", "first_name", "last_name")
+            ->select("transaction_number", "company_clients_id", "client_first_name", "client_last_name", "client_primary_number",
+             "destination", "source", "schedule_date", "first_name", "last_name", "company_rider_id","brand_name",
+             "registered_number", "bike_id", "delivery_charge", "payment_type","payment_mode","delivery_status","schedule_date","schedule_time")
             ->where("transactions.companiescompanies_id", Auth::user()->companiescompanies_id)
             ->get();
             $clientset = [];

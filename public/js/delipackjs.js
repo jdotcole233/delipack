@@ -822,23 +822,47 @@ function updateAssignmentBike(){
         });
 
         const client_data = $(this).data('clients');
-        const rider_name = client_data.client_first_name + " " + client_data.client_last_name;
+        const rider_name = client_data.first_name + " " + client_data.last_name;
+        const client_name = client_data.client_first_name + " " + client_data.client_last_name;
+        const payment_type = client_data.payment_type;
+        const schedule_action = client_data.delivery_status;
         console.log(client_data);
 
         $('#manual_record_form_button').text('Update schedule');
         $('#modal_title_details').text('Update Schedule for ' + client_data.client_first_name + " " + client_data.client_last_name);
-        $('#select_rider_input').val(rider_name);
-        $('#brand_name14').val();
+        $("#select_rider_input option[value='" + client_data.company_rider_id +"']" ).prop("selected", true);
+        $('#brand_name14').val(client_data.brand_name);
         $('#rider_details123').val();
-        $('#reg_number').val();
-        $('#client_identification').val();
-        $('#known_clients_input').val();
-        $('#phone_num').val();
-        $('#source').val();
-        $('#destination').val();
-        $('#payment_type').val();
-        $('#delivery_charge').val();
-        $('#brand_name14').val();
+        $('#reg_number').val(client_data.registered_number);
+        $('#client_identification').val("-1");
+        $('#known_clients_input').val(client_name);
+        $('#phone_num').val(client_data.client_primary_number);
+        $('#source').val(client_data.source);
+        $('#destination').val(client_data.destination);
+        $('#delivery_charge').val(client_data.delivery_charge);
+
+        $("#payment_type option[value='" + payment_type + "']").prop("selected", true);
+        $("#schedule_action_type option[value='" + schedule_action + "']").prop("selected", true);
+
+        if (payment_type == "Cash"){
+            $('#payment_mode').show();
+            $("#payment_mode option[value='" + client_data.payment_mode +"']").prop("selected", true);
+        } else {
+            $('#payment_mode').hide();
+        }
+
+        if (schedule_action == "Scheduled Delivery"){
+            // $('.scheduleOption').show();
+            console.log("Schedule");
+            $('#schedule_date').val(client_data.schedule_date);
+            $('#schedule_time').val(client_data.schedule_time);
+        }else{
+            $('.scheduleOption').hide();
+        }
+
+
+
+
 
     });
 
