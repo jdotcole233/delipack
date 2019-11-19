@@ -852,7 +852,7 @@ function updateAssignmentBike(){
         }
 
         if (schedule_action == "Scheduled Delivery"){
-            // $('.scheduleOption').show();
+            $('.scheduleOption').show();
             console.log("Schedule");
             $('#schedule_date').val(client_data.schedule_date);
             $('#schedule_time').val(client_data.schedule_time);
