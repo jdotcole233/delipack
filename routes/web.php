@@ -77,6 +77,7 @@ Route::post('/gettotalsales','CompanyController@totalSales');
 
 
 Route::post('/upload_manual_record','CompanyController@manual_record_upload');
+Route::post('/update_schedule_record', 'CompanyController@update_schedule_row');
 Route::get('/getridersalesdfortoday/{id}','CompanyController@getridersalesfortoday');
 Route::get('/deactivteRider/{id}','riderController@deactivateRider');
 Route::get('/deleteBike/{id}','rideController@deleteBike');

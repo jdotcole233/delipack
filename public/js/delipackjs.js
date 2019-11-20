@@ -16,7 +16,7 @@ $(document).ready(function(e){
       }else{
         $('#payment_mode').hide(); //hide it
       }
-    })
+    });
 
 
     $('#select_rider_input').change(function(){
@@ -32,31 +32,36 @@ $(document).ready(function(e){
             $('#rider_details123').val(JSON.stringify($(this).children("option:selected").data('rider')));
             $('#reg_number').val(selected_value_data['registered_number'])
       }
-    })
-
-    $('#manual_record_form_button').on('click',(event)=>{
-      console.log("Hello");
-      const isValidated = validateForms('manual_record_form', event);
-    //   console.log(isValidated);
-        if ($('#phone_num').val().length > 9 || $('#phone_num').val().length < 9) {
-            nowuiDashboards.showNotification('top', 'right', 'primary', 'Contact number must be 9 characters without the preceeding 0');
-            return;
-      } else {
-            if (isValidated == true) {
-                let isrequestback = postInformation('.manual_record_form',
-                    '',
-                    '',
-                    '',
-                    '/upload_manual_record');
-                $('#manual_record_modal').hide();
-                  $('.manual_record_form').trigger("reset");
-
-            } else {
-                nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
-            }
-      }
-
     });
+
+    $('#manual_record_form_button').on('click',function (event){
+        const btntext = $(this).text();
+        if (btntext == "Submit"){
+            sendManualForm('manual_record_form','/upload_manual_record');
+        } else {
+            sendUpdatedScheduleForm('manual_record_form', '/update_schedule_record');
+        }
+    });
+
+     function sendManualForm(formclassname, routingpath,){
+         const isValidated = validateForms(formclassname, event);
+         if ($('#phone_num').val().length > 9 || $('#phone_num').val().length < 9) {
+             nowuiDashboards.showNotification('top', 'right', 'primary', 'Contact number must be 9 characters without the preceeding 0');
+             return;
+         } else {
+             if (isValidated == true) {
+                 let isrequestback = postInformation('.' + formclassname,
+                     '',
+                     '',
+                     '',
+                     routingpath);
+                //  $('#manual_record_modal').hide();
+                //  $('.manual_record_form').trigger("reset");
+             } else {
+                 nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
+             }
+         }
+     }
 
 
     $('#manual_cancel').on('click', function(){
@@ -826,15 +831,25 @@ function updateAssignmentBike(){
         const client_name = client_data.client_first_name + " " + client_data.client_last_name;
         const payment_type = client_data.payment_type;
         const schedule_action = client_data.delivery_status;
+        const riderdet = JSON.stringify({
+            brand_name: client_data.brand_name,
+            registered_number: client_data.registered_number,
+            company_rider_id: client_data.company_rider_id,
+            company_id: client_data.companiescompanies_id,
+            first_name: client_data.first_name,
+            last_name: client_data.last_name,
+            transaction_id: client_data.transaction_id
+        });
         console.log(client_data);
+
 
         $('#manual_record_form_button').text('Update schedule');
         $('#modal_title_details').text('Update Schedule for ' + client_data.client_first_name + " " + client_data.client_last_name);
         $("#select_rider_input option[value='" + client_data.company_rider_id +"']" ).prop("selected", true);
         $('#brand_name14').val(client_data.brand_name);
-        $('#rider_details123').val();
+        $('#rider_details123').val(riderdet);
         $('#reg_number').val(client_data.registered_number);
-        $('#client_identification').val("-1");
+        $('#client_identification').val(client_data.company_clients_id);
         $('#known_clients_input').val(client_name);
         $('#phone_num').val(client_data.client_primary_number);
         $('#source').val(client_data.source);
@@ -859,11 +874,6 @@ function updateAssignmentBike(){
         }else{
             $('.scheduleOption').hide();
         }
-
-
-
-
-
     });
 
 

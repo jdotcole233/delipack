@@ -328,7 +328,7 @@ class CompanyController extends Controller
 
     //method to upload the manual record
     public function manual_record_upload(Request $request){
-      $trans_generate = date('Y',strtotime(Carbon::now())) . date('i',strtotime(Carbon::now()));
+      $trans_generate = $this->generateTransactionReferenceNumber();
       $rider_details = json_decode($request->rider_details);
       $customer = "";
       $name;
@@ -340,18 +340,7 @@ class CompanyController extends Controller
                 $company_client_identificaton = $customer->company_clients_id;
            }
       } else {
-        $name = explode(" ",$request->customer_name);
-        $name_count = count($name);
-        $name_parts = [];
-        if ($name_count > 1){
-            for ($i = 0; $i < $name_count; $i++){
-                if ($name[$i] != null){
-                    array_push($name_parts, $name[$i]);
-                }
-            }
-        }
-
-
+        $name_parts = $this->splitCustomerName($request->customer_name);
         $customer = Company_client::create([
         "client_first_name"=> $name_parts[0],
         "client_last_name"=> count($name_parts) > 1 ? $name_parts[1]: " ",
@@ -363,8 +352,8 @@ class CompanyController extends Controller
             $customer = Company_client::where('client_primary_number', "+233".$request->phone_number)->first();
             $company_client_identificaton = $customer->company_clients_id;
         }
-
       }
+
 
 
       $trans = Transaction::create([
@@ -408,6 +397,65 @@ class CompanyController extends Controller
     }
 
 
+    private function generateTransactionReferenceNumber(){
+        return date('Y',strtotime(Carbon::now())) . date('i',strtotime(Carbon::now()));
+    }
+
+    private function splitCustomerName($customerName){
+        $name = explode(" ",$customerName);
+        $name_count = count($name);
+        $name_parts = [];
+        if ($name_count > 1){
+            for ($i = 0; $i < $name_count; $i++){
+                if ($name[$i] != null){
+                    array_push($name_parts, $name[$i]);
+                }
+            }
+        }
+        return $name_parts;
+    }
+
+
+    public function update_schedule_row(Request $request){
+        $rider_details = json_decode($request->rider_details);
+
+      $trans = Transaction::where('transaction_id', $rider_details->transaction_id)->update([
+        "company_riderscompany_rider_id"=>$rider_details->company_rider_id,
+        "company_client_id"=> $request->client_identification,
+        "companiescompanies_id"=>$rider_details->company_id,
+        "motor_bikesbike_id"=>$rider_details->bike_id,
+        "destination"=>$request->destination,
+        "source"=>$request->source,
+        "delivery_status"=> $request->schedule_action_type,
+        "payment_mode" =>$request->payment_mode
+      ]);
+
+      if ($request->schedule_action_type == "Scheduled Delivery") {
+            Company_schedule::where('transactionstransaction_id', $rider_details->transaction_id)->update([
+                "schedule_date" => $request->schedule_date,
+                "schedule_time" => $request->schedule_time
+            ]);
+      }
+
+
+      Payment::where('transactionstransaction_id', $rider_details->transaction_id)->update([
+        "company_client_id"=>$request->client_identification,
+        "delivery_charge"=>$request->delivery_charge,
+        "total_charge"=>$request->delivery_charge,
+        "payment_type"=>$request->payment_type,
+      ]);
+
+      Rating::where('transactions_id', $rider_details->transaction_id)->update([
+          "rate_value" => 1,
+          "company_riderscompany_rider_id" => $rider_details->company_rider_id,
+          "company_client_id" => $request->client_identification,
+          "company_id" => Auth::user()->companiescompanies_id
+      ]);
+
+      return response()->json(["response" => "Updated successfully"]);
+    }
+
+
     public function getScheduledTransaction(){
         $company_clients = Company_client::join("transactions","company_clients.company_clients_id","transactions.company_client_id")
             ->join("payments", "transactions.transaction_id","payments.transactionstransaction_id")
@@ -417,7 +465,8 @@ class CompanyController extends Controller
             ->join("company_schedules","transactions.transaction_id", "company_schedules.transactionstransaction_id")
             ->select("transaction_number", "company_clients_id", "client_first_name", "client_last_name", "client_primary_number",
              "destination", "source", "schedule_date", "first_name", "last_name", "company_rider_id","brand_name",
-             "registered_number", "bike_id", "delivery_charge", "payment_type","payment_mode","delivery_status","schedule_date","schedule_time")
+             "registered_number", "bike_id", "delivery_charge", "payment_type","payment_mode","delivery_status",
+             "schedule_date","schedule_time", "transactions.companiescompanies_id","transaction_id")
             ->where("transactions.companiescompanies_id", Auth::user()->companiescompanies_id)
             ->get();
             $clientset = [];
