@@ -19,9 +19,9 @@ class CompanyClientController extends Controller
                 array_push($temp_clients,
                 $company_client->client_first_name . " " .$company_client->client_last_name,
                 $number,
-                ($company_client->location == null) ? "N/A" : $company_client->location,
-                $company_client->email_address,
-                $company_client->company_name,
+                // ($company_client->location == null) ? "N/A" : $company_client->location,
+                // $company_client->email_address,
+                // $company_client->company_name,
                 date("jS F Y", strtotime($company_client->created_at)),
                 "<button class='btn btn-info btn-outline clientMoreBtn'  data-clients='$encodeCompanyclients'> More </button>"
                 );

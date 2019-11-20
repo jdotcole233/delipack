@@ -18,9 +18,9 @@
                     <thead class=" text-primary">
                       <th> Client Name</th>
                       <th> Phone Number </th>
-                      <th> Location </th>
-                      <th> Email Address </th>
-                      <th> Company Name  </th>
+                      {{-- <th> Location </th> --}}
+                      {{-- <th> Email Address </th> --}}
+                      {{-- <th> Company Name  </th> --}}
                       <th> Created On </th>
                       <th> Action </th>
                     </thead>
@@ -145,7 +145,7 @@
                 </div>
               </div>
           </form>
-          <div class="row mb-2" >
+          <div class="row mb-2 emailsmsaction" >
                 <div class="form-group col-md-12">
                   <label for="">Select Action</label>
                   <select class="form-control" id="clientActionChange" name="clientActionChange_more">
@@ -154,7 +154,7 @@
                     <option value="Send SMS">Send SMS</option>
                   </select>
                 </div>
-              </div>
+            </div>
 
           <div class="row emailsmssection" style="display:none;">
                 <div class="form-group col-md-12">

@@ -344,12 +344,12 @@ class CompanyController extends Controller
         $customer = Company_client::create([
         "client_first_name"=> $name_parts[0],
         "client_last_name"=> count($name_parts) > 1 ? $name_parts[1]: " ",
-        "client_primary_number"=> $request->phone_number,
+        "client_primary_number"=> "0".$request->phone_number,
         "company_id" => $rider_details->companiescompanies_id
         ]);
 
         if ($customer != null) {
-            $customer = Company_client::where('client_primary_number', "+233".$request->phone_number)->first();
+            $customer = Company_client::where('client_primary_number', "0".$request->phone_number)->first();
             $company_client_identificaton = $customer->company_clients_id;
         }
       }

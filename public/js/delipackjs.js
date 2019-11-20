@@ -701,6 +701,8 @@ function updateAssignmentBike(){
             $(index).removeAttr("readonly");
         });
         $('.emailsmssection').hide();
+        $('.emailsmsaction').fadeOut(1000);
+        $('#client_record_form_button_more').show();
         // $('#client_record_form_button').text("Send Message");
     });
 
@@ -713,7 +715,7 @@ function updateAssignmentBike(){
             if(getClientEmail != "N/A"){
                 $('.emailsmssection').show();
                 $('#clientToggleMore').hide();
-                $('#client_record_form_button').text("Send Message");
+                $('#client_record_form_button_more').text("Send Message").show();
                 $('.editClientDetailsBtn').hide();
             } else {
                 swal.fire({
@@ -740,9 +742,7 @@ function updateAssignmentBike(){
     });
 
 
-    $('#manual_cancel_more').on('click', function(){
-        $('.client_record_form_more').trigger("reset");
-    });
+
 
     $('#schedule_action_type').change((e)=>{
         let scheduleOption = $('#schedule_action_type').children("option:selected").val();
@@ -780,7 +780,12 @@ function updateAssignmentBike(){
     });
 
     $('#clientTable').on('click','.clientMoreBtn',function(){
-        $('#more_client_modal').modal('show');
+        $('#client_record_form_button_more').hide();
+        $('#more_client_modal').modal({
+            backdrop:'static',
+            keyboard:false
+        });
+
         const selectOption = $('#clientActionChange').val();
         if (selectOption != "No Action"){
             $('.emailsmssection').hide();
@@ -791,7 +796,7 @@ function updateAssignmentBike(){
             return;
         }
         const clientDetails = $(this).data('clients');
-        $('#clientDetailsName').text("Edit " + clientDetails.client_first_name + " " + clientDetails.client_last_name + " Details");
+        $('#clientDetailsName').text("Edit " + clientDetails.client_first_name + " " + clientDetails.client_last_name + "'s" + " Details");
         $('#client_first_name_more').val(clientDetails.client_first_name);
         $('#client_last_name_more').val(clientDetails.client_last_name);
         $('#client_contact_number_more').val(clientDetails.client_primary_number);
@@ -800,6 +805,16 @@ function updateAssignmentBike(){
         $('#customer_location_more').val(clientDetails.location);
         $('#company_name_more').val(clientDetails.company_name);
         $('#clientSendEmailAddress').val(clientDetails.email_address);
+
+    });
+
+    $('#manual_cancel_more').on('click', function () {
+        $('.client_record_form_more').trigger("reset");
+        $('.toggleInput').each((value, index) => {
+            $(index).attr("readonly", true);
+        });
+        $('.emailsmsaction').show();
+        $('#client_record_form_button_more').show();
 
     });
 
@@ -813,9 +828,14 @@ function updateAssignmentBike(){
             $('#phone_num').val("");
         } else {
             console.log($(this) );
-            let client_phone = Array.from(d_value.client_primary_number).slice(1, 10).join("");
-            $('#phone_num').val(client_phone);
-            $('#client_identification').val(d_value.company_clients_id);
+            if (d_value == undefined){
+                $('#client_identification').val("-1");
+                $('#phone_num').val("");
+            } else{
+                let client_phone = Array.from(d_value.client_primary_number).slice(1, 10).join("");
+                $('#phone_num').val(client_phone);
+                $('#client_identification').val(d_value.company_clients_id);
+            }
         }
     });
 
@@ -841,7 +861,6 @@ function updateAssignmentBike(){
             first_name: client_data.first_name,
             last_name: client_data.last_name
         });
-        console.log(client_data);
 
 
         $('#manual_record_form_button').text('Update schedule');
@@ -851,8 +870,8 @@ function updateAssignmentBike(){
         $('#rider_details123').val(riderdet);
         $('#reg_number').val(client_data.registered_number);
         $('#client_identification').val(client_data.company_clients_id);
-        $('#known_clients_input').val(client_name);
-        $('#phone_num').val(fixNumber(client_data.client_primary_number));
+        $('#known_clients_input').val(client_name).prop("readonly", true);
+        $('#phone_num').val(fixNumber(client_data.client_primary_number)).prop("readonly", true);
         $('#source').val(client_data.source);
         $('#destination').val(client_data.destination);
         $('#delivery_charge').val(client_data.delivery_charge);
@@ -888,6 +907,8 @@ function updateAssignmentBike(){
             backdrop: 'static',
             keyboard: false
         });
+        $('#known_clients_input').prop("readonly", false);
+        $('#phone_num').prop("readonly", false);
     });
 
 
