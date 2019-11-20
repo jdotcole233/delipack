@@ -39,7 +39,7 @@ $(document).ready(function(e){
         if (btntext == "Submit"){
             sendManualForm('manual_record_form','/upload_manual_record');
         } else {
-            sendUpdatedScheduleForm('manual_record_form', '/update_schedule_record');
+            sendManualForm('manual_record_form','/update_schedule_record');
         }
     });
 
@@ -51,7 +51,7 @@ $(document).ready(function(e){
          } else {
              if (isValidated == true) {
                  let isrequestback = postInformation('.' + formclassname,
-                     '',
+                     '#manual_record_modal',
                      '',
                      '',
                      routingpath);
@@ -138,11 +138,12 @@ $(document).ready(function(e){
                     $(optionalmodal).modal('show');
                 }
                 $(inputforms).trigger('reset');
+                $(loader).modal("hide");
                 nowuiDashboards.showNotification('top', 'right', 'success',  data);
 
             },
             error: function (error){
-                $(loader).modal('hide');
+                // $(loader).modal('hide');
                 $(mainform).modal('show');
                 nowuiDashboards.showNotification('top', 'right', 'danger', error.message);
 
@@ -806,7 +807,7 @@ function updateAssignmentBike(){
     $('#known_clients_input').on('input',function(){
         const f_value = $(this).val();
         const d_value = $('#known_clients [value="' + f_value + '"]').data('companyclients');
-        // console.log($('#known_clients [value="' + f_value +'"]').data('companyclients'));
+        console.log(f_value);
         if(f_value == ""){
             $('#client_identification').val("-1");
             $('#phone_num').val("");
@@ -832,13 +833,13 @@ function updateAssignmentBike(){
         const payment_type = client_data.payment_type;
         const schedule_action = client_data.delivery_status;
         const riderdet = JSON.stringify({
+            bike_id:client_data.bike_id,
             brand_name: client_data.brand_name,
             registered_number: client_data.registered_number,
             company_rider_id: client_data.company_rider_id,
             company_id: client_data.companiescompanies_id,
             first_name: client_data.first_name,
-            last_name: client_data.last_name,
-            transaction_id: client_data.transaction_id
+            last_name: client_data.last_name
         });
         console.log(client_data);
 
@@ -851,10 +852,11 @@ function updateAssignmentBike(){
         $('#reg_number').val(client_data.registered_number);
         $('#client_identification').val(client_data.company_clients_id);
         $('#known_clients_input').val(client_name);
-        $('#phone_num').val(client_data.client_primary_number);
+        $('#phone_num').val(fixNumber(client_data.client_primary_number));
         $('#source').val(client_data.source);
         $('#destination').val(client_data.destination);
         $('#delivery_charge').val(client_data.delivery_charge);
+        $('#transaction_id').val(client_data.transaction_id);
 
         $("#payment_type option[value='" + payment_type + "']").prop("selected", true);
         $("#schedule_action_type option[value='" + schedule_action + "']").prop("selected", true);
@@ -875,6 +877,10 @@ function updateAssignmentBike(){
             $('.scheduleOption').hide();
         }
     });
+
+    function fixNumber(number){
+        return Array.from(number).slice(1,10).join("");
+    }
 
 
     $('#manual_btn').on('click', function(){

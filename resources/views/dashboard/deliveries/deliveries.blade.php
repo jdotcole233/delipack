@@ -302,6 +302,7 @@
               <div class="row mb-2">
                   <div class="form-group col-md-6" style="display:none;">
                   <input type="hidden" name="client_identification"  id="client_identification" class="form-control">
+                  <input type="hidden" name="transaction_id"  id="transaction_id" class="form-control">
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Customer Name</label>

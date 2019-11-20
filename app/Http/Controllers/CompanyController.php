@@ -344,7 +344,7 @@ class CompanyController extends Controller
         $customer = Company_client::create([
         "client_first_name"=> $name_parts[0],
         "client_last_name"=> count($name_parts) > 1 ? $name_parts[1]: " ",
-        "client_primary_number"=>"+233".$request->phone_number,
+        "client_primary_number"=> $request->phone_number,
         "company_id" => $rider_details->companiescompanies_id
         ]);
 
@@ -419,10 +419,10 @@ class CompanyController extends Controller
     public function update_schedule_row(Request $request){
         $rider_details = json_decode($request->rider_details);
 
-      $trans = Transaction::where('transaction_id', $rider_details->transaction_id)->update([
+      $trans = Transaction::where('transaction_id', $request->transaction_id)->update([
         "company_riderscompany_rider_id"=>$rider_details->company_rider_id,
         "company_client_id"=> $request->client_identification,
-        "companiescompanies_id"=>$rider_details->company_id,
+        "companiescompanies_id"=>Auth::user()->companiescompanies_id,
         "motor_bikesbike_id"=>$rider_details->bike_id,
         "destination"=>$request->destination,
         "source"=>$request->source,
@@ -431,21 +431,21 @@ class CompanyController extends Controller
       ]);
 
       if ($request->schedule_action_type == "Scheduled Delivery") {
-            Company_schedule::where('transactionstransaction_id', $rider_details->transaction_id)->update([
+            Company_schedule::where('transactionstransaction_id', $request->transaction_id)->update([
                 "schedule_date" => $request->schedule_date,
                 "schedule_time" => $request->schedule_time
             ]);
       }
 
 
-      Payment::where('transactionstransaction_id', $rider_details->transaction_id)->update([
+      Payment::where('transactionstransaction_id', $request->transaction_id)->update([
         "company_client_id"=>$request->client_identification,
         "delivery_charge"=>$request->delivery_charge,
         "total_charge"=>$request->delivery_charge,
         "payment_type"=>$request->payment_type,
       ]);
 
-      Rating::where('transactions_id', $rider_details->transaction_id)->update([
+      Rating::where('transactions_id', $request->transaction_id)->update([
           "rate_value" => 1,
           "company_riderscompany_rider_id" => $rider_details->company_rider_id,
           "company_client_id" => $request->client_identification,
@@ -479,8 +479,8 @@ class CompanyController extends Controller
                         $company_client->transaction_number,
                         $company_client->client_first_name . " " . $company_client->client_last_name,
                         $company_client->client_primary_number,
-                        $company_client->destination,
                         $company_client->source,
+                        $company_client->destination,
                         date("jS F Y", strtotime($company_client->schedule_date)),
                         $company_client->first_name . " " . $company_client->last_name,
                         "<button class='btn btn-info btn-outline updateScheduleDelivery'  data-clients='$encode_data'> Update Schedule </button>"
