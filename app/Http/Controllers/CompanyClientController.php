@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Company_client;
 use DB;
 use Auth;
+use App\Transaction;
+use App\Company_rider;
+use App\Payment;
 class CompanyClientController extends Controller
 {
     public function fetchCompanyClient(){
@@ -34,6 +37,35 @@ class CompanyClientController extends Controller
 
 
         return response()->json(['data' => $comp_client]);
+    }
+
+
+    public function updateCompanyClientData(Request $request){
+        Company_client::where("company_clients_id", $request->company_client_id)
+        ->update([
+            "client_first_name" => $request->client_first_name_more,
+            "client_last_name" => $request->client_last_name_more,
+            "client_primary_number" => "0".$request->client_contact_number_more,
+            "client_alt_number" => $request->client_contact_number_two_more,
+            "location" => $request->customer_location_more,
+            "email_address" => $request->email_more,
+            "company_name" => $request->company_name_more
+        ]);
+
+        return response()->json(["response" => "Updated successfully"]);
+    }
+
+
+    public function quickQuery(Request $request){
+        $quick = Payment::where('transaction_number', $request->searchData)
+        ->join('transactions','payments.transactionstransaction_id', 'transactions.transaction_id')
+        ->join('company_riders','transactions.company_riderscompany_rider_id','company_riders.company_rider_id')
+        ->join('company_clients','transactions.company_client_id','company_clients.company_clients_id')
+        ->select('transaction_number','first_name','last_name','source','destination','client_primary_number',
+        'client_first_name','client_last_name','payments.created_at')
+        ->first();
+
+        return ($quick == null) ? response()->json("error ". $request->searchData, 500): response()->json($quick, 200);
     }
 
 

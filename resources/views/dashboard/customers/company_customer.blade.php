@@ -65,13 +65,13 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="Alt Phone">Alt Phone No.</label>
-                  <input type="text" name="number_two" value="N/A" class="form-control" placeholder="0203 444 4444" >
+                  <input type="text" name="number_two" value="" class="form-control" placeholder="0203 444 4444" >
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="Email">Email (Optional)</label>
-                  <input type="text" name="email"  class="form-control" value="N/A" placeholder="kwame@me.com" >
+                  <input type="text" name="email"  class="form-control" value="" placeholder="kwame@me.com" >
                 </div>
                 <div class="form-group col-md-6">
                   <label for="Location">Location</label>
@@ -81,7 +81,7 @@
               <div class="row mb-2">
                 <div class="form-group col-md-12">
                   <label for="Company Name">Company Name (Optional)</label>
-                  <input type="text" name="company_name" class="form-control" value="N/A" placeholder="Asare company Ltd">
+                  <input type="text" name="company_name" class="form-control" value="" placeholder="Asare company Ltd">
                 </div>
             </div>
           </form>
@@ -125,13 +125,14 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Alt Phone No.</label>
-                  <input type="text" name="client_contact_number_two_more" id="client_contact_number_two_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly  required>
+                  <input type="text" name="client_contact_number_two_more" id="client_contact_number_two_more" value="" class="form-control toggleInput" placeholder="0203 444 4444" readonly>
                 </div>
               </div>
               <div class="row mb-2">
                 <div class="form-group col-md-6">
                   <label for="brand">Email (Optional)</label>
-                  <input type="text" name="email_more" value="" id="email_more" class="form-control toggleInput" placeholder="kwame@me.com" readonly required>
+                  <input type="text" name="email_more" value="" id="email_more" class="form-control toggleInput" placeholder="kwame@me.com" readonly>
+                  <input type="hidden" name="company_client_id" value="" id="company_client_id_more" class="form-control toggleInput">
                 </div>
                 <div class="form-group col-md-6">
                   <label for="brand">Location</label>
@@ -141,7 +142,7 @@
               <div class="row mb-2">
                 <div class="form-group col-md-12">
                   <label for="brand">Company Name (Optional)</label>
-                  <input type="text" name="company_name_more" id="company_name_more" value="" class="form-control toggleInput" placeholder="Asare company Ltd" readonly required>
+                  <input type="text" name="company_name_more" id="company_name_more" value="" class="form-control toggleInput" placeholder="Asare company Ltd" readonly>
                 </div>
               </div>
           </form>
@@ -159,11 +160,11 @@
           <div class="row emailsmssection" style="display:none;">
                 <div class="form-group col-md-12">
                   <label for="emailaddress">Email To:</label>
-                  <input type="text" name="emailaddress" value="" class="form-control toggleInput" id="clientSendEmailAddress"   required readonly>
+                  <input type="text" name="emailaddress" value="" class="form-control toggleInput" id="clientSendEmailAddress"    readonly>
                 </div>
                 <div class="form-group col-md-12">
                   <label for="subject">Subject: </label>
-                  <input type="text" name="emailsubject" value="" class="form-control toggleInput" placeholder="Items delivered"  required>
+                  <input type="text" name="emailsubject" value="" id="emailsubject" class="form-control toggleInput" placeholder="Items delivered"  >
                 </div>
                 <div class="col-md-12">
                     <div>

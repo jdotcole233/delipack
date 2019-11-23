@@ -37,21 +37,21 @@ $(document).ready(function(e){
     $('#manual_record_form_button').on('click',function (event){
         const btntext = $(this).text();
         if (btntext == "Submit"){
-            sendManualForm('manual_record_form','/upload_manual_record');
+            sendManualForm('manual_record_form', 'phone_num', 'manual_record_modal', '/upload_manual_record');
         } else {
-            sendManualForm('manual_record_form','/update_schedule_record');
+            sendManualForm('manual_record_form', 'phone_num', 'manual_record_modal','/update_schedule_record');
         }
     });
 
-     function sendManualForm(formclassname, routingpath,){
+     function sendManualForm(formclassname, phoneinputid, modalid, routingpath,){
          const isValidated = validateForms(formclassname, event);
-         if ($('#phone_num').val().length > 9 || $('#phone_num').val().length < 9) {
+         if ($('#' + phoneinputid).val().length > 9 || $('#' + phoneinputid).val().length < 9) {
              nowuiDashboards.showNotification('top', 'right', 'primary', 'Contact number must be 9 characters without the preceeding 0');
              return;
          } else {
              if (isValidated == true) {
                  let isrequestback = postInformation('.' + formclassname,
-                     '#manual_record_modal',
+                     '#' +modalid,
                      '',
                      '',
                      routingpath);
@@ -709,19 +709,22 @@ function updateAssignmentBike(){
 
     $('#clientActionChange').on('change', () => {
         let selection = $("#clientActionChange").children("option:selected").val();
-        const getClientEmail = $('#clientSendEmailAddress').val();
+        const getClientEmail = $('#email_more').val();
 
         if (selection == "Send Email") {
-            if(getClientEmail != "N/A"){
+            if(getClientEmail != ""){
                 $('.emailsmssection').show();
                 $('#clientToggleMore').hide();
                 $('#client_record_form_button_more').text("Send Message").show();
                 $('.editClientDetailsBtn').hide();
+                $('#emailsubject').removeAttr('readonly');
             } else {
                 swal.fire({
                     title: "Email Unavailable",
                     text: "Include a valid email for " + $('#client_first_name_more').val() +" to use this feature",
                 });
+                $('#client_record_form_button_more').text("Submit").hide();
+
             }
         } else if (selection == "Send SMS"){
             $('.emailsmssection').hide();
@@ -731,13 +734,13 @@ function updateAssignmentBike(){
              });
             $('#clientToggleMore').show();
             $('.editClientDetailsBtn').show();
-            $('#client_record_form_button').text("Submit");
+            $('#client_record_form_button_more').text("Submit").hide();
 
         } else {
             $('.emailsmssection').hide();
             $('#clientToggleMore').show();
             $('.editClientDetailsBtn').show();
-            $('#client_record_form_button').text("Submit");
+            $('#client_record_form_button_more').text("Submit").hide();
         }
     });
 
@@ -779,32 +782,41 @@ function updateAssignmentBike(){
         }
     });
 
-    $('#clientTable').on('click','.clientMoreBtn',function(){
+    $('#clientTable').on('click','.clientMoreBtn',function(e){
+        e.preventDefault();
         $('#client_record_form_button_more').hide();
         $('#more_client_modal').modal({
             backdrop:'static',
             keyboard:false
         });
+        const alt_num = "";
+
+        console.log($('#client_first_name_more').val());
 
         const selectOption = $('#clientActionChange').val();
+        console.log(selectOption);
         if (selectOption != "No Action"){
             $('.emailsmssection').hide();
             $('#clientToggleMore').show();
             $('.editClientDetailsBtn').show();
             $('#client_record_form_button').text("Submit");
             $('#clientActionChange').val("No Action");
-            return;
         }
+
+
         const clientDetails = $(this).data('clients');
+
         $('#clientDetailsName').text("Edit " + clientDetails.client_first_name + " " + clientDetails.client_last_name + "'s" + " Details");
         $('#client_first_name_more').val(clientDetails.client_first_name);
         $('#client_last_name_more').val(clientDetails.client_last_name);
-        $('#client_contact_number_more').val(clientDetails.client_primary_number);
+        $('#client_contact_number_more').val(fixNumber(clientDetails.client_primary_number));
         $('#client_contact_number_two_more').val(clientDetails.client_alt_number);
         $('#email_more').val(clientDetails.email_address);
         $('#customer_location_more').val(clientDetails.location);
         $('#company_name_more').val(clientDetails.company_name);
         $('#clientSendEmailAddress').val(clientDetails.email_address);
+        $('#company_client_id_more').val(clientDetails.company_clients_id);
+        console.log(clientDetails.company_clients_id);
 
     });
 
@@ -817,6 +829,19 @@ function updateAssignmentBike(){
         $('#client_record_form_button_more').show();
 
     });
+
+
+    $('#client_record_form_button_more').on('click', function(e){
+        const btn_content = $(this).text();
+        console.log(btn_content);
+        if(btn_content == "Submit"){
+            sendManualForm('client_record_form_more', 'client_contact_number_more', 'more_client_modal','/updateClientData');
+        }else if (btn_content == "Send Message") {
+            //email to be written
+        }
+    });
+
+
 
 
     $('#known_clients_input').on('input',function(){
@@ -898,7 +923,7 @@ function updateAssignmentBike(){
     });
 
     function fixNumber(number){
-        return Array.from(number).slice(1,10).join("");
+        return Array.from(number).slice(1, 10).join("");
     }
 
 
@@ -911,6 +936,52 @@ function updateAssignmentBike(){
         $('#phone_num').prop("readonly", false);
     });
 
+
+
+    $('#searchDataInput').keyup(function(){
+        console.log($(this).val());
+        const searchvalue = $(this).val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            method: 'POST',
+            url: "/quickquerydata",
+            data: {"searchData":$(this).val()},
+            success: function(data){
+                const client_name = data.client_first_name + " " + data.client_last_name;
+                const c_date = new Date(data.created_at);
+
+                $('.resultprompt').text("Found results for " + client_name).css({ color: "black" });
+                $('.resultdivision').slideDown(1000);
+
+                const rider_name = data.first_name + " " + data.last_name;
+                $('#resulttablebody').html("");
+                const tableBody = `<tr>
+                                        <td>${data.transaction_number} </td>
+                                        <td> ${client_name} </td>
+                                        <td> ${data.client_primary_number} </td>
+                                        <td> ${data.source} </td>
+                                        <td> ${data.destination} </td>
+                                        <td> ${c_date.toDateString()} </td>
+                                        <td> ${rider_name} </td>
+                                    </tr>`;
+                $('#resulttablebody').append(tableBody);
+            },
+            error: function(error){
+                console.log(searchvalue);
+                if (searchvalue == ""){
+                    $('.resultprompt').text("Waiting to search...").css({ color: "black" });
+                }else{
+                    $('.resultprompt').text("Searching...").css({color:"red"});
+                }
+                $('.resultdivision').slideUp(1000);
+            }
+        });
+    });
 
 
 

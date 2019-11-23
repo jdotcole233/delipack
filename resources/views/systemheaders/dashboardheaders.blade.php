@@ -204,9 +204,40 @@
             <div class="row">
                   <div class="col-md-12">
                          <div class="form-group">
-                            <input type="text" id="searchDataInput" name="searchData" class="form-control" placeholder="Enter Reference Number or Phone Number">
+                             <form >
+                               <meta name="csrf-token" content="{{csrf_token()}}">
+                               <input type="text" id="searchDataInput" name="searchData" class="form-control" placeholder="Enter Reference Number">
+                             </form>
                         </div>
                   </div>
+            </div>
+            <!-- results table -->
+            <div class="row ">
+                <div class="col-md-12">
+                    <div class="card" >
+                        <div class="card-header">
+                            <h4 class="card-title resultprompt"> Waiting to search... </h4>
+                        </div>
+                        <div class="card-body " >
+                            <div class="table-responsive resultdivision" style="display:none;">
+                            <table class="table" id="resultstable">
+                                <thead class=" text-primary">
+                                <th> Ref </th>
+                                <th> Customer</th>
+                                <th> Phone </th>
+                                <th> Pick-up </th>
+                                <th> Delivery </th>
+                                <th> Date </th>
+                                <th> Rider </th>
+                                </thead>
+                                <tbody id="resulttablebody">
+
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
