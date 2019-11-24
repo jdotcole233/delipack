@@ -11,18 +11,18 @@ use Hash;
 class MobileRiderController extends Controller
 {
         public function authenticateDriver(Request $request){
-        
+
         $driver_phoneNumber = $request->phone_number;
         $driver_password = $request->password;
-     
+
             if (Auth::guard('driver_login')->attempt(['phone_number' => $driver_phoneNumber, 'password' => $driver_password])){
                     $driver = Rider_login::where('phone_number', $driver_phoneNumber)->first();
-                    
+
                     if ($driver->account_status == "ACTIVE"){
                             $driver_data = company_rider::where('company_rider_id', $driver->rider_id)
                                             ->join('rider_assigned_motor_bikes','company_riders.company_rider_id','rider_assigned_motor_bikes.company_riderscompany_rider_id')
                                             ->first();
-                            $company_name = company_rider::join('companies_riders','company_riders.company_rider_id','companoes_riders.company_riderscompany_rider_id')
+                            $company_name = company_rider::join('companies_riders','company_riders.company_rider_id','companies_riders.company_riderscompany_rider_id')
                             ->join('companies','companies_riders.companiescompanies_id','companies.companies_id')
                             ->select('company_name','company_logo_path')->first();
 
@@ -56,7 +56,7 @@ class MobileRiderController extends Controller
                                 ]);
                             }
 
-                            
+
                     } else {
                             return response()->json([
                             'success_cue' => 'Deactivated',
@@ -64,7 +64,7 @@ class MobileRiderController extends Controller
                             'first_time_sign_in' => ""
                         ]);
                     }
-                    
+
             } else {
                 return response()->json([
                         'success_cue' => "Failed",
@@ -80,7 +80,7 @@ class MobileRiderController extends Controller
                 'password' => Hash::make($request->password),
                 'first_time_sign_in' => 'false'
             ]);
-            
+
             return response()->json([
                 'success_cue' => 'Successful',
                 'password_response' => $updatepass

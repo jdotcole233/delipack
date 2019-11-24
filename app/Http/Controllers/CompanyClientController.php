@@ -69,4 +69,16 @@ class CompanyClientController extends Controller
     }
 
 
+    public function riderSchedule(Request $request){
+        $riderScheduleData = Transaction::where('company_riderscompany_rider_id', $request->rider_id)
+        ->join('company_clients','transactions.company_client_id','company_clients.company_clients_id')
+        ->join('company_schedules','transactions.transaction_id','company_schedules.transactionstransaction_id')
+        ->select("company_clients_id","schedule_date","schedule_time","client_first_name","client_last_name",
+        "client_primary_number","source","destination")
+        ->get();
+
+        return ($riderScheduleData == null) ? response()->json("error",500):response()->json($riderScheduleData,200);
+    }
+
+
 }
