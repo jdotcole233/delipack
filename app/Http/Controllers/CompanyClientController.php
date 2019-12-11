@@ -22,7 +22,7 @@ class CompanyClientController extends Controller
                 array_push($temp_clients,
                 $company_client->client_first_name . " " .$company_client->client_last_name,
                 $number,
-                // ($company_client->location == null) ? "N/A" : $company_client->location,
+                // ($company_client->çlocation == null) ? "N/A" : $company_client->location,
                 // $company_client->email_address,
                 // $company_client->company_name,
                 date("jS F Y", strtotime($company_client->created_at)),
@@ -71,13 +71,21 @@ class CompanyClientController extends Controller
 
     public function riderSchedule(Request $request){
         $riderScheduleData = Transaction::where('company_riderscompany_rider_id', $request->rider_id)
+        ->where("transactions.delivery_status", "Scheduled Delivery")
+        ->orWhere("transactions.delivery_status", "Delivery started")
         ->join('company_clients','transactions.company_client_id','company_clients.company_clients_id')
         ->join('company_schedules','transactions.transaction_id','company_schedules.transactionstransaction_id')
         ->select("company_clients_id","schedule_date","schedule_time","client_first_name","client_last_name",
-        "client_primary_number","source","destination")
+        "client_primary_number","source","destination","delivery_status")
         ->get();
 
         return ($riderScheduleData == null) ? response()->json("error",500):response()->json($riderScheduleData,200);
+    }
+
+
+    public function updateCustomerSchedule(Request $request){
+         $transupdate  = Transaction::where("company_client_id", $request->company_client_id)->update(["delivery_status" => $request->delivery_status]);
+         return ($transupdate != null) ? response()->json($request, 200) : response()->json($request, 500);
     }
 
 

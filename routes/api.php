@@ -35,6 +35,7 @@ Route::post('/customertransactionhistory', 'customerController@getcustomertransa
 Route::post('/sendandroidcustomerreport','customerController@customerAndroidReport');
 Route::post('/customererrandsessioncancel','customerController@customererrandsessioncancel');
 Route::post('/riderschedules','CompanyClientController@riderSchedule');
+Route::post('/updatescheduledelivery','CompanyClientController@updateCustomerSchedule');
 
 
 Route::post('/registercutomer', 'customerController@registerCustomer');

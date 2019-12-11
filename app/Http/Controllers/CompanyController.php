@@ -468,6 +468,8 @@ class CompanyController extends Controller
              "registered_number", "bike_id", "delivery_charge", "payment_type","payment_mode","delivery_status",
              "schedule_date","schedule_time", "transactions.companiescompanies_id","transaction_id")
             ->where("transactions.companiescompanies_id", Auth::user()->companiescompanies_id)
+            ->where("transactions.delivery_status", "Delivery started")
+            ->orWhere("transactions.delivery_status", "Scheduled Delivery")
             ->get();
             $clientset = [];
 
