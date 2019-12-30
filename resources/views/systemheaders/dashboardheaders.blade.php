@@ -15,8 +15,9 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   {{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> --}}
   <!-- CSS Files -->
-  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="../assets/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
+  <link href="{{asset("assets/css/bootstrap.min.css")}}" rel="stylesheet" />
+  <link href="{{asset("assets/css/now-ui-dashboard.css?v=1.3.0")}}" rel="stylesheet" />
+  <link href="{{asset("css/toast.css")}}" rel="stylesheet" />
   {{-- <!-- <link rel="stylesheet" href="{{asset('css/delipack.css')}}"> --> --}}
 
   <!-- <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" /> -->
@@ -365,7 +366,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
    <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="{{asset("assets/js/core/bootstrap.min.js")}}"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!--  Google Maps Plugin    -->
   <!-- Chart JS -->
@@ -374,10 +375,11 @@
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{asset("assets/js/now-ui-dashboard.min.js?v=1.3.0")}}" type="text/javascript"></script>
-  <script src="{{asset("assets/js/now-ui-dashboard.js")}}" type="text/javascript"></script>
+  {{-- <script src="{{asset("assets/js/now-ui-dashboard.js")}}" type="text/javascript"></script> --}}
+
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+  {{-- <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script> --}}
   <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -403,6 +405,7 @@
 
 <script src="{{asset("assets/demo/demo.js")}}"></script>
 <script src="{{asset("js/delipackjs.js")}}"></script>
+<script src="{{asset("js/toast.min.js")}}"></script>
 
 
 <script>

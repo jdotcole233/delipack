@@ -21,10 +21,32 @@ $(document).ready(function(e){
       }
     });
 
+    function error(message){
+        $.toast({
+            text: `<div class="alert alert-danger d-flex justify-content-center align-items-center" style="height:50px">${message}</div>`,
+            showHideTransition: 'fade',
+            hideAfter: 3000,
+            position: 'top-center',
+            bgColor: 'red',
+            allowToastClose: true,
+
+        });
+    }
+
+    function success(message) {
+        $.toast({
+            text: `<div class="alert alert-success d-flex justify-content-center align-items-center" style="height:50px">${message}</div>`,
+            showHideTransition: 'fade',
+            hideAfter: 3000,
+            position: 'top-center',
+            bgColor: 'green',
+            allowToastClose: true,
+        });
+    }
 
     $('#select_rider_input').change(function(){
       let selected_value_data = $(this).children("option:selected").data('rider');
-      console.log("nothing selected " + selected_value_data);
+      //console.log("nothing selected " + selected_value_data);
       if (selected_value_data == undefined){
             console.log("nothing selected ");
             $('#brand_name14').val("")
@@ -39,7 +61,7 @@ $(document).ready(function(e){
 
     $('#manual_record_form_button').on('click',function (event){
         const btntext = $(this).text();
-        console.log(btntext);
+        //console.log(btntext);
         if (btntext == "submit"){
             sendManualForm('manual_record_form', 'phone_num', '#manual_record_modal', '/upload_manual_record');
         } else {
@@ -50,7 +72,7 @@ $(document).ready(function(e){
      function sendManualForm(formclassname, phoneinputid, modalid, routingpath){
          const isValidated = validateForms(formclassname, event);
          if ($('#' + phoneinputid).val().length > 9 || $('#' + phoneinputid).val().length < 9) {
-             nowuiDashboards.showNotification('top', 'right', 'primary', 'Contact number must be 9 characters without the preceeding 0');
+             error('Contact number must be 9 characters without the preceeding 0');
              return;
          } else {
              if (isValidated == true) {
@@ -58,7 +80,8 @@ $(document).ready(function(e){
                      modalid,
                      routingpath);
              } else {
-                 nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
+                //  nowuiDashboards.showNotification('top', 'right', 'primary', '');
+                 error("Fill out all mandatory fields");
              }
          }
      }
@@ -82,7 +105,7 @@ $(document).ready(function(e){
             '/registerrider');
 
         } else {
-            nowuiDashboards.showNotification('top', 'right', 'primary','Fill out all mandatory fields');
+            error('Fill out all mandatory fields');
         }
     });
 
@@ -91,7 +114,7 @@ $(document).ready(function(e){
         if (formvalidate == true){
             postInformation('.ridesformsval', '.bd-rideform-modal-lg','/registerride');
         } else {
-            nowuiDashboards.showNotification('top','right', 'primary', 'Fill out all mandatory fields');
+            error('Fill out all mandatory fields');
         }
     });
 
@@ -122,7 +145,16 @@ $(document).ready(function(e){
             data: $(inputforms).serialize(),
             success: function(data){
                 $(inputforms).trigger('reset');
-                nowuiDashboards.showNotification('top', 'right', 'success',  data.success);
+                // nowuiDashboards.showNotification('top', 'right', 'success',  data.success);
+                $.toast({
+                    text: `<div class="alert alert-success d-flex justify-content-center align-items-center" style="height:50px">${data.success}</div>`,
+                    showHideTransition: 'slide',
+                    hideAfter: 3000,
+                    position: 'top-center',
+                    bgColor: 'green',
+                    allowToastClose: true,
+
+                });
                 $('#loaderModal').remove();
                 $('.modal-backdrop').remove();
 
@@ -131,7 +163,16 @@ $(document).ready(function(e){
             error: function (error){
                 $('#loaderModal').remove();
                 $(optionalmodal).modal('show');
-                nowuiDashboards.showNotification('top', 'right', 'danger', error.error);
+                $.toast({
+                    text: `<div class="alert alert-danger d-flex justify-content-center align-items-center" style="height:50px">${error.error}</div>`,
+                    showHideTransition: 'slide',
+                    hideAfter: 3000,
+                    position: 'top-center',
+                    bgColor: 'red',
+                    allowToastClose: true,
+
+                });
+                // nowuiDashboards.showNotification('top', 'right', 'danger', error.error);
 
             }
         });
@@ -269,7 +310,7 @@ $(document).ready(function(e){
         $('#created_at').text(dataitemobj.paidon);
         $('#brand_name').text(dataitemobj.brand_name);
         // $('#rating').text(dataitemobj.rate_value);
-        console.log(parseInt(dataitemobj.rate_value));
+        //console.log(parseInt(dataitemobj.rate_value));
             $('#rating_tag').barrating({
               theme: 'fontawesome-stars',
               initialRating: parseInt(dataitemobj.rate_value),
@@ -392,7 +433,7 @@ $('.riderprofilebtn').on('click', function(e){
             updateAssignmentBike();
             $('.bd-assignride-modal-sm').modal('show');
             $('#assigncmp_rider').val($(this).attr('id'));
-            console.log($('#assigncmp_rider').val());
+            //console.log($('#assigncmp_rider').val());
         } else if(btntxt.length == 8 ){
             Swal.fire({
                 title: 'Are you sure?',
@@ -502,7 +543,7 @@ $('.riderprofilebtn').on('click', function(e){
                     method: 'GET',
                     url: `/deactivteRider/${id}`,
                 }).done(function (data) {
-                    nowuiDashboards.showNotification('top', 'right', 'warning', data);
+                    error(data);
                 });
             }
         })
@@ -550,7 +591,7 @@ $('.addride').click(function(){
                     method: 'GET',
                     url: `/deleteBike/${id}`,
                 }).done(function (data) {
-                    nowuiDashboards.showNotification('top', 'right', 'warning', data);
+                    error(data);
                 });
             }
         })
@@ -662,7 +703,12 @@ $('.addride').click(function(){
         if(newPass.length >= 8){
             if(confirmPass.length >= 8){
                 if(confirmPass != newPass){
-                    nowuiDashboards.showNotification('top', 'right', 'danger', "Passwords must match");
+                    $.toast({
+                        text: "Password does not match",
+                        showHideTransition: 'slide',
+                        hideAfter: 3000
+                    });
+                    //nowuiDashboards.showNotification('top', 'right', 'danger', "Passwords must match");
                 }else{
                     $('#newPass').css(manresetdcss);
                     $('#confirmPass').css(manresetdcss);
@@ -681,7 +727,7 @@ $('.addride').click(function(){
                         success:function(data){
                             $('#newPass').css(manresetdcss);
                             $('#confirmPass').css(manresetdcss);
-                            nowuiDashboards.showNotification('top', 'right', 'success', data);
+                            success(data);
                             $('#changePasswordFrom').trigger('reset')
                             $('#change_password_modal').modal("hide");
                             setTimeout(function(){
@@ -689,7 +735,7 @@ $('.addride').click(function(){
                             },2000);
                         },
                         error:function(error){
-                            nowuiDashboards.showNotification('top', 'right', 'danger', "Whoops couldn't change your password");
+                            error("Whoops couldn't change your password");
                         }
                     });
                 }
@@ -758,7 +804,7 @@ $('.addride').click(function(){
 
     $('#schedule_action_type').change((e)=>{
         let scheduleOption = $('#schedule_action_type').children("option:selected").val();
-        console.log(scheduleOption);
+        //console.log(scheduleOption);
         if (scheduleOption == "Scheduled Delivery") {
             $('.scheduleOption').show();
             $('#schedule_date').attr("required", true);
@@ -777,14 +823,14 @@ $('.addride').click(function(){
 
     $('#client_record_form_button').on('click', (e) => {
         const isClientRecorded =  validateForms('client_record_form', e);
-        console.log(isClientRecorded);
+        //console.log(isClientRecorded);
         if (isClientRecorded == true){
             postInformation('.client_record_form',
             '#client_record_modal',
             '/client_record');
         } else {
-            nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
-            console.log("Error");
+            error('Fill out all mandatory fields');
+            //console.log("Error");
         }
     });
 
@@ -822,7 +868,7 @@ $('.addride').click(function(){
         $('#company_name_more').val(clientDetails.company_name);
         $('#clientSendEmailAddress').val(clientDetails.email_address);
         $('#company_client_id_more').val(clientDetails.company_clients_id);
-        console.log(clientDetails.company_clients_id);
+        //console.log(clientDetails.company_clients_id);
 
     });
 
@@ -839,7 +885,7 @@ $('.addride').click(function(){
 
     $('#client_record_form_button_more').on('click', function(e){
         const btn_content = $(this).text();
-        console.log(btn_content);
+        //console.log(btn_content);
         if(btn_content == "Submit"){
             sendManualForm('client_record_form_more', 'client_contact_number_more', '#more_client_modal','/updateClientData');
         }else if (btn_content == "Send Message") {
@@ -853,12 +899,12 @@ $('.addride').click(function(){
     $('#known_clients_input').on('input',function(){
         const f_value = $(this).val();
         const d_value = $('#known_clients [value="' + f_value + '"]').data('companyclients');
-        console.log(f_value);
+        //console.log(f_value);
         if(f_value == ""){
             $('#client_identification').val("-1");
             $('#phone_num').val("");
         } else {
-            console.log($(this) );
+            //console.log($(this) );
             if (d_value == undefined){
                 $('#client_identification').val("-1");
                 $('#phone_num').val("");
@@ -921,7 +967,7 @@ $('.addride').click(function(){
 
         if (schedule_action == "Scheduled Delivery"){
             $('.scheduleOption').show();
-            console.log("Schedule");
+            //console.log("Schedule");
             $('#schedule_date').val(client_data.schedule_date);
             $('#schedule_time').val(client_data.schedule_time);
         }else{
@@ -946,7 +992,7 @@ $('.addride').click(function(){
 
 
     $('#searchDataInput').keyup(function(){
-        console.log($(this).val());
+        //console.log($(this).val());
         const searchvalue = $(this).val();
         $.ajaxSetup({
             headers: {
@@ -979,7 +1025,7 @@ $('.addride').click(function(){
                 $('#resulttablebody').append(tableBody);
             },
             error: function(error){
-                console.log(searchvalue);
+                //console.log(searchvalue);
                 if (searchvalue == ""){
                     $('.resultprompt').text("Waiting to search...").css({ color: "black" });
                 }else{
