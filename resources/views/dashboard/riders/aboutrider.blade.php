@@ -30,7 +30,7 @@
                       <th> Date/Time </th>
                     </thead>
                     <tbody>
-                      
+
                     </tbody>
                   </table>
                 </div>
@@ -43,7 +43,7 @@
 
 
 <div class="modal fade bd-riderprofile-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
 
 
@@ -58,7 +58,7 @@
               </div>
               <div class="card-body">
                 <form class="editridersinformation" no-validate>
-                  <meta name="csrf-token" content="{{csrf_token()}}"> 
+                  <meta name="csrf-token" content="{{csrf_token()}}">
                   <div class="row">
                     <div class="col-md-5 pr-1">
                       <div class="form-group">
@@ -157,7 +157,7 @@
                       </div>
                   </div>
                 </div>
-                
+
                 <div class="row" style="display:none;">
                   <div class="col-md-6">
                     <div class="form-group">

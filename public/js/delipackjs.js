@@ -1,4 +1,7 @@
 $(document).ready(function(e){
+
+  let currentpath = location.pathname;
+
   $('#payment_mode').hide();
 
   $('#phone_num').keyup(function(){
@@ -36,27 +39,24 @@ $(document).ready(function(e){
 
     $('#manual_record_form_button').on('click',function (event){
         const btntext = $(this).text();
-        if (btntext == "Submit"){
-            sendManualForm('manual_record_form', 'phone_num', 'manual_record_modal', '/upload_manual_record');
+        console.log(btntext);
+        if (btntext == "submit"){
+            sendManualForm('manual_record_form', 'phone_num', '#manual_record_modal', '/upload_manual_record');
         } else {
-            sendManualForm('manual_record_form', 'phone_num', 'manual_record_modal','/update_schedule_record');
+            sendManualForm('manual_record_form', 'phone_num', '#manual_record_modal','/update_schedule_record');
         }
     });
 
-     function sendManualForm(formclassname, phoneinputid, modalid, routingpath,){
+     function sendManualForm(formclassname, phoneinputid, modalid, routingpath){
          const isValidated = validateForms(formclassname, event);
          if ($('#' + phoneinputid).val().length > 9 || $('#' + phoneinputid).val().length < 9) {
              nowuiDashboards.showNotification('top', 'right', 'primary', 'Contact number must be 9 characters without the preceeding 0');
              return;
          } else {
              if (isValidated == true) {
-                 let isrequestback = postInformation('.' + formclassname,
-                     '#' +modalid,
-                     '',
-                     '',
+                 let isrequestback = postInformation('.'+formclassname,
+                     modalid,
                      routingpath);
-                //  $('#manual_record_modal').hide();
-                //  $('.manual_record_form').trigger("reset");
              } else {
                  nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
              }
@@ -76,28 +76,20 @@ $(document).ready(function(e){
     $('#ridersubmitbtn').on('click', (event) => {
        let formvalid =  validateForms('needs-validation', event);
         if (formvalid == true){
-            // let ridersinfomation = $('.needs-validation').serialize();
-            // console.log(ridersinfomation);
             $('.rideregistrationforms').modal('hide');
-            // $('#modalloader').modal('show');
-            let isrequestback = postInformation($('.needs-validation').serialize(),
-            '#modalloader',
-            '',
-            '',
+            let isrequestback = postInformation('.needs-validation',
+            '.rideregistrationforms',
             '/registerrider');
 
         } else {
             nowuiDashboards.showNotification('top', 'right', 'primary','Fill out all mandatory fields');
-            // console.log("Something went wrong");
         }
     });
 
     $('.registerridebtn').on('click', function(e){
         let formvalidate = validateForms('ridesformsval', e);
         if (formvalidate == true){
-            $('.bd-rideform-modal-lg').modal('hide');
-            postInformation($('.ridesformsval').serialize(), '','.bd-rideform-modal-lg','' , '/registerride');
-            $('.ridesformsval').trigger("reset");
+            postInformation('.ridesformsval', '.bd-rideform-modal-lg','/registerride');
         } else {
             nowuiDashboards.showNotification('top','right', 'primary', 'Fill out all mandatory fields');
         }
@@ -106,11 +98,7 @@ $(document).ready(function(e){
     $('.assignridebtn').on('click', function (e) {
         let assignform = validateForms('assignform', e);
         if (assignform == true) {
-            postInformation($('.assignform').serialize(), '', '', '', '/assignedmotrorbiketorider');
-            $('.bd-assignride-modal-sm').modal('hide');
-            $('.assignform').trigger('reset');
-            // $('').text('Unassign');
-            // location.reload();
+            postInformation('.assignform', '.bd-assignride-modal-sm','/assignedmotrorbiketorider');
         }
     });
 
@@ -119,33 +107,31 @@ $(document).ready(function(e){
 
 
 
-    function postInformation(inputforms,loader, mainform = null,optionalmodal = null ,url){
+    function postInformation(inputforms,optionalmodal = null , url){
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        // $(loader).modal('show');
-        // $('#modalloader').modal('hide');
-
+        $(optionalmodal).modal('hide');
+        $('.modal-backdrop').remove();
+        $('#loaderModal').modal('show');
         $.ajax({
             method: 'POST',
             url: url,
             data: $(inputforms).serialize(),
             success: function(data){
-                if (optionalmodal != null) {
-                    $(optionalmodal).modal('show');
-                }
                 $(inputforms).trigger('reset');
-                $(loader).modal("hide");
-                nowuiDashboards.showNotification('top', 'right', 'success',  data);
+                nowuiDashboards.showNotification('top', 'right', 'success',  data.success);
+                $('#loaderModal').remove();
+                $('.modal-backdrop').remove();
+
 
             },
             error: function (error){
-                // $(loader).modal('hide');
-                $(mainform).modal('show');
-                nowuiDashboards.showNotification('top', 'right', 'danger', error.message);
+                $('#loaderModal').remove();
+                $(optionalmodal).modal('show');
+                nowuiDashboards.showNotification('top', 'right', 'danger', error.error);
 
             }
         });
@@ -169,19 +155,22 @@ $(document).ready(function(e){
         // location.href = /aboutriders/ + riderfound_id;
     });
 
+
+    $('.addclientbtn').click(function(e){
+        $('#client_record_modal').modal('show');
+    });
+
+
     (function(){
-        // console.log(location.pathname.substring(1,12));
         if (location.pathname.substring(1, 12) == "aboutriders"){
             riderfound_id = location.pathname.substring(13);
         }
-        //console.log(riderfound_id);
-
     })();
 
     if(riderfound_id != ""){
         let singleriderinfo = $('#riderstable').DataTable({
             'ajax': '/getsingleriderinformation/' + riderfound_id,
-            'deferRender': false,
+            'deferRender': true,
             'searching':false,
             'destroy':true
         });
@@ -331,11 +320,19 @@ $(document).ready(function(e){
 
 
       setInterval(function(){
-        riderinfo.ajax.reload(null, false);
-        ridesinfo.ajax.reload(null, false);
-        transactioninfo.ajax.reload(null, false);
-        scheduledTransactions.ajax.reload(null, false);
+          if (currentpath == '/rides') {ridesinfo.ajax.reload(null, false);}
+
+          if (currentpath == '/riders'){
+            riderinfo.ajax.reload(null, false);
+          }
+
+          if (currentpath == '/deliveries') {
+              scheduledTransactions.ajax.reload(null, false);
+              transactioninfo.ajax.reload(null, false);
+            }
       },3000);
+
+
 
 
 $('.riderprofilebtn').on('click', function(e){
@@ -380,9 +377,7 @@ $('.riderprofilebtn').on('click', function(e){
     $('.ridereditinfobtn').on('click', function (e){
         let isvalidated = validateForms('editridersinformation', e);
         if (isvalidated == true){
-            postInformation($('.editridersinformation').serialize(), '', '', '','/editridersprofile');
-            $('.editridersinformation').trigger('reset');
-            $('.bd-riderprofile-modal-lg').modal('hide');
+            postInformation('.editridersinformation', '.bd-riderprofile-modal-lg','/editridersprofile');
         }
     });
 
@@ -439,13 +434,21 @@ $('.riderprofilebtn').on('click', function(e){
     });
 
 
+    $('#home-tab').click(function(){
+        $('#home').show();
+        $('#profile').hide();
+    });
+
+    $('#profile-tab').click(function () {
+        $('#home').hide();
+        $('#profile').show();
+    });
+
     //send editted information
     $('.editridebtn').on('click', function(event){
         let isvalidated = validateForms('editrideform',event);
         if (isvalidated == true){
-            postInformation($('.editrideform').serialize(), '', '', '', '/editrideinformation')
-            $('.editrideform').trigger('reset');
-            $('.bd-rideeditform-modal-lg').modal('hide');
+            postInformation('.editrideform', '.bd-rideeditform-modal-lg', '/editrideinformation');
         }
     });
 
@@ -522,6 +525,10 @@ function updateAssignmentBike(){
         }
     })
 }
+
+$('.addride').click(function(){
+    $('.bd-rideform-modal-lg').modal('show');
+});
 
 // setInterval(updateAssignmentBike, 3000);
 
@@ -619,7 +626,9 @@ function updateAssignmentBike(){
         });
     }
 
-    setInterval(checkRiderStatus, 1000);
+    if (currentpath == '/maindashboard'){
+        setInterval(checkRiderStatus, 1000);
+    }
 
 
 
@@ -771,11 +780,8 @@ function updateAssignmentBike(){
         console.log(isClientRecorded);
         if (isClientRecorded == true){
             postInformation('.client_record_form',
-            '',
-            '',
-            '',
+            '#client_record_modal',
             '/client_record');
-            $('#client_record_modal').modal('hide');
         } else {
             nowuiDashboards.showNotification('top', 'right', 'primary', 'Fill out all mandatory fields');
             console.log("Error");
@@ -835,7 +841,7 @@ function updateAssignmentBike(){
         const btn_content = $(this).text();
         console.log(btn_content);
         if(btn_content == "Submit"){
-            sendManualForm('client_record_form_more', 'client_contact_number_more', 'more_client_modal','/updateClientData');
+            sendManualForm('client_record_form_more', 'client_contact_number_more', '#more_client_modal','/updateClientData');
         }else if (btn_content == "Send Message") {
             //email to be written
         }
@@ -864,6 +870,7 @@ function updateAssignmentBike(){
         }
     });
 
+    $('.modal').attr('data-backdrop','modal-backdrop');
 
     $('#scheduletransactionstable').on('click','.updateScheduleDelivery', function (){
 

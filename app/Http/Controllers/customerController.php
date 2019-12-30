@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Customer;
-use App\customer_login;
+use App\Customer_login;
 use Auth;
 use App\company_rider;
 use App\Company;
@@ -19,26 +19,26 @@ use Carbon\Carbon;
 class customerController extends Controller
 {
     function registerCustomer(Request $request){
-
-        $isRegistered = Customer::where('phone_number',$request->phone_number)->first();
+        $request = Datacleaner::cleaner($request->all());
+        $isRegistered = Customer::where('phone_number',$request["phone_number"])->first();
         if($isRegistered == null){
             $customer_id = Customer::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number
+                'first_name' => $request["first_name"],
+                'last_name' => $request["last_name"],
+                'email' => $request["email"],
+                'phone_number' => $request["phone_number"]
             ])->latest()->value("customer_id");
-    
+
             // $encryptCustomerPassword = bcrypt($request->password);
-            customer_login::create([
-                'phone_number' => $request->phone_number,
-                'password' => bcrypt($request->password),
+            Customer_login::create([
+                'phone_number' => $request["phone_number"],
+                'password' => bcrypt($request["password"]),
                 'customerscustomer_id' => $customer_id,
                 'account_status' => 'ACTIVE'
             ]);
-    
+
             $customer_data = Customer::where('customer_id', $customer_id)->first();
-    
+
             return response()->json([
                             'success_cue' => 'Success',
                             'customer_id' => $customer_id,
@@ -56,7 +56,7 @@ class customerController extends Controller
      ]);
         }
 
-        
+
     }
 
 
@@ -92,7 +92,7 @@ class customerController extends Controller
                 $payment->commission_charge = $request->commission_charge;
                 $payment->payment_type = $request->payment_type;
                 $payment->total_charge = ($request->delivery_charge + $request->commission_charge);
-                
+
                 if($payment->save()){
                     $transactionResponse = [
                             "success" => "Done",
@@ -141,7 +141,7 @@ class customerController extends Controller
         ->get();
         // ->orderBy('transactions.created_at');
 
-        return response()->json($transactions);
+        return (count($transactions) > 0 ) ? response()->json($transactions, 200) : response()->json([ "error" => "Empty history"],500);
 
     }
 
@@ -155,7 +155,7 @@ class customerController extends Controller
        if (strlen($customer_phoneNumber) == 10){
             $substring_phoneNumber = substr($customer_phoneNumber, 1);
             $customer_validNumber = "+233" . $substring_phoneNumber;
-       } 
+       }
 
         if (Auth::guard('customer_login')->attempt(['phone_number' => $customer_validNumber, 'password' => $customer_password])){
 
@@ -167,24 +167,24 @@ class customerController extends Controller
                         'first_name' => $customer_data->first_name,
                         'last_name' => $customer_data->last_name,
                         'phone_number' => $customer_data->phone_number
-                    ]);
+                        ], 200);
                 } else {
                         return response()->json([
                         'success_cue' => 'Deactivated'
-                    ]);
+                        ], 500);
                 }
-                
+
         } else {
             return response()->json([
                     'success_cue' => "Failed"
-                ]);
+            ], 500);
         }
 
     }
 
 
 
-    //Cancel errand in session 
+    //Cancel errand in session
 
     public function customererrandsessioncancel(Request $request){
         Transaction::where('transaction_id',$request->transactions_id)->update([

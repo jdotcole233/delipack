@@ -13,17 +13,17 @@
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  {{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> --}}
   <!-- CSS Files -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../assets/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
-  <!-- <link rel="stylesheet" href="{{asset('css/delipack.css')}}"> -->
+  {{-- <!-- <link rel="stylesheet" href="{{asset('css/delipack.css')}}"> --> --}}
 
   <!-- <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" /> -->
   <link href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css" rel="stylesheet" />
 
   <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" />
+  {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" /> --}}
   <link href="https://cdn.datatables.net/1.10.19/css/dataTables.semanticui.min.css" rel="stylesheet" />
   <link href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.semanticui.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{asset('assets/demo/demo.css')}}">
@@ -315,15 +315,15 @@
       <div class="modal-body">
         <form  id="changePasswordFrom">
               <div style="display:none">
-                <meta name="csrf-token" content="{{csrf_field()}}" >
+                <meta name="csrf-token" content="{{csrf_field()}}" />
               </div>
              <div class="form-group">
                 <label for="new-pasword">New password</label>
-                <input type="password" id="newPass" name="password" class="form-control" placeholder="Enter new password">
+                <input type="password" id="newPass" name="password" class="form-control" placeholder="Enter new password" />
              </div>
              <div class="form-group">
                 <label for="confirm_password">Confirm password</label>
-                <input type="password" id="confirmPass" name="confirm_password" class="form-control" placeholder="Confirm password">
+                <input type="password" id="confirmPass" name="confirm_password" class="form-control" placeholder="Confirm password" />
              </div>
         </form>
       </div>
@@ -338,12 +338,25 @@
 <!-- / -->
 
 
+<div class="modal fade" id="loaderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body d-flex justify-content-center align-items-center">
+        <lottie-player src="https://assets6.lottiefiles.com/datafiles/bNwYPnjv3OdFA5w/data.json" mode="bounce" background="transparent" speed="2.5" style="width: 300px; height: 300px;" loop autoplay >
+        </lottie-player>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 
 
 
   <!--   Core JS Files   -->
-  <!-- <script src="../assets/js/core/jquery.min.js"></script> -->
+//   <!-- <script src="../assets/js/core/jquery.min.js"></script> -->
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#config-web-app -->
@@ -351,7 +364,7 @@
 <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <!-- <script src="../assets/js/core/popper.min.js"></script> -->
+   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!--  Google Maps Plugin    -->
@@ -361,7 +374,7 @@
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/now-ui-dashboard.min.js?v=1.3.0" type="text/javascript"></script>
-  <script src="../assets/js/now-ui-dashboard.js" type="text/javascript"></script>
+  {{-- <script src="../assets/js/now-ui-dashboard.js" type="text/javascript"></script> --}}
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
@@ -371,8 +384,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
   <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-  <script src="../assets/demo/demo.js"></script>
-  <script src="../js/delipackjs.js"></script>
+
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
@@ -388,6 +401,8 @@
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
 
+<script src="../assets/demo/demo.js"></script>
+<script src="../js/delipackjs.js"></script>
 
 
 <script>
@@ -410,6 +425,8 @@
     });
 } );
   </script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
 
 <!-- https://code.jquery.com/jquery-3.3.1.js -->
 </body>

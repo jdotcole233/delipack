@@ -4,71 +4,94 @@
 </div>
 
 
-<div class="container" >
-    <div class="row" >
-        <div class="col-md-12">
-        <div class="card" >
-              <div class="card-header">
-                <h4 class="card-title"> Scheduled Deliveries </h4>
-                <button type="button" class="btn btn-info btn-outline pull-right" name="button" id="manual_btn">Manual Record</button>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table" id="scheduletransactionstable">
-                    <thead class=" text-primary">
-                      <th> Ref </th>
-                      <th> Customer</th>
-                      <th> Phone </th>
-                      <th> Pick-up </th>
-                      <th> Delivery </th>
-                      <th> Date </th>
-                      <th> Rider name </th>
-                      <th> Action </th>
-                    </thead>
-                    <tbody>
 
-                    </tbody>
-                  </table>
+   <div class="container mt-md-4">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Scheduled Deliveries</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">All Deliveries</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="" >
+                    <div class="row" >
+                        <div class="col-md-12">
+                        <div class="card" >
+                            <div class="card-header">
+                                <h4 class="card-title"> Scheduled Deliveries </h4>
+                                <button type="button" class="btn btn-info btn-outline pull-right" name="button" id="manual_btn">Manual Record</button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                <table class="table" id="scheduletransactionstable">
+                                    <thead class=" text-primary">
+                                    <th> Ref </th>
+                                    <th> Customer</th>
+                                    <th> Phone </th>
+                                    <th> Pick-up </th>
+                                    <th> Delivery </th>
+                                    <th> Date </th>
+                                    <th> Rider name </th>
+                                    <th> Action </th>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+            </div>
+
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title"> All Deliveries </h4>
+                                {{-- <button type="button" class="btn btn-info btn-outline pull-right" name="button" data-toggle="modal" data-target="#manual_record_modal">Manual Record</button> --}}
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                <table class="table" id="transactionstable">
+                                    <thead class=" text-primary">
+                                    <th> Ref </th>
+                                    <th> Customer</th>
+                                    <th> Phone </th>
+                                    <th> Pick-up </th>
+                                    <th> Delivery </th>
+                                    <th> Date </th>
+                                    <th> Rider name </th>
+                                    <th> Action </th>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+   </div>
 
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-        <div class="card">
-              <div class="card-header">
-                <h4 class="card-title"> All Deliveries </h4>
-                {{-- <button type="button" class="btn btn-info btn-outline pull-right" name="button" data-toggle="modal" data-target="#manual_record_modal">Manual Record</button> --}}
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table" id="transactionstable">
-                    <thead class=" text-primary">
-                      <th> Ref </th>
-                      <th> Customer</th>
-                      <th> Phone </th>
-                      <th> Pick-up </th>
-                      <th> Delivery </th>
-                      <th> Date </th>
-                      <th> Rider name </th>
-                      <th> Action </th>
-                    </thead>
-                    <tbody>
 
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 
 
 
@@ -82,7 +105,7 @@
 
 
 <div class="modal fade bd-quickview-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
 
 
@@ -265,7 +288,7 @@
 </div>
 
 <div class="modal fade bd-example-modal-lg" id="manual_record_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
           <h5 class="modal-title" id="modal_title_details">Add manual record</h5>
@@ -376,7 +399,7 @@
           </form>
       </div>
       <div class="modal-footer">
-          <button type="button" id="manual_record_form_button" name="button" class="btn btn-success pull-right">Submit</button>
+          <button type="button" id="manual_record_form_button" name="button" class="btn btn-success pull-right">submit</button>
           <button type="button" name="button" data-dismiss="modal" id="manual_cancel" class="btn btn-secondary pull-right">Cancel</button>
       </div>
     </div>

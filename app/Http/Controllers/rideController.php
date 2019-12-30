@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Motor_bike;
+use App\Datacleaner;
 use Auth;
 
 class rideController extends Controller
@@ -15,8 +16,8 @@ class rideController extends Controller
     }
 
     function regRide(Request $request){
-        Motor_bike::create($request->all());
-        return response()->json("Ride registered successfully");
+        $motor = Motor_bike::create(Datacleaner::cleaner($request->all()));
+        return ($motor != null ) ? response()->json(["success" => "Ride registered successfully"], 200) : response()->json(["error" => "Ride registered successfully"], 500);
     }
 
     function getregRides(){
@@ -29,7 +30,7 @@ class rideController extends Controller
             foreach ($registeredbikes as $registeredbike) {
                 $recbike = array();
                 if($registeredbike->status == 1){
-                    array_push($recbike, 
+                    array_push($recbike,
                     $registeredbike->brand_name,
                     $registeredbike->registered_number,
                     $registeredbike->date_of_expiry,
@@ -37,7 +38,7 @@ class rideController extends Controller
                     '<button data-id="'.$registeredbike->bike_id.'" class="btn btn-primary motorBikeDeleteBtn disabled">Delete</button>'
                     );
                 }else{
-                    array_push($recbike, 
+                    array_push($recbike,
                     $registeredbike->brand_name,
                     $registeredbike->registered_number,
                     $registeredbike->date_of_expiry,
@@ -61,9 +62,9 @@ class rideController extends Controller
     }
 
     function editmotorinformation(Request $request){
-        Motor_bike::where('bike_id', $request->bike_id)
-        ->update($request->all());
-        return response()->json("Updated successfully");
+        $motor = Motor_bike::where('bike_id', $request->bike_id)
+        ->update(Datacleaner::cleaner($request->all()));
+        return ($motor == 1) ? response()->json(["success" => "Updated successfully"], 200) : response()->json(["error" => "Try again!"], 500);
     }
 
 

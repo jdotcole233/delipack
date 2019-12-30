@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Rider_login;
-use App\company_rider;
+use App\Company_rider;
+use App\Subscription;
 use Hash;
 
 class MobileRiderController extends Controller
@@ -19,12 +20,17 @@ class MobileRiderController extends Controller
                     $driver = Rider_login::where('phone_number', $driver_phoneNumber)->first();
 
                     if ($driver->account_status == "ACTIVE"){
-                            $driver_data = company_rider::where('company_rider_id', $driver->rider_id)
+                            $driver_data = Company_rider::where('company_rider_id', $driver->rider_id)
                                             ->join('rider_assigned_motor_bikes','company_riders.company_rider_id','rider_assigned_motor_bikes.company_riderscompany_rider_id')
                                             ->first();
-                            $company_name = company_rider::join('companies_riders','company_riders.company_rider_id','companies_riders.company_riderscompany_rider_id')
+                            $company_name = Company_rider::join('companies_riders','company_riders.company_rider_id','companies_riders.company_riderscompany_rider_id')
                             ->join('companies','companies_riders.companiescompanies_id','companies.companies_id')
-                            ->select('company_name','company_logo_path')->first();
+                            ->select('company_name','companies_id','company_logo_path')->first();
+
+                            $subsciption = Subscription::where('companycompanies_id', $company_name->companies_id)
+                            ->latest()
+                            ->select('subscription_type')
+                            ->first();
 
                             if ($driver_data != null) {
                                 return response()->json([
@@ -37,8 +43,9 @@ class MobileRiderController extends Controller
                                     'first_time_sign_in' => $driver->first_time_sign_in,
                                     'account_status' => $driver->account_status,
                                     'company_name'=> $company_name->company_name,
+                                    'subscription_type' => $subsciption->subscription_type,
                                     'company_logo_path' => $company_name->company_logo_path
-                                ]);
+                                ], 200);
                             } else {
                                 $driver_data = company_rider::where('company_rider_id', $driver->rider_id)
                                 ->first();
@@ -52,8 +59,9 @@ class MobileRiderController extends Controller
                                     'first_time_sign_in' => $driver->first_time_sign_in,
                                     'account_status' => $driver->account_status,
                                      'company_name'=> $company_name->company_name,
+                                     'subscription_type' => $subsciption->subscription_type,
                                     'company_logo_path' => $company_name->company_logo_path
-                                ]);
+                                ], 500);
                             }
 
 
@@ -62,15 +70,15 @@ class MobileRiderController extends Controller
                             'success_cue' => 'Deactivated',
                             'account_status' => "",
                             'first_time_sign_in' => ""
-                        ]);
+                            ], 500);
                     }
 
             } else {
                 return response()->json([
                         'success_cue' => "Failed",
-                        'account_status' => $request->phone_number,
-                        'first_time_sign_in' => $request->password
-                    ]);
+                        'account_status' => "",
+                        'first_time_sign_in' => ""
+                ], 500);
             }
     }
 

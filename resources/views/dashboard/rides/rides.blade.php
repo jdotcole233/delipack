@@ -1,6 +1,6 @@
 @extends('systemheaders.dashboardheaders')
 @section('content')
- 
+
 <div class="panel-header panel-header-sm">
       </div>
 <div class="content">
@@ -11,7 +11,7 @@
                 <h4 class="card-title"> All Registered Rides</h4>
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-success pull-right" data-toggle="modal" data-target=".bd-rideform-modal-lg">Add new ride</button>
+                        <button class="btn btn-success pull-right addride" >Add new ride</button>
                     </div>
                 </div>
               </div>
@@ -26,7 +26,7 @@
                       <th>Action</th>
                     </thead>
                     <tbody>
-                      
+
                     </tbody>
                   </table>
                 </div>
@@ -40,7 +40,7 @@
 
 
 <div class="modal fade bd-rideform-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
 
 
@@ -67,12 +67,14 @@
                         <label for="recipient-name" class="col-form-label">Registered number:</label>
                         <input type="text" class="form-control" name="registered_number" placeholder="GS-223" required>
                       </div>
-                   </div> 
+                   </div>
               </div>
               <div class="row" style="display:none;">
                    <div class="col-md-6">
                       <div class="form-group">
-                        <input type="text" class="form-control" name="companiescompanies_id" value="{{Auth::user()->companiescompanies_id}}">
+                        @if (Auth::check())
+                            <input type="text" class="form-control" name="companiescompanies_id" value="{{Auth::user()->companiescompanies_id}}">
+                        @endif
                       </div>
                    </div>
                    <div class="col-md-6">
@@ -93,7 +95,7 @@
                         <label for="recipient-name" class="col-form-label">Date of expiry:</label>
                         <input type="Date" class="form-control" name="date_of_expiry"  required>
                       </div>
-                   </div> 
+                   </div>
               </div>
           </form>
                <div class="modal-footer">
@@ -112,7 +114,7 @@
 
 
 <div class="modal fade bd-rideeditform-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
 
 
@@ -139,7 +141,7 @@
                         <label for="recipient-name" class="col-form-label">Registered number:</label>
                         <input type="text" class="form-control" id="registered_number" name="registered_number"  required>
                       </div>
-                   </div> 
+                   </div>
               </div>
               <div class="row">
                    <div class="col-md-6">
@@ -153,7 +155,7 @@
                         <label for="recipient-name" class="col-form-label">Date of expiry:</label>
                         <input type="Date" class="form-control" id="date_of_expiry" name="date_of_expiry" required>
                       </div>
-                   </div> 
+                   </div>
               </div>
               <div class="row" style="display:none;">
                    <!-- <div class="col-md-6">
@@ -166,7 +168,7 @@
                       <div class="form-group">
                         <input type="hidden" class="form-control" id="bike_ident" name="bike_id">
                       </div>
-                   </div> 
+                   </div>
               </div>
             </form>
                <div class="modal-footer">

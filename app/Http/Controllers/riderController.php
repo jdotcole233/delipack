@@ -13,6 +13,7 @@ use App\Rider_login;
 use DB;
 use App\Motor_bike;
 use App\Rider_assigned_motor_bike;
+use App\Datacleaner;
 use Auth;
 
 
@@ -25,21 +26,22 @@ class riderController extends Controller
     }
 
     function func_registerrider(Request $request){
-        $rider_id = Company_rider::create($request->all())->latest()->value('company_rider_id');
+        $request = Datacleaner::cleaner($request->all());
+        $rider_id = Company_rider::create($request)->latest()->value('company_rider_id');
         Riders_address::create([
             'company_riderscompany_rider_id' => $rider_id,
-            'address' => $request->address,
-            'region' => $request->region,
-            'city' => $request->city,
-            'area' => $request->area
+            'address' => $request["address"],
+            'region' => $request["region"],
+            'city' => $request["city"],
+            'area' => $request["area"]
         ]);
         Riders_license::create([
             'company_riderscompany_rider_id' => $rider_id,
             'company_id' => Auth::user()->companiescompanies_id,
-            'License_type' => $request->license_type,
-            'License_number' => $request->license_number,
-            'Expiry_date' => $request->expiry_date,
-            'date_of_issue' => $request->date_of_issue
+            'License_type' => $request["license_type"],
+            'License_number' => $request["license_number"],
+            'Expiry_date' => $request["expiry_date"],
+            'date_of_issue' => $request["date_of_issue"]
 
         ]);
         Companies_rider::create([
@@ -47,9 +49,9 @@ class riderController extends Controller
             'companiescompanies_id' => Auth::user()->companiescompanies_id
         ]);
 
-        Rider_login::create([
-            'phone_number' => $request->personal_phone,
-            'password' => bcrypt('123456'),
+        $login_credential = Rider_login::create([
+            'phone_number' => $request["personal_phone"],
+            'password' => bcrypt('123456789'),
             'account' => "ACTIVE",
             'rider_id' => $rider_id,
             'company_id' => Auth::user()->companiescompanies_id,
@@ -57,7 +59,7 @@ class riderController extends Controller
         ]);
 
 
-        return response()->json('Account created successfully!!');
+        return ($login_credential != null ) ? response()->json(["success" => "Account created successfully!!"], 200) : response()->json(["error" => "Try again!"], 500);;
 
     }
 
@@ -80,7 +82,7 @@ class riderController extends Controller
         ->where('companies_riders.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->where('company_riders.delete_status','NOT DELETED')
         ->latest('company_riders.created_at')
-        ->get();    
+        ->get();
 
 
         $ridersarray = array();
@@ -108,14 +110,14 @@ class riderController extends Controller
                         '<button data-id="'.$rider->company_rider_id.'" class="btn btn-danger deactivateRiderBtn" disabled> Deactivate </button>'
                     );
                  }
-                        
+
                         array_push($ridersarray, $recordarray);
             }
         } else {
-            $emptyarray = array("", "", "", "", "", "", "");
+            $emptyarray = array("", "", "", "", "", "", "","");
             array_push($ridersarray, $emptyarray);
         }
-        
+
         return response()->json(['data' => $ridersarray ]);
     }
 
@@ -150,45 +152,46 @@ class riderController extends Controller
     }
 
     function insertRiderAndAssign(Request $request){
-        Rider_assigned_motor_bike::create($request->all());
+        Rider_assigned_motor_bike::create(Datacleaner::cleaner($request->all()));
         Motor_bike::where('bike_id', $request->motor_bikesbike_id)->update([
             'status' => 1
         ]);
-        Company_rider::where('company_rider_id', $request->company_riderscompany_rider_id)
+        $assign_rider = Company_rider::where('company_rider_id', $request->company_riderscompany_rider_id)
         ->update([
             'assigned_bike' => 1
         ]);
-       
-        return response()->json('Bike assigned to rider');
+
+        return ($assign_rider == 1 ) ? response()->json(["success" => "Bike assigned to rider"], 200) : response()->json(["error" => "Try again!"], 500);
     }
 
     function editriderprofile(Request $request){
-        Company_rider::where('company_rider_id', $request->rider_id)
+        $request = Datacleaner::cleaner($request->all());
+        Company_rider::where('company_rider_id', $request["rider_id"])
         ->update([
-            'first_name' => $request->first_name,
-            'other_name' => $request->other_name,
-            'last_name' => $request->last_name,
-            'gender' => $request->gender,
-            'work_phone' => $request->personal_phone,
-            'personal_phone' => $request->work_phone,
-            'about' => $request->about,
+            'first_name' => $request["first_name"],
+            'other_name' => $request["other_name"],
+            'last_name' => $request["last_name"],
+            'gender' => $request["gender"],
+            'work_phone' => $request["personal_phone"],
+            'personal_phone' => $request["work_phone"],
+            'about' => $request["about"],
         ]);
-        Riders_address::where('company_riderscompany_rider_id', $request->rider_id)
+        Riders_address::where('company_riderscompany_rider_id', $request["rider_id"])
         ->update([
-            'address' => $request->address,
-            'region' => $request->region,
-            'city' => $request->city,
-            'area' => $request->area
+            'address' => $request["address"],
+            'region' => $request["region"],
+            'city' => $request["city"],
+            'area' => $request["area"]
         ]);
-        Riders_license::where('company_riderscompany_rider_id', $request->rider_id)
+        $license = Riders_license::where('company_riderscompany_rider_id', $request["rider_id"])
         ->update([
-            'License_number' => $request->License_number,
-            'License_type' => $request->License_type,
-            'Expiry_date' => $request->Expiry_date,
-            'date_of_issue' => $request->date_of_issue 
+            'License_number' => $request["License_number"],
+            'License_type' => $request["License_type"],
+            'Expiry_date' => $request["Expiry_date"],
+            'date_of_issue' => $request["date_of_issue"]
         ]);
 
-        return response()->json("Updated successfully");
+        return ($license == 1 ) ? response()->json(["success" => "Updated successfully"], 200) : response()->json(["error" => "Try again!"]);
     }
 
     function unassignbiker(Request $request){

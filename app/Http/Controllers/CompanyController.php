@@ -19,6 +19,7 @@ use Session;
 use App\Companies_rider;
 use App\Company_client;
 use App\Company_schedule;
+use App\Datacleaner;
 
 class CompanyController extends Controller
 {
@@ -151,9 +152,8 @@ class CompanyController extends Controller
                  array_push($trans, $inittrans);
             }
         } else {
-            $em_array = ["", "", "", "", "", "", "", ""];
+            $em_array = array("", "", "", "", "", "", "", "");
             array_push($trans,$em_array);
-
         }
 
 
@@ -269,25 +269,28 @@ class CompanyController extends Controller
 
 
     public function updateProfile(Request $info){
+        $info = Datacleaner::cleaner($info->all());
         Company::where('companies_id',Auth::user()->companiescompanies_id)
         ->update([
-            "company_abbreviation" => $info->company_abbreviation,
-            "company_phone_one" => $info->company_phone_one,
-            "company_phone_two" => $info->company_phone_two,
-        ]);
-
-        Company_address::where('companiescompanies_id',Auth::user()->companiescompanies_id)
-        ->update([
-            "address" => $info->address,
-            "city" => $info->city,
-            "area" => $info->area,
-            "region" => $info->region,
+            "company_abbreviation" => $info["company_abbreviation"],
+            "company_phone_one" => $info["company_phone_one"],
+            "company_phone_two" => $info["company_phone_two"],
         ]);
 
         User::where('companiescompanies_id',Auth::user()->companiescompanies_id)
         ->update([
-            "email"=>$info->email
+            "email"=>$info["email"]
         ]);
+
+        Company_address::where('companiescompanies_id',Auth::user()->companiescompanies_id)
+        ->update([
+            "address" => $info["address"],
+            "city" => $info["city"],
+            "area" => $info["area"],
+            "region" => $info["region"],
+        ]);
+
+
 
         //Session::flush("message","");
 
@@ -341,9 +344,10 @@ class CompanyController extends Controller
            }
       } else {
         $name_parts = $this->splitCustomerName($request->customer_name);
+
         $customer = Company_client::create([
-        "client_first_name"=> $name_parts[0],
-        "client_last_name"=> count($name_parts) > 1 ? $name_parts[1]: " ",
+        "client_first_name"=> ucfirst(strtolower(trim($name_parts[0]))),
+        "client_last_name"=> count($name_parts) > 1 ? ucfirst(strtolower(trim($name_parts[1]))): " ",
         "client_primary_number"=> "0".$request->phone_number,
         "company_id" => $rider_details->companiescompanies_id
         ]);
@@ -361,8 +365,8 @@ class CompanyController extends Controller
         "company_client_id"=> $company_client_identificaton,
         "companiescompanies_id"=>$rider_details->companiescompanies_id,
         "motor_bikesbike_id"=>$rider_details->bike_id,
-        "destination"=>$request->destination,
-        "source"=>$request->source,
+        "destination"=>ucfirst(strtolower(trim($request->destination))),
+        "source"=>ucfirst(strtolower(trim($request->source))),
         "delivery_status"=> $request->schedule_action_type,
         "payment_mode" =>$request->payment_mode
       ]);
@@ -393,7 +397,7 @@ class CompanyController extends Controller
           "company_id" => Auth::user()->companiescompanies_id
       ]);
 
-      return response()->json(["transaction " => $trans, "customer" => $customer]);
+      return ($trans != null ) ? response()->json(["success" => $trans_generate.$trans->transaction_id . " created successfully"], 200) : response()->json(["error " => "Try again!"], 500);
     }
 
 
@@ -424,8 +428,8 @@ class CompanyController extends Controller
         "company_client_id"=> $request->client_identification,
         "companiescompanies_id"=>Auth::user()->companiescompanies_id,
         "motor_bikesbike_id"=>$rider_details->bike_id,
-        "destination"=>$request->destination,
-        "source"=>$request->source,
+        "destination" => ucfirst(strtolower(trim($request->destination))),
+        "source" => ucfirst(strtolower(trim($request->source))),
         "delivery_status"=> $request->schedule_action_type,
         "payment_mode" =>$request->payment_mode
       ]);
@@ -452,7 +456,7 @@ class CompanyController extends Controller
           "company_id" => Auth::user()->companiescompanies_id
       ]);
 
-      return response()->json(["response" => "Updated successfully"]);
+      return ($trans == 1 ) ? response()->json(["success" => "Updated successfully"], 200) : response()->json(["error" => "Try again!"], 500);
     }
 
 
@@ -500,17 +504,20 @@ class CompanyController extends Controller
 
 
     public function inputCompanyClient(Request $request){
+          $client_name = $request->first_name. " " . $request->last_name;
+          $request = Datacleaner::cleaner($request->all());
           $isCreated =  Company_client::create([
-                "client_first_name" => $request->first_name,
-                "client_last_name" => $request->last_name,
-                "client_primary_number" => $request->contact_number,
-                "client_alt_number" => $request->number_two,
-                "location" => $request->location,
-                "email_address" => $request->email,
-                "company_name" => $request->company_name
+                "client_first_name" => $request["first_name"],
+                "client_last_name" => $request["last_name"],
+                "client_primary_number" => $request["contact_number"],
+                "client_alt_number" => $request["number_two"],
+                "location" => $request["customer_location"],
+                "company_id" => Auth::user()->companiescompanies_id,
+                "email_address" => $request["email"],
+                "company_name" => $request["company_name"]
             ]);
 
-            return response()->json($isCreated);
+            return (count($isCreated) > 0 ) ? response()->json(["success" => $client_name . " created successfully"], 200) : response()->json(["error" => "Try again"], 500) ;
     }
 
 }

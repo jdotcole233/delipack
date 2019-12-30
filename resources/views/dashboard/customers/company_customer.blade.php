@@ -10,7 +10,7 @@
         <div class="card">
               <div class="card-header">
                 <h4 class="card-title"> All Clients </h4>
-                <button type="button" class="btn btn-success btn-outline pull-right" name="button" data-toggle="modal" data-target="#client_record_modal">Clients</button>
+                <button type="button" class="btn btn-success btn-outline pull-right addclientbtn" name="button" >Add client</button>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -39,7 +39,7 @@
 
 
 <div class="modal fade bd-example-modal-lg" id="client_record_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
           <h5 class="modal-title">Add Client</h5>
@@ -98,7 +98,7 @@
 
 
 <div class="modal fade bd-example-modal-lg" id="more_client_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
           <h5 class="modal-title" id="clientDetailsName">Client {Name}</h5>

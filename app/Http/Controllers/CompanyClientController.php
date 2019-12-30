@@ -9,6 +9,7 @@ use Auth;
 use App\Transaction;
 use App\Company_rider;
 use App\Payment;
+use App\Datacleaner;
 class CompanyClientController extends Controller
 {
     public function fetchCompanyClient(){
@@ -41,18 +42,20 @@ class CompanyClientController extends Controller
 
 
     public function updateCompanyClientData(Request $request){
-        Company_client::where("company_clients_id", $request->company_client_id)
+        $update_name =  $request->client_first_name_more. " " . $request->client_last_name_more;
+        $request = Datacleaner::cleaner($request->all());
+        $company_client = Company_client::where("company_clients_id", $request["company_client_id"])
         ->update([
-            "client_first_name" => $request->client_first_name_more,
-            "client_last_name" => $request->client_last_name_more,
-            "client_primary_number" => "0".$request->client_contact_number_more,
-            "client_alt_number" => $request->client_contact_number_two_more,
-            "location" => $request->customer_location_more,
-            "email_address" => $request->email_more,
-            "company_name" => $request->company_name_more
+            "client_first_name" => $request["client_first_name_more"],
+            "client_last_name" => $request["client_last_name_more"],
+            "client_primary_number" => "0".$request["client_contact_number_more"],
+            "client_alt_number" => $request["client_contact_number_two_more"],
+            "location" => $request["customer_location_more"],
+            "email_address" => $request["email_more"],
+            "company_name" => $request["company_name_more"]
         ]);
 
-        return response()->json(["response" => "Updated successfully"]);
+        return  ($company_client == 1) ? response()->json(["success" => $update_name. " updated successfully "], 200) : response()->json(["error" => "Try again! "], 500) ;
     }
 
 
