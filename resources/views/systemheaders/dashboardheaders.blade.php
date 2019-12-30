@@ -373,7 +373,7 @@
   <!--  Notifications Plugin    -->
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/now-ui-dashboard.min.js?v=1.3.0" type="text/javascript"></script>
+  <script src="{{asset("assets/js/now-ui-dashboard.js")}}" type="text/javascript"></script>
   {{-- <script src="../assets/js/now-ui-dashboard.js" type="text/javascript"></script> --}}
   <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
   <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -401,8 +401,8 @@
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
 
-<script src="../assets/demo/demo.js"></script>
-<script src="../js/delipackjs.js"></script>
+<script src="{{asset("assets/demo/demo.js")}}"></script>
+<script src="{{asset("js/delipackjs.js")}}"></script>
 
 
 <script>
