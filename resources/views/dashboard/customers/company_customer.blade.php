@@ -171,13 +171,6 @@
                         <label for="message"> Message: </label>
                     </div>
                     <div id="summernote"></div>
-                     <script>
-                    $('#summernote').summernote({
-                        placeholder: 'Type message to be sent',
-                        tabsize: 2,
-                        height: 200
-                    });
-                    </script>
                 </div>
           </div>
       </div>

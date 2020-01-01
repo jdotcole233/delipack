@@ -1,7 +1,6 @@
 $(document).ready(function(e){
 
   let currentpath = location.pathname;
-
   $('#payment_mode').hide();
 
   $('#phone_num').keyup(function(){
@@ -768,6 +767,11 @@ $('.addride').click(function(){
 
         if (selection == "Send Email") {
             if(getClientEmail != ""){
+                $('#summernote').summernote({
+                    placeholder: 'Type message to be sent',
+                    tabsize: 2,
+                    height: 200
+                });
                 $('.emailsmssection').show();
                 $('#clientToggleMore').hide();
                 $('#client_record_form_button_more').text("Send Message").show();
@@ -836,6 +840,7 @@ $('.addride').click(function(){
 
     $('#clientTable').on('click','.clientMoreBtn',function(e){
         e.preventDefault();
+
         $('#client_record_form_button_more').hide();
         $('#more_client_modal').modal({
             backdrop:'static',

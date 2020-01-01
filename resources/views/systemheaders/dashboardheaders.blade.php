@@ -16,8 +16,10 @@
   {{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> --}}
   <!-- CSS Files -->
   <link href="{{asset("assets/css/bootstrap.min.css")}}" rel="stylesheet" />
-  <link href="{{asset("assets/css/now-ui-dashboard.css?v=1.3.0")}}" rel="stylesheet" />
+  <link href="{{asset("assets/css/now-ui-dashboard.css?v=1.5.0")}}" rel="stylesheet" />
   <link href="{{asset("css/toast.css")}}" rel="stylesheet" />
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet"/>
+
   {{-- <!-- <link rel="stylesheet" href="{{asset('css/delipack.css')}}"> --> --}}
 
   <!-- <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" /> -->
@@ -30,11 +32,9 @@
   <link rel="stylesheet" href="{{asset('assets/demo/demo.css')}}">
 
 
-   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/themes/fontawesome-stars.css"/>
 
 
 
@@ -352,61 +352,23 @@
 
 
 
-
-
-
-
-  <!--   Core JS Files   -->
-//   <!-- <script src="../assets/js/core/jquery.min.js"></script> -->
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#config-web-app -->
 <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-   <script src="../assets/js/core/popper.min.js"></script>
-  <script src="{{asset("assets/js/core/bootstrap.min.js")}}"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <!-- Chart JS -->
-  <script src="../assets/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="{{asset("assets/js/now-ui-dashboard.min.js?v=1.3.0")}}" type="text/javascript"></script>
-  {{-- <script src="{{asset("assets/js/now-ui-dashboard.js")}}" type="text/javascript"></script> --}}
-
-  <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  {{-- <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script> --}}
-  <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
- <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
-
-
-
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<script src="{{asset('assets/js/core/jquery.min.js')}}"></script>
+<script src="{{asset('assets/js/core/popper.min.js')}}"></script>
+<script src="{{asset('assets/js/core/bootstrap.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>
+<script src="{{asset('assets/js/now-ui-dashboard.min.js?v=1.5.0')}}"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/jquery.barrating.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/themes/fontawesome-stars.css"/>
-
-<!-- include summernote css/js -->
-<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
-
 <script src="{{asset("assets/demo/demo.js")}}"></script>
 <script src="{{asset("js/delipackjs.js")}}"></script>
 <script src="{{asset("js/toast.min.js")}}"></script>
-
 
 <script>
     $(document).ready(function() {
@@ -428,9 +390,9 @@
     });
 } );
   </script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
 
-<!-- https://code.jquery.com/jquery-3.3.1.js -->
+
+
 </body>
 </html>
