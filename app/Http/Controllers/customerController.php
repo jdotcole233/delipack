@@ -187,11 +187,11 @@ class customerController extends Controller
     //Cancel errand in session
 
     public function customererrandsessioncancel(Request $request){
-        Transaction::where('transaction_id',$request->transactions_id)->update([
+        $trans_cancelled = Transaction::where('transaction_id',$request->transactions_id)->update([
             "delivery_status" => "CANCELLED"
         ]);
 
-        return response()->json("done");
+        return ($trans_cancelled == 1 ) ? response()->json(["success" => "Cancelled"], 200) : response()->json(["error" => "Cancelling failed.. Try again"], 500);
 
     }
 
