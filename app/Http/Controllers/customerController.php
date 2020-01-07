@@ -45,7 +45,7 @@ class customerController extends Controller
                             'first_name' => $customer_data->first_name,
                             'last_name' => $customer_data->last_name,
                             'phone_number' => $customer_data->phone_number
-                 ]);
+            ], 200);
         }else{
             return response()->json([
                 'success_cue' => 'Failed',
@@ -53,7 +53,7 @@ class customerController extends Controller
                 'first_name' => "",
                 'last_name' => "",
                 'phone_number' => ""
-     ]);
+            ], 500);
         }
 
 
