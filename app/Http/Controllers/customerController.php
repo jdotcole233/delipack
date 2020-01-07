@@ -15,6 +15,7 @@ use App\Payment;
 use App\Rating;
 use App\Android_report;
 use Carbon\Carbon;
+use App\Datacleaner;
 
 class customerController extends Controller
 {
