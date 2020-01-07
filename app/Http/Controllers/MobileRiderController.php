@@ -15,8 +15,6 @@ class MobileRiderController extends Controller
 
         $driver_phoneNumber = $request->phone_number;
         $driver_password = $request->password;
-            dd($request->all());
-            return;
             if (Auth::guard('driver_login')->attempt(['phone_number' => $driver_phoneNumber, 'password' => $driver_password])){
                     $driver = Rider_login::where('phone_number', $driver_phoneNumber)->first();
 
