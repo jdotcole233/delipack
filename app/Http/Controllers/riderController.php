@@ -204,15 +204,9 @@ class riderController extends Controller
         ->update([
             'status' => 0
         ]);
-        Rider_assigned_motor_bike::where('company_riderscompany_rider_id', $request->rider_id)->delete();
+        $un = Rider_assigned_motor_bike::where('company_riderscompany_rider_id', $request->rider_id)->delete();
 
-
-        // Rider_assigned_motor_bike::where('company_riderscompany_rider_id', $request->company_riderscompany_rider_id)
-        // ->update([
-        //     'assigned_bike' => 0
-        // ]);
-
-        return response()->json("Bike unassigned");
+        return ($un == 1) ? response()->json(["success" => "Bike unassigned "]) : response()->json(["error" => "Try again!!"]);
 
     }
 

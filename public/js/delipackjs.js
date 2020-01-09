@@ -425,14 +425,12 @@ $('.riderprofilebtn').on('click', function(e){
 
     $('#ridersoutputtable').on('click','.assignride', function(){
         let btntxt = String($(this).html().trim());
-        let unassignobj = {};
-        unassignobj["rider_id"] = $(this).attr("id");
-
+        $('#unassign_rider_id').val($(this).attr("id"));
         if (btntxt.length == 6){
             updateAssignmentBike();
             $('.bd-assignride-modal-sm').modal('show');
             $('#assigncmp_rider').val($(this).attr('id'));
-            //console.log($('#assigncmp_rider').val());
+            $('#assignridername').text("Assign ride to " + $(this).parent().parent().children()[0].innerHTML);
         } else if(btntxt.length == 8 ){
             Swal.fire({
                 title: 'Are you sure?',
@@ -444,13 +442,12 @@ $('.riderprofilebtn').on('click', function(e){
                 confirmButtonText: 'Yes, Unassign!'
             }).then((result) => {
                 if (result.value) {
-                    postInformation(unassignobj,'','','','/unassignedmotorbike');
+                    postInformation('.unassignform','.bd-assignride-modal-sm','/unassignedmotorbike');
                     Swal.fire(
                         'Unassigned!',
                         'Rider has been unassigned.',
                         'success'
                     )
-                    // location.reload();
                 }
             })
         }

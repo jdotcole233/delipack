@@ -1,6 +1,6 @@
 @extends('systemheaders.dashboardheaders')
 @section('content')
-   
+
 <div class="panel-header panel-header-sm">
 </div>
 <div class="content">
@@ -28,7 +28,7 @@
                       <th> Delete</th>
                     </thead>
                     <tbody id="riderTable">
-                      
+
                     </tbody>
                   </table>
                 </div>
@@ -38,13 +38,19 @@
     </div>
 </div>
 
+<div style="display:none;">
+    <form class="unassignform">
+        <input type="hidden" name="rider_id" id="unassign_rider_id">
+    </form>
+</div>
+
 
 <div class="modal fade bd-assignride-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Assign ride to {rider name}</h5>
+        <h5 class="modal-title" id="assignridername">Assign ride to {rider name}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -58,7 +64,7 @@
                   <div class="form-group">
                      <!-- <label for="recipient-name" class="col-form-label">Select Bike</label> -->
                         <select id="ridesselecttag" class="form-control form-control-lg" name="motor_bikesbike_id" required>
-                         
+
                         </select>
                         <div class="row" style="display:none;">
                               <div class="col-md-6">
@@ -83,7 +89,7 @@
                 </div>
               </div>
 
-              
+
         </div>
     </div>
   </div>
@@ -160,7 +166,7 @@
                           <option value="Ashanti Region">Ashanti Region</option>
                           <option value="Eastern Region">Eastern Region</option>
                           <option value="Central Region">Central Region</option>
-                          
+
                         </select>
                       </div>
                   </div>
@@ -290,7 +296,7 @@
                 <img  id="displayprofilepic" style="width:100%; height:100%; border-radius:50%;">
             </div>
             <div class="col-md-2">
-              
+
             </div>
           </div>
           <form method="POST" action="/uploadriderphoto" enctype="multipart/form-data" id="imageuploadform" >
