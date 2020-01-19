@@ -924,7 +924,7 @@ $('.addride').click(function(){
 
         let companyName = $('#getcompanyname').text().trim();
 
-        if (companyName === "Sam George") {
+        if (companyName === "DeliPack") {
             $('#specialinput').show();
             $('#product_type').attr("required", true);
             $('#quantity').attr("required", true);
