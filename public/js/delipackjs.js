@@ -922,6 +922,17 @@ $('.addride').click(function(){
 
     $('#scheduletransactionstable').on('click','.updateScheduleDelivery', function (){
 
+        let companyName = $('#getcompanyname').text().trim();
+
+        if (companyName === "Sam George") {
+            $('#specialinput').show();
+            $('#product_type').attr("required", true);
+            $('#quantity').attr("required", true);
+        } else {
+            $('#specialinput').hide();
+        }
+
+
         $('#manual_record_modal').modal({
             backdrop: 'static',
             keyboard: false
@@ -953,6 +964,8 @@ $('.addride').click(function(){
         $('#known_clients_input').val(client_name).prop("readonly", true);
         $('#phone_num').val(fixNumber(client_data.client_primary_number)).prop("readonly", true);
         $('#source').val(client_data.source);
+        $('#product_type').val(client_data.product_type);
+        $('#quantity').val(client_data.quantity);
         $('#destination').val(client_data.destination);
         $('#delivery_charge').val(client_data.delivery_charge);
         $('#transaction_id').val(client_data.transaction_id);
@@ -980,9 +993,19 @@ $('.addride').click(function(){
     function fixNumber(number){
         return Array.from(number).slice(1, 10).join("");
     }
-
+    
 
     $('#manual_btn').on('click', function(){
+        let companyName = $('#getcompanyname').text().trim();
+
+        if (companyName === "Sam George") {
+            $('#specialinput').show();
+            $('#product_type').attr("required", true);
+            $('#quantity').attr("required", true);
+        } else {
+            $('#specialinput').hide(); 
+        }
+
         $('#manual_record_modal').modal({
             backdrop: 'static',
             keyboard: false

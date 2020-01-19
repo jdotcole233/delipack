@@ -60,7 +60,7 @@
                 {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id)->value('company_abbreviation')}}
               @endauth
               </a>
-              <a class="simple-text logo-normal">
+              <a class="simple-text logo-normal" id="getcompanyname">
               @auth
                 {{DB::table('companies')->where('companies_id',Auth::user()->companiescompanies_id )->value('company_name')}}
               @endauth

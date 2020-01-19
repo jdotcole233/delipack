@@ -86,16 +86,31 @@ class CompanyController extends Controller
 
 
     public function transactionquery(){
-       $transactions =  Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+       $eve =  Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
         ->join('customers','transactions.customerscustomer_id', 'customers.customer_id')
         ->join('company_riders', 'transactions.company_riderscompany_rider_id','company_riders.company_rider_id')
         ->join('motor_bikes','transactions.motor_bikesbike_id','motor_bikes.bike_id')
         ->join('ratings', 'transactions.transaction_id', 'ratings.transactions_id')
+        ->whereNull('transactions.company_client_id')
         ->select('transaction_number','rate_value','brand_name','registered_number','destination','source','delivery_status','payments.created_at as paidon', 'delivery_charge', 'commission_charge', 'payment_type', 'total_charge', 'customers.first_name as customerFirstName',
-                 'customers.last_name as customerLastName', 'customers.phone_number as customerPhoneNumber', 'company_riders.first_name as ridersFirstName', 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 'work_phone', 'personal_phone')
+                 'customers.last_name as customerLastName',
+                 'company_riders.first_name as ridersFirstName', 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 'work_phone', 'personal_phone')
+        ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id);
+
+
+        $transactions =  Transaction::join('payments', 'transactions.transaction_id', 'payments.transactionstransaction_id')
+        ->join('company_clients','transactions.company_client_id', 'company_clients.company_clients_id')
+        ->join('company_riders', 'transactions.company_riderscompany_rider_id','company_riders.company_rider_id')
+        ->join('motor_bikes','transactions.motor_bikesbike_id','motor_bikes.bike_id')
+        ->join('ratings', 'transactions.transaction_id', 'ratings.transactions_id')
+        ->select('transaction_number','rate_value','brand_name','registered_number','destination','source','delivery_status','payments.created_at as paidon', 'delivery_charge', 'commission_charge', 'payment_type', 'total_charge',
+                 'client_first_name as customerFirstName','client_last_name as customerLastName', 'client_primary_number as customerPhoneNumber', 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 'work_phone', 'personal_phone')
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
+        ->whereNull('transactions.customerscustomer_id')
+        ->where('transactions.delivery_status','Completed Delivery')
         ->orderBy('transactions.created_at')
-        ->get();
+        ->union($eve)
+        ->get();        
 
         $trans = [];
         if($transactions != null){
@@ -367,6 +382,8 @@ class CompanyController extends Controller
         "motor_bikesbike_id"=>$rider_details->bike_id,
         "destination"=>ucfirst(strtolower(trim($request->destination))),
         "source"=>ucfirst(strtolower(trim($request->source))),
+        "product_type" => $request->product_type,
+        "quantity" => $request->quantity,
         "delivery_status"=> $request->schedule_action_type,
         "payment_mode" =>$request->payment_mode
       ]);
@@ -430,6 +447,8 @@ class CompanyController extends Controller
         "motor_bikesbike_id"=>$rider_details->bike_id,
         "destination" => ucfirst(strtolower(trim($request->destination))),
         "source" => ucfirst(strtolower(trim($request->source))),
+        "product_type" => $request->product_type,
+        "quantity" => $request->quantity,
         "delivery_status"=> $request->schedule_action_type,
         "payment_mode" =>$request->payment_mode
       ]);
@@ -470,7 +489,7 @@ class CompanyController extends Controller
             ->select("transaction_number", "company_clients_id", "client_first_name", "client_last_name", "client_primary_number",
              "destination", "source", "schedule_date", "first_name", "last_name", "company_rider_id","brand_name",
              "registered_number", "bike_id", "delivery_charge", "payment_type","payment_mode","delivery_status",
-             "schedule_date","schedule_time", "transactions.companiescompanies_id","transaction_id")
+             "schedule_date","schedule_time", "product_type", "quantity", "transactions.companiescompanies_id","transaction_id")
             ->where("transactions.companiescompanies_id", Auth::user()->companiescompanies_id)
             ->where("transactions.delivery_status", "Delivery started")
             ->orWhere("transactions.delivery_status", "Scheduled Delivery")

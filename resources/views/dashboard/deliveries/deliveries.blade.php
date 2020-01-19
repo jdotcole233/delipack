@@ -367,6 +367,23 @@
                   <input type="text" name="delivery_charge" id="delivery_charge" value="" class="form-control" placeholder="25.50"  required>
                 </div>
               </div>
+              
+              <div class="row mb-2" id="specialinput" style="display:none">
+                    <div class="form-group col-md-6">
+                      <label for="brand">Product type</label>
+                      <select class="form-control" id="product_type" name="product_type" >
+                        <option value="">Choose product type</option>
+                        <option value="Ice Cubes">Ice Cubes</option>
+                        <option value="Blocks">Blocks</option>
+                      </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                  <label for="brand">Quantity</label>
+                  <input type="text" name="quantity" id="quantity" value="" class="form-control" placeholder="Enter expected quantity"  >
+                </div>
+              </div>
+
+
               <div class="row mb-2" id="payment_mode">
                 <div class="form-group col-md-12">
                   <label for="">Payment Mode</label>
