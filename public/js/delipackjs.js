@@ -924,7 +924,7 @@ $('.addride').click(function(){
 
         let companyName = $('#getcompanyname').text().trim();
 
-        if (companyName === "DeliPack") {
+        if (companyName === "Grail Ice Limited") {
             $('#specialinput').show();
             $('#product_type').attr("required", true);
             $('#quantity').attr("required", true);
@@ -998,7 +998,7 @@ $('.addride').click(function(){
     $('#manual_btn').on('click', function(){
         let companyName = $('#getcompanyname').text().trim();
 
-        if (companyName === "Sam George") {
+        if (companyName === "Grail Ice Limited") {
             $('#specialinput').show();
             $('#product_type').attr("required", true);
             $('#quantity').attr("required", true);
