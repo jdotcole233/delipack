@@ -455,10 +455,11 @@ class CompanyController extends Controller
     }
 
     private function splitCustomerName($customerName){
+
         $name = explode(" ",$customerName);
         $name_count = count($name);
         $name_parts = [];
-        if ($name_count > 1){
+        if ($name_count >= 1){
             for ($i = 0; $i < $name_count; $i++){
                 if ($name[$i] != null){
                     array_push($name_parts, $name[$i]);
