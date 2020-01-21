@@ -73,9 +73,10 @@ class CompanyClientController extends Controller
 
 
     public function riderSchedule(Request $request){
+        $today = date("Y-m-d");
         $riderScheduleData = Transaction::where('company_riderscompany_rider_id', $request->rider_id)
-        ->where("transactions.delivery_status", "Scheduled Delivery")
-        ->orWhere("transactions.delivery_status", "Delivery started")
+        ->whereIn("transactions.delivery_status", ["Scheduled Delivery","Delivery started"])
+        ->whereDate("transactions.created_at", $today)
         ->join('company_clients','transactions.company_client_id','company_clients.company_clients_id')
         ->join('company_schedules','transactions.transaction_id','company_schedules.transactionstransaction_id')
         ->select("company_clients_id","schedule_date","schedule_time","client_first_name","client_last_name",

@@ -92,9 +92,24 @@ class CompanyController extends Controller
         ->join('motor_bikes','transactions.motor_bikesbike_id','motor_bikes.bike_id')
         ->join('ratings', 'transactions.transaction_id', 'ratings.transactions_id')
         ->whereNull('transactions.company_client_id')
-        ->select('transaction_number','rate_value','brand_name','registered_number','destination','source','delivery_status','payments.created_at as paidon', 'delivery_charge', 'commission_charge', 'payment_type', 'total_charge', 'customers.first_name as customerFirstName',
-                 'customers.last_name as customerLastName',
-                 'company_riders.first_name as ridersFirstName', 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 'work_phone', 'personal_phone')
+        ->select('transaction_number',
+        'rate_value',
+        'brand_name',
+        'registered_number',
+        'destination',
+        'source',
+        'delivery_status',
+        'payments.created_at as paidon',
+        'delivery_charge', 'commission_charge', 
+        'payment_type', 'total_charge', 
+        'customers.first_name as customerFirstName',
+        'customers.last_name as customerLastName',
+        'customers.phone_number as customerPhoneNumber', 
+        'company_riders.company_rider_id as rider_id', 
+        'company_riders.first_name as ridersFirstName', 
+        'company_riders.last_name as ridersLastName', 
+        'work_phone',
+        'personal_phone')
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id);
 
 
@@ -103,8 +118,25 @@ class CompanyController extends Controller
         ->join('company_riders', 'transactions.company_riderscompany_rider_id','company_riders.company_rider_id')
         ->join('motor_bikes','transactions.motor_bikesbike_id','motor_bikes.bike_id')
         ->join('ratings', 'transactions.transaction_id', 'ratings.transactions_id')
-        ->select('transaction_number','rate_value','brand_name','registered_number','destination','source','delivery_status','payments.created_at as paidon', 'delivery_charge', 'commission_charge', 'payment_type', 'total_charge',
-                 'client_first_name as customerFirstName','client_last_name as customerLastName', 'client_primary_number as customerPhoneNumber', 'company_riders.company_rider_id as rider_id', 'company_riders.last_name as ridersLastName', 'work_phone', 'personal_phone')
+        ->select('transaction_number',
+        'rate_value','brand_name',
+        'registered_number',
+        'destination',
+        'source',
+        'delivery_status',
+        'payments.created_at as paidon', 
+        'delivery_charge', 
+        'commission_charge', 
+        'payment_type', 
+        'total_charge',
+        'client_first_name as customerFirstName',
+        'client_last_name as customerLastName', 
+        'client_primary_number as customerPhoneNumber', 
+        'company_riders.company_rider_id as rider_id',
+        'company_riders.first_name as ridersFirstName',  
+        'company_riders.last_name as ridersLastName', 
+        'work_phone', 
+        'personal_phone')
         ->where('transactions.companiescompanies_id', Auth::user()->companiescompanies_id)
         ->whereNull('transactions.customerscustomer_id')
         ->where('transactions.delivery_status','Completed Delivery')
