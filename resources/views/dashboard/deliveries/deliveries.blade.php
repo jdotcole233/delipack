@@ -360,6 +360,7 @@
                     <option value="">Choose one</option>
                     <option value="Cash">Cash</option>
                     <option value="Mobile Money">Mobile Money</option>
+                    <option value="Cheque">Cheque</option>
                   </select>
                 </div>
                 <div class="form-group col-md-6">
