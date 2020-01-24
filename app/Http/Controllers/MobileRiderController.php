@@ -16,6 +16,7 @@ class MobileRiderController extends Controller
 
         $driver_phoneNumber = $request->phone_number;
         $driver_password = $request->password;
+
             if (Auth::guard('driver_login')->attempt(['phone_number' => $driver_phoneNumber, 'password' => $driver_password])){
                     $driver = Rider_login::where('phone_number', $driver_phoneNumber)->first();
 
@@ -24,10 +25,10 @@ class MobileRiderController extends Controller
                                             ->join('rider_assigned_motor_bikes','company_riders.company_rider_id','rider_assigned_motor_bikes.company_riderscompany_rider_id')
                                             ->first();
 
-                            $company_name = Company::where("companies_id", $driver_data->company_id)
+                            $company_name = Company::where("companies_id", $driver_data->companiescompanies_id)
                             ->select('company_name','companies_id','company_logo_path')->first();
 
-                            $subsciption = Subscription::where('companycompanies_id', $driver_data->company_id)
+                            $subsciption = Subscription::where('companycompanies_id', $driver_data->companiescompanies_id)
                             ->latest()
                             ->select('subscription_type')
                             ->first();
