@@ -7,6 +7,7 @@ use Auth;
 use App\Rider_login;
 use App\Company_rider;
 use App\Subscription;
+use App\Company;
 use Hash;
 
 class MobileRiderController extends Controller
@@ -22,11 +23,11 @@ class MobileRiderController extends Controller
                             $driver_data = Company_rider::where('company_rider_id', $driver->rider_id)
                                             ->join('rider_assigned_motor_bikes','company_riders.company_rider_id','rider_assigned_motor_bikes.company_riderscompany_rider_id')
                                             ->first();
-                            $company_name = Company_rider::join('companies_riders','company_riders.company_rider_id','companies_riders.company_riderscompany_rider_id')
-                            ->join('companies','companies_riders.companiescompanies_id','companies.companies_id')
+
+                            $company_name = Company::where("company_id", $driver->company_id)
                             ->select('company_name','companies_id','company_logo_path')->first();
 
-                            $subsciption = Subscription::where('companycompanies_id', $company_name->companies_id)
+                            $subsciption = Subscription::where('companycompanies_id', $driver->company_id)
                             ->latest()
                             ->select('subscription_type')
                             ->first();
