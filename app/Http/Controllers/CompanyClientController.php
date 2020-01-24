@@ -79,8 +79,9 @@ class CompanyClientController extends Controller
         ->whereDate("transactions.created_at", $today)
         ->join('company_clients','transactions.company_client_id','company_clients.company_clients_id')
         ->join('company_schedules','transactions.transaction_id','company_schedules.transactionstransaction_id')
+        ->join('payments','transactions.transaction_id','payments.transactionstransaction_id')
         ->select("company_clients_id","schedule_date","schedule_time","client_first_name","client_last_name",
-        "client_primary_number","source","destination","delivery_status", "product_type", "quantity")
+        "client_primary_number","source","destination","delivery_status", "product_type", "quantity", "payment_type")
         ->get();
 
         return ($riderScheduleData == null) ? response()->json("error",500):response()->json($riderScheduleData,200);
