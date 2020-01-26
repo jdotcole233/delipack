@@ -10,6 +10,8 @@ use App\Transaction;
 use App\Company_rider;
 use App\Payment;
 use App\Datacleaner;
+use App\SmsMessaging;
+
 class CompanyClientController extends Controller
 {
     public function fetchCompanyClient(){
@@ -76,12 +78,12 @@ class CompanyClientController extends Controller
         $today = date("Y-m-d");
         $riderScheduleData = Transaction::where('company_riderscompany_rider_id', $request->rider_id)
         ->whereIn("transactions.delivery_status", ["Scheduled Delivery","Delivery started"])
-        ->whereDate("transactions.created_at", $today)
+        ->whereDate("company_schedules.schedule_date", $today)
         ->join('company_clients','transactions.company_client_id','company_clients.company_clients_id')
         ->join('company_schedules','transactions.transaction_id','company_schedules.transactionstransaction_id')
         ->join('payments','transactions.transaction_id','payments.transactionstransaction_id')
-        ->select("company_clients_id","schedule_date","schedule_time","client_first_name","client_last_name",
-        "client_primary_number","source","destination","delivery_status", "product_type", "quantity", "payment_type")
+        ->select("transaction_id","company_clients_id","schedule_date","schedule_time","client_first_name","client_last_name",
+        "client_primary_number","source","destination","delivery_status", "product_type", "quantity", "payment_type", "transaction_number")
         ->get();
 
         return ($riderScheduleData == null) ? response()->json("error",500):response()->json($riderScheduleData,200);
@@ -89,9 +91,62 @@ class CompanyClientController extends Controller
 
 
     public function updateCustomerSchedule(Request $request){
-         $transupdate  = Transaction::where("company_client_id", $request->company_client_id)->update(["delivery_status" => $request->delivery_status]);
+        $delivery_status = $request->delivery_status;
+        $customer_name = $request->customer_name;
+        $phone_number = $this->processphonenumber($request->phone_number);
+        $company_name = $request->company_name;
+        $transaction_number = $request->transaction_number;
+        $rider_name = $request->rider_name;
+        $todayDate = date("Y-m-d");
+        $sendMessage = new SmsMessaging($phone_number,explode(" ", $request->company_name)[0]);
+
+
+         $transupdate  = Transaction::where("transaction_id", $request->transaction_id)->update(["delivery_status" => $delivery_status]);
+          
+         if ($delivery_status == "Delivery Started") {
+            $message = "Dear " .  $customer_name . "\nYour order with ". $company_name;
+            $message .= " for " . $todayDate . " has started.";
+            $message .= "\npowered by DELIPACK";
+            $sendMessage->sendSMS($message);
+         } else if ($delivery_status == "Completed Delivery"){
+            $message = "Dear " .  $customer_name . "\nYour order with trans # ". $transaction_number;
+            $message .= "\nhas been delivered on " . $todayDate . " by " . $rider_name;
+            $message .= "\nThank you for dealing with ". $company_name;
+            $message .= "\npowered by DELIPACK";
+            $sendMessage->sendSMS($message);            
+         }
+
+        //  $alert_message = new SmsMessaging();
          return ($transupdate != null) ? response()->json($request, 200) : response()->json($request, 500);
     }
+
+
+     private function processphonenumber($phonenumber){
+        $phone = str_split($phonenumber);
+        if (count($phone) == 10){
+            $phone = substr($phonenumber, 1);
+            $phone = "233". $phone;
+        }
+        return $phone;
+    }
+
+
+
+    public function updateridertoken(Request $request){
+        Company_rider::where("company_rider_id", $request->rider_id)
+        ->update([
+            "deviceToken" => $request->notification_token
+        ]);
+        
+        $message = "Hi ". $request->rider_name. " welcome to DELIPACK services";
+        $notification = new SmsMessaging(null, null);
+        $notificationresponse = $notification->sendNotifcationToDevice($request->notification_token, $message, "DELIPACK");
+        
+        return ($notificationresponse)? response()->json(["success" => "Successful " . $request->notification_token . " " .$notificationresponse]) : response()->json(["error" => "Try Again!"]) ;
+    }
+
+
+  
 
 
 }

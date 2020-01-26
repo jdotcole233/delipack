@@ -20,6 +20,7 @@ use App\Companies_rider;
 use App\Company_client;
 use App\Company_schedule;
 use App\Datacleaner;
+use App\SmsMessaging;
 
 class CompanyController extends Controller
 {
@@ -421,11 +422,22 @@ class CompanyController extends Controller
       ]);
 
       if ($request->schedule_action_type == "Scheduled Delivery") {
+            $todayDate = date("Y-m-d");
             Company_schedule::create([
                 "transactionstransaction_id" => $trans->transaction_id,
                 "schedule_date" => $request->schedule_date,
                 "schedule_time" => $request->schedule_time
             ]);
+
+            if ($request->schedule_date == $todayDate){
+                $deviceToken = Company_rider::where("company_rider_id", $rider_details->company_rider_id)->value("deviceToken");
+                $notification = new SmsMessaging(null, null);
+                $message = "You have received a new order for ". $customer->client_first_name. " " . $customer->client_last_name;
+                $message .= "\nDate: ". $todayDate ." with transaction number ". $trans_generate;
+                $notification->sendNotifcationToDevice($deviceToken, $message, "DELIPACK");
+            }
+
+
       }
 
 
@@ -471,8 +483,7 @@ class CompanyController extends Controller
 
 
     public function update_schedule_row(Request $request){
-        $rider_details = json_decode($request->rider_details);
-
+      $rider_details = json_decode($request->rider_details);
       $trans = Transaction::where('transaction_id', $request->transaction_id)->update([
         "company_riderscompany_rider_id"=>$rider_details->company_rider_id,
         "company_client_id"=> $request->client_identification,
@@ -487,10 +498,19 @@ class CompanyController extends Controller
       ]);
 
       if ($request->schedule_action_type == "Scheduled Delivery") {
+            $todayDate = date("Y-m-d");
             Company_schedule::where('transactionstransaction_id', $request->transaction_id)->update([
                 "schedule_date" => $request->schedule_date,
                 "schedule_time" => $request->schedule_time
             ]);
+
+              if ($request->schedule_date == $todayDate){
+                $deviceToken = Company_rider::where("company_rider_id", $rider_details->company_rider_id)->value("deviceToken");
+                $customer = Company_client::where("company_clients_id", $request->client_identification)->first();
+                $notification = new SmsMessaging(null, null);
+                $message = "Order has been updated  for ". $customer->client_first_name. " " . $customer->client_last_name. "\nDate ". $todayDate;
+                $notification->sendNotifcationToDevice($deviceToken, $message, "DELIPACK");
+            }
       }
 
 
@@ -508,7 +528,7 @@ class CompanyController extends Controller
           "company_id" => Auth::user()->companiescompanies_id
       ]);
 
-      return ($trans == 1 ) ? response()->json(["success" => "Updated successfully"], 200) : response()->json(["error" => "Try again!"], 500);
+      return ($trans == 1 ) ? response()->json(["success" => "Updated successfully "], 200) : response()->json(["error" => "Try again!"], 500);
     }
 
 

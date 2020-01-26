@@ -63,8 +63,10 @@ $(document).ready(function(e){
         //console.log(btntext);
         if (btntext == "submit"){
             sendManualForm('manual_record_form', 'phone_num', '#manual_record_modal', '/upload_manual_record');
+            $('.scheduleOption').hide();
         } else {
             sendManualForm('manual_record_form', 'phone_num', '#manual_record_modal','/update_schedule_record');
+            $('.scheduleOption').hide();
         }
     });
 
@@ -996,6 +998,7 @@ $('.addride').click(function(){
     
 
     $('#manual_btn').on('click', function(){
+        $('.scheduleOption').hide();
         let companyName = $('#getcompanyname').text().trim();
 
         if (companyName === "Grail Ice Limited") {
